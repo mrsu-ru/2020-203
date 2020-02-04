@@ -11,7 +11,7 @@ class kvashninka : public lab
    * Метод Гаусса с выбором главного элемента
    */
 	
-  cout << "Hello world!" << endl;
+ 
 
   /*
    */
