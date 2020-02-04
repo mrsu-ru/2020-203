@@ -4,6 +4,7 @@ LDFLAGS= -g
 SOURCES= \
     main.cpp \
     zhalninrv.cpp \
+    zevaykinae.cpp \
 	lab.cpp
 
 OBJECTS=$(SOURCES:.cpp=.o)
