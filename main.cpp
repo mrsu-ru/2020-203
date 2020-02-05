@@ -3,7 +3,7 @@
 #include "lab.h"
 #include <iostream>
 #include "zhalninrv.h"
-
+#include "loginovvv.h"
 
 void print_usage(char* name);
 
@@ -19,9 +19,9 @@ int main(int argc, char** argv)
   if (strcmp(argv[1], "zhalninrv") == 0) {
     l = new zhalninrv();
   }
-//  else if (strcmp(argv[1], "borisovaem") == 0) {
-//    l = new borisovaem();
-//  }
+  else if (strcmp(argv[1], "loginovvv") == 0) {
+    l = new loginovvv();
+  }
   else  {
     print_usage(argv[0]);
     return 0;
