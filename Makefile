@@ -4,7 +4,8 @@ LDFLAGS= -g
 SOURCES= \
     main.cpp \
     zhalninrv.cpp \
-	lab.cpp
+	lab.cpp \
+	puzinva.cpp \
 
 OBJECTS=$(SOURCES:.cpp=.o)
 EXECUTABLE=vvm
