@@ -3,7 +3,7 @@
 #include "lab.h"
 #include <iostream>
 #include "zhalninrv.h"
-
+#include "parshinad.h"
 
 void print_usage(char* name);
 
