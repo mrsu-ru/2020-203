@@ -2,8 +2,8 @@ CC=g++
 CFLAGS=-c -Wall -g
 LDFLAGS= -g
 SOURCES= \
-    main.cpp \
-    zhalninrv.cpp \
+	main.cpp \
+	zhalninrv.cpp \
 	maslovaes.cpp \
 	lab.cpp
 
