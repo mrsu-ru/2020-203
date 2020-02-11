@@ -34,6 +34,15 @@ void kazakovais::lab2()
 			{
 				max = j;
 			}
+		
+		
+		
+			
+		}
+		
+		
+		
+			
 			if (max != i)
 			{
 				for (int k = 0; k < N; k++)
@@ -49,7 +58,7 @@ void kazakovais::lab2()
 				break;
 			}
 */
-		}
+//		}
 		
 		for (int j = N-1; j > i; j--)
 		{
