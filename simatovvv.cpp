@@ -1,9 +1,9 @@
-﻿#include "zhalninrv.h"
+﻿#include "simatovvv.h"
 
 /**
  * Введение в дисциплину
  */
-void zhalninrv::lab1()
+void simatovvv::lab1()
 {
   cout << "hello world!" << endl;
 }
@@ -12,7 +12,7 @@ void zhalninrv::lab1()
 /**
  * Метод Гаусса с выбором главного элемента
  */
-void zhalninrv::lab2()
+void simatovvv::lab2()
 {
 
 }
@@ -22,7 +22,7 @@ void zhalninrv::lab2()
 /**
  * Метод прогонки
  */
-void zhalninrv::lab3()
+void simatovvv::lab3()
 {
 
 }
@@ -32,7 +32,7 @@ void zhalninrv::lab3()
 /**
  * Метод простых итераций
  */
-void zhalninrv::lab4()
+void simatovvv::lab4()
 {
 
 }
@@ -42,7 +42,7 @@ void zhalninrv::lab4()
 /**
  * Метод Якоби или Зейделя
  */
-void zhalninrv::lab5()
+void simatovvv::lab5()
 {
 
 }
@@ -52,7 +52,7 @@ void zhalninrv::lab5()
 /**
  * Метод минимальных невязок
  */
-void zhalninrv::lab6()
+void simatovvv::lab6()
 {
 
 }
@@ -62,25 +62,25 @@ void zhalninrv::lab6()
 /**
  * Метод сопряженных градиентов
  */
-void zhalninrv::lab7()
+void simatovvv::lab7()
 {
 
 }
 
 
-void zhalninrv::lab8()
+void simatovvv::lab8()
 {
 
 }
 
 
-void zhalninrv::lab9()
+void simatovvv::lab9()
 {
 
 }
 
 
-std::string zhalninrv::get_name()
+std::string simatovvv::get_name()
 {
-  return "Zhalnin R.V.";
+  return "simatovvv";
 }

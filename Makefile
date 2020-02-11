@@ -4,8 +4,15 @@ LDFLAGS= -g
 SOURCES= \
     main.cpp \
     zhalninrv.cpp \
-	malovki.cpp \
-	lab.cpp
+	  malovki.cpp \
+    landyshevav.cpp \
+    garinma.cpp \
+    simatovvv.cpp \
+    guskovas.cpp \
+    kozinasa.cpp \
+    sayfetdinovsf.cpp \
+    borisovayu.cpp \
+    lab.cpp
 
 OBJECTS=$(SOURCES:.cpp=.o)
 EXECUTABLE=vvm
