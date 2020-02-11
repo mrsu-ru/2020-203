@@ -4,6 +4,7 @@ LDFLAGS= -g
 SOURCES= \
     main.cpp \
     zhalninrv.cpp \
+	  parshinad.cpp \
 	  malovki.cpp \
     landyshevav.cpp \
     garinma.cpp \
