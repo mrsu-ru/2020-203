@@ -4,6 +4,7 @@
 #include <iostream>
 #include "sayfetdinovsf.h"
 #include "zhalninrv.h"
+#include "kozinasa.h"
 #include "borisovayu.h"
 
 void print_usage(char* name);
@@ -19,6 +20,9 @@ int main(int argc, char** argv)
   lab *l = NULL;
   if (strcmp(argv[1], "zhalninrv") == 0) {
     l = new zhalninrv();
+  }
+  else if (strcmp(argv[1], "kozinasa") == 0) {
+    l = new kozinasa();
   }
   else if (strcmp(argv[1], "sayfetdinovsf") == 0) {
     l = new sayfetdinovsf();
