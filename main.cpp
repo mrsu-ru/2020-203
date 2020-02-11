@@ -5,6 +5,7 @@
 #include "garinma.h"
 #include "sayfetdinovsf.h"
 #include "zhalninrv.h"
+#include "puzinva.h"
 #include "parshinad.h"
 #include "malovki.h"
 #include "LandyshevAV.h"
@@ -26,6 +27,9 @@ int main(int argc, char** argv)
   lab *l = NULL;
   if (strcmp(argv[1], "zhalninrv") == 0) {
     l = new zhalninrv();
+  }
+  else if (strcmp(argv[1], "puzinva") == 0) {
+    l = new puzinva();
   }
   else if (strcmp(argv[1], "parshinad") == 0) {
     l = new parshinad();
