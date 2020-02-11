@@ -5,6 +5,7 @@ SOURCES= \
     main.cpp \
     zhalninrv.cpp \
     landyshevav.cpp \
+    garinma.cpp \
     simatovvv.cpp \
     guskovas.cpp \
     kozinasa.cpp \
