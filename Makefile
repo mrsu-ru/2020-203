@@ -5,7 +5,12 @@ SOURCES= \
     main.cpp \
     zhalninrv.cpp \
     landyshevav.cpp \
-	lab.cpp
+    simatovvv.cpp \
+    guskovas.cpp \
+    kozinasa.cpp \
+    sayfetdinovsf.cpp \
+    borisovayu.cpp \
+    lab.cpp
 
 OBJECTS=$(SOURCES:.cpp=.o)
 EXECUTABLE=vvm
