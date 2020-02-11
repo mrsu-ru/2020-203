@@ -35,7 +35,7 @@ void kazakovais::lab2()
 		max = i;
 		for (j = i + 1; j < N; j++)
 		{
-			if (fabs(A[j][i]) > fabs(A[max][i]))
+			if (A[j][i]*A[j][i] > A[max][i]*A[max][i])
 			{
 				max = j;
 			}
