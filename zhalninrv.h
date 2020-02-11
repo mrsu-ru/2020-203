@@ -1,6 +1,7 @@
 #pragma once
 #include "lab.h"
 
+
 class zhalninrv : public lab
 {
   /**
