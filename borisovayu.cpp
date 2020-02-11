@@ -15,9 +15,6 @@ void borisovayu::lab1()
 void borisovayu::lab2()
 {
 int i,j,k,max;
-double ved;
-double c;
-double eps = 0.00001;
 
   for (i=0; i<N; b[i]=-b[i], i++)
 
