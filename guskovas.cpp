@@ -14,6 +14,19 @@ void guskovas::lab1()
  */
 void guskovas::lab2()//int n, int m, double e, double** arr, double* x) {
 {
+
+	for(int i = 0; i < N; i++){
+		int indexMax = i; 
+		for (int j = i + 1; j < N; j++) { 
+			if (abs(A[j][i]) > abs(A[indexMax][i])) indexMax = j; 
+		} 
+		if (indexMax != i) { 
+			for (int k = 0; k < N; k++) { 
+				swap(A[i][k], A[indexMax][k]); 
+			} 
+		} 
+	}
+
 	//ТУДА
 	int n = N;
 
