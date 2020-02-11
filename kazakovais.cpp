@@ -15,16 +15,12 @@ void kazakovais::lab1()
 void kazakovais::lab2()
 {
     //double eps = 0.0001;
-    
     double *vspom = new double[N];
     double vspom_1;
-    
-    
-	int max,i,j,k;
+ 	int max,i,j,k;
 	double sum;
 	sum = 0;
-
-	for (i=0; i<N; i++)
+    for (i=0; i<N; i++)
 	{
 		b[i]=-b[i];
 	}
@@ -39,15 +35,7 @@ void kazakovais::lab2()
 			{
 				max = j;
 			}
-		
-		
-		
-			
 		}
-		
-		
-		
-			
 			if (max != i)
 			{
 				for (k = 0; k < N; k++)
@@ -56,7 +44,6 @@ void kazakovais::lab2()
 	                vspom[k]=A[i][k];
 	                A[i][k]=A[max][k];
 	                A[max][k]=vspom[k];
-	                
                 }
 				//swap(b[i], b[max]);
 				vspom_1=b[i];
