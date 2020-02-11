@@ -14,8 +14,49 @@ void garinma::lab1()
  */
 void garinma::lab2()
 {
+	double tmp;
+for (int k = 0; k < N; k++) { 
+  int m=k;
+    for(int i=k+1;i<N;i++)
+      if(abs(A[i][k]) > abs(A[m][k]))
+        m=i;
+  for(int i=0;i<N;i++)
+  std::swap(A[k][i],A[m][i]);
+  std::swap(b[k],b[m]);
 
+
+tmp = A[k][k];
+for (int j = 0; j < N; j++)    //Прямой ход
+  A[k][j] = A[k][j] / tmp;
+b[k] =b[k]/tmp;
+
+for (int i = k + 1; i < N; i++) {
+  tmp = A[i][k];
+  for (int j = 0; j < N; j++) {
+    A[i][j] =A[i][j]- A[k][j] * tmp;
+  }
+b[i] =b[i]- b[k] * tmp;
 }
+}
+
+for (int k = N - 1; k > 0; k--)  //Обратный ход
+{
+  for (int i = k - 1; i >= 0; i--)
+    {
+       tmp = A[i][k];
+       for (int j = 0; j < N; j++)
+           A[i][j] =A[i][j]- A[k][j] * tmp;
+       b[i] =b[i] - b[k] * tmp;
+    }
+}
+for(int i=0; i<N; i++)
+x[i]=b[i];
+}
+
+
+
+
+
 
 
 
