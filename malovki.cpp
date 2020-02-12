@@ -1,5 +1,7 @@
 ﻿#include "malovki.h"
 
+using namespace std;
+
 /**
  * Введение в дисциплину
  */
