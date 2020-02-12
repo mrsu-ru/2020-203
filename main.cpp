@@ -23,6 +23,7 @@
 #include "guskovas.h"
 #include "kozinasa.h"
 #include "borisovayu.h"
+#include "kozlovaes.h"
 
 void print_usage(char* name);
 
@@ -97,6 +98,9 @@ int main(int argc, char** argv)
   }
   else if (strcmp(argv[1], "borisovayu") == 0) {
     l = new borisovayu();
+  }
+  else if (strcmp(argv[1], "kozlovaes") == 0) {
+    l = new kozlovaes();
   }
   else  {
     print_usage(argv[0]);
