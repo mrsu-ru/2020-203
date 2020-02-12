@@ -3,7 +3,17 @@
 #include "lab.h"
 #include <iostream>
 #include "kirdyushkindv.h"
+#include "garinma.h"
+#include "sayfetdinovsf.h"
 #include "zhalninrv.h"
+#include "puzinva.h"
+#include "parshinad.h"
+#include "malovki.h"
+#include "LandyshevAV.h"
+#include "simatovvv.h"
+#include "guskovas.h"
+#include "kozinasa.h"
+#include "borisovayu.h"
 
 void print_usage(char* name);
 
@@ -21,6 +31,36 @@ int main(int argc, char** argv)
   }
   else if (strcmp(argv[1], "kirdyushkindv") == 0) {
     l = new kirdyushkindv();
+  }
+  else if (strcmp(argv[1], "puzinva") == 0) {
+    l = new puzinva();
+  }
+  else if (strcmp(argv[1], "parshinad") == 0) {
+    l = new parshinad();
+  }
+  else if (strcmp(argv[1], "malovki") == 0) {
+    l = new malovki();
+  }
+  else if (strcmp(argv[1], "landyshevav") == 0) {
+    l = new landyshevav();
+  }
+  else if (strcmp(argv[1], "garinma") == 0) {
+    l = new garinma();
+  }
+  else if (strcmp(argv[1], "simatovvv") == 0) {
+    l = new simatovvv();
+  }
+  else if (strcmp(argv[1], "guskovas") == 0) {
+    l = new guskovas();
+  }
+  else if (strcmp(argv[1], "kozinasa") == 0) {
+    l = new kozinasa();
+  }
+  else if (strcmp(argv[1], "sayfetdinovsf") == 0) {
+    l = new sayfetdinovsf();
+  }
+  else if (strcmp(argv[1], "borisovayu") == 0) {
+    l = new borisovayu();
   }
   else  {
     print_usage(argv[0]);
