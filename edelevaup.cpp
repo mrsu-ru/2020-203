@@ -16,10 +16,8 @@ void edelevaup::lab1()
 void edelevaup::lab2()
 {
 
-	cout << "\nПрямой ход: " << endl;
 	for (int i = 0; i < N; i++) {
 
-		//проаверяем наличие решения 
 		int max = i;
 		for (int j = i + 1; j < N; j++) {
 			if (abs(A[j][i]) > abs(A[max][i]))
@@ -54,7 +52,6 @@ void edelevaup::lab2()
 
 	}
 
-	cout << "\n\nОбратный ход: " << endl;
 	for (int i = N - 1; i > 0; i--) {
 		double s = 0, l = 0;
 		for (int j = i; j < N; j++) {
