@@ -1,9 +1,9 @@
-﻿#include "zhalninrv.h"
+﻿#include "kazakovais.h"
 
 /**
  * Введение в дисциплину
  */
-void zhalninrv::lab1()
+void kazakovais::lab1()
 {
   cout << "hello world!" << endl;
 }
@@ -12,7 +12,7 @@ void zhalninrv::lab1()
 /**
  * Метод Гаусса с выбором главного элемента
  */
-void zhalninrv::lab2()
+void kazakovais::lab2()
 {
 
 }
@@ -22,7 +22,7 @@ void zhalninrv::lab2()
 /**
  * Метод прогонки
  */
-void zhalninrv::lab3()
+void kazakovais::lab3()
 {
 
 }
@@ -32,7 +32,7 @@ void zhalninrv::lab3()
 /**
  * Метод простых итераций
  */
-void zhalninrv::lab4()
+void kazakovais::lab4()
 {
 
 }
@@ -42,7 +42,7 @@ void zhalninrv::lab4()
 /**
  * Метод Якоби или Зейделя
  */
-void zhalninrv::lab5()
+void kazakovais::lab5()
 {
 
 }
@@ -52,7 +52,7 @@ void zhalninrv::lab5()
 /**
  * Метод минимальных невязок
  */
-void zhalninrv::lab6()
+void kazakovais::lab6()
 {
 
 }
@@ -62,25 +62,25 @@ void zhalninrv::lab6()
 /**
  * Метод сопряженных градиентов
  */
-void zhalninrv::lab7()
+void kazakovais::lab7()
 {
 
 }
 
 
-void zhalninrv::lab8()
+void kazakovais::lab8()
 {
 
 }
 
 
-void zhalninrv::lab9()
+void kazakovais::lab9()
 {
 
 }
 
 
-std::string zhalninrv::get_name()
+std::string kazakovais::get_name()
 {
-  return "Zhalnin R.V.";
+  return "Kazakova I.S.";
 }

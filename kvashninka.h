@@ -1,7 +1,7 @@
 #pragma once
 #include "lab.h"
 
-class zhalninrv : public lab
+class kvashninka : public lab
 {
   /**
    * Метод Гаусса
@@ -9,6 +9,11 @@ class zhalninrv : public lab
   virtual void lab1();
   /**
    * Метод Гаусса с выбором главного элемента
+   */
+	
+ 
+
+  /*
    */
   virtual void lab2();
   /**
@@ -36,6 +41,9 @@ class zhalninrv : public lab
   virtual void lab9();
 
 
-  virtual std::string get_name();
+  virtual std::string get_name()
+  {
+	return "Kvashnin K.A."
+  };
 
 };
