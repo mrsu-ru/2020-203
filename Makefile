@@ -5,6 +5,7 @@ SOURCES= \
     maslovaes.cpp \
     main.cpp \
     zhalninrv.cpp \
+    edelevaup.cpp \
     ashryatovarr.cpp \
     kotkovsn.cpp \
     kvashninka.cpp \
