@@ -1,7 +1,7 @@
 #pragma once
 #include "lab.h"
 
-class zhalninrv : public lab
+class bochkarevda : public lab
 {
   /**
    * Метод Гаусса
