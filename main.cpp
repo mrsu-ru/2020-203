@@ -2,6 +2,7 @@
 #include <cstring>
 #include "lab.h"
 #include <iostream>
+#include "kirdyushkindv.h"
 #include "garinma.h"
 #include "sayfetdinovsf.h"
 #include "zhalninrv.h"
@@ -27,6 +28,9 @@ int main(int argc, char** argv)
   lab *l = NULL;
   if (strcmp(argv[1], "zhalninrv") == 0) {
     l = new zhalninrv();
+  }
+  else if (strcmp(argv[1], "kirdyushkindv") == 0) {
+    l = new kirdyushkindv();
   }
   else if (strcmp(argv[1], "puzinva") == 0) {
     l = new puzinva();
