@@ -1,9 +1,9 @@
-﻿#include "zhalninrv.h"
+﻿#include "kirdyushkindv.h"
 
 /**
  * Введение в дисциплину
  */
-void zhalninrv::lab1()
+void kirdyushkindv::lab1()
 {
   cout << "hello world!" << endl;
 }
@@ -12,7 +12,7 @@ void zhalninrv::lab1()
 /**
  * Метод Гаусса с выбором главного элемента
  */
-void zhalninrv::lab2()
+void kirdyushkindv::lab2()
 {
 
 }
@@ -22,7 +22,7 @@ void zhalninrv::lab2()
 /**
  * Метод прогонки
  */
-void zhalninrv::lab3()
+void kirdyushkindv::lab3()
 {
 
 }
@@ -32,7 +32,7 @@ void zhalninrv::lab3()
 /**
  * Метод простых итераций
  */
-void zhalninrv::lab4()
+void kirdyushkindv::lab4()
 {
 
 }
@@ -42,7 +42,7 @@ void zhalninrv::lab4()
 /**
  * Метод Якоби или Зейделя
  */
-void zhalninrv::lab5()
+void kirdyushkindv::lab5()
 {
 
 }
@@ -52,7 +52,7 @@ void zhalninrv::lab5()
 /**
  * Метод минимальных невязок
  */
-void zhalninrv::lab6()
+void kirdyushkindv::lab6()
 {
 
 }
@@ -62,25 +62,25 @@ void zhalninrv::lab6()
 /**
  * Метод сопряженных градиентов
  */
-void zhalninrv::lab7()
+void kirdyushkindv::lab7()
 {
 
 }
 
 
-void zhalninrv::lab8()
+void kirdyushkindv::lab8()
 {
 
 }
 
 
-void zhalninrv::lab9()
+void kirdyushkindv::lab9()
 {
 
 }
 
 
-std::string zhalninrv::get_name()
+std::string kirdyushkindv::get_name()
 {
-  return "Zhalnin R.V.";
+  return "Kirdyushkin D.V.";
 }
