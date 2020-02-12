@@ -6,6 +6,7 @@
 #include "garinma.h"
 #include "sayfetdinovsf.h"
 #include "zhalninrv.h"
+#include "bochkarevda.h"
 #include "kazakovais.h"
 #include "isokovaa.h"
 #include "maslovaes.h"
@@ -32,6 +33,9 @@ int main(int argc, char** argv)
   lab *l = NULL;
   if (strcmp(argv[1], "zhalninrv") == 0) {
     l = new zhalninrv();
+  }
+  else if (strcmp(argv[1], "bochkarevda") == 0) {
+   l = new bochkarevda();
   }
   else if (strcmp(argv[1], "kazakovais") == 0) {
     l = new kazakovais();

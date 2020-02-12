@@ -5,6 +5,7 @@ SOURCES= \
     maslovaes.cpp \
     main.cpp \
     zhalninrv.cpp \
+    bochkarevda.cpp \
 	  kazakovais.cpp \
     isokovaa.cpp \
     golovatyukam.cpp \
