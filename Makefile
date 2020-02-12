@@ -8,13 +8,13 @@ SOURCES= \
     kotkovsn.cpp \
     kvashninka.cpp \
     bochkarevda.cpp \
-	  kazakovais.cpp \
+    kazakovais.cpp \
     isokovaa.cpp \
     golovatyukam.cpp \
-	  kirdyushkindv.cpp \
-	  puzinva.cpp \
-	  parshinad.cpp \
-	  malovki.cpp \
+    kirdyushkindv.cpp \
+    puzinva.cpp \
+    parshinad.cpp \
+    malovki.cpp \
     landyshevav.cpp \
     garinma.cpp \
     simatovvv.cpp \

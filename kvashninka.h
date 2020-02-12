@@ -41,9 +41,6 @@ class kvashninka : public lab
   virtual void lab9();
 
 
-  virtual std::string get_name()
-  {
-	return "Kvashnin K.A."
-  };
+  virtual std::string get_name();
 
 };
