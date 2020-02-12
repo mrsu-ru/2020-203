@@ -2,6 +2,7 @@ CC=g++
 CFLAGS=-c -Wall -g
 LDFLAGS= -g
 SOURCES= \
+    maslovaes.cpp \
     main.cpp \
     zhalninrv.cpp \
     golovatyukam.cpp \
