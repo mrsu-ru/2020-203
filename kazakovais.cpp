@@ -19,10 +19,13 @@ void kazakovais::lab2()
  	int max,i,j,k;
 	double sum;
 	sum = 0;
+	
+	/*
     for (i=0; i<N; i++)
 	{
 		b[i]=-b[i];
 	}
+	*/
 	
 	//прямой ход
 	for (i = 0; i < N; i++)
