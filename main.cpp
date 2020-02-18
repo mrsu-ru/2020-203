@@ -24,6 +24,7 @@
 #include "kozinasa.h"
 #include "borisovayu.h"
 #include "kozlovaes.h"
+#include "loginovvv.h"
 
 void print_usage(char* name);
 
@@ -39,7 +40,7 @@ int main(int argc, char** argv)
   if (strcmp(argv[1], "zhalninrv") == 0) {
     l = new zhalninrv();
   }
-    else if (strcmp(argv[1], "edelevaup") == 0) {
+  else if (strcmp(argv[1], "edelevaup") == 0) {
     l = new edelevaup();
   }
   else if (strcmp(argv[1], "ashryatovarr") == 0) {
@@ -101,6 +102,9 @@ int main(int argc, char** argv)
   }
   else if (strcmp(argv[1], "kozlovaes") == 0) {
     l = new kozlovaes();
+  }
+  else if (strcmp(argv[1], "loginovvv") == 0) {
+    l = new loginovvv();
   }
   else  {
     print_usage(argv[0]);
