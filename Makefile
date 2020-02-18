@@ -26,6 +26,7 @@ SOURCES= \
     borisovayu.cpp \
     lab.cpp \
 	kozlovaes.cpp \
+	loginovvv.cpp
 
 OBJECTS=$(SOURCES:.cpp=.o)
 EXECUTABLE=vvm
