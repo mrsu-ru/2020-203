@@ -60,7 +60,8 @@ void malovki::lab2()
 			}
 		}
 	}
-
+	for(int i = 0; i < N; i++)
+        x[i] = A[i][N-1];
 }
 
 
