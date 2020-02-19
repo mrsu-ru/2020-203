@@ -2,9 +2,14 @@
 #include <cstring>
 #include "lab.h"
 #include <iostream>
+#include "garinma.h"
+#include "sayfetdinovsf.h"
 #include "zhalninrv.h"
 #include "LandyshevAV.h"
-
+#include "simatovvv.h"
+#include "guskovas.h"
+#include "kozinasa.h"
+#include "borisovayu.h"
 
 void print_usage(char* name);
 
@@ -22,6 +27,24 @@ int main(int argc, char** argv)
   }
   else if (strcmp(argv[1], "landyshevav") == 0) {
     l = new landyshevav();
+  }
+  else if (strcmp(argv[1], "garinma") == 0) {
+    l = new garinma();
+  }
+  else if (strcmp(argv[1], "simatovvv") == 0) {
+    l = new simatovvv();
+  }
+  else if (strcmp(argv[1], "guskovas") == 0) {
+    l = new guskovas();
+  }
+  else if (strcmp(argv[1], "kozinasa") == 0) {
+    l = new kozinasa();
+  }
+  else if (strcmp(argv[1], "sayfetdinovsf") == 0) {
+    l = new sayfetdinovsf();
+  }
+  else if (strcmp(argv[1], "borisovayu") == 0) {
+    l = new borisovayu();
   }
   else  {
     print_usage(argv[0]);
