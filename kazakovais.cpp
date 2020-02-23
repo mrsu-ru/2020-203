@@ -80,6 +80,7 @@ void kazakovais::lab2()
  */
 void kazakovais::lab3()
 {
+	/*
 	double *alpha;
 	double *beta;
 	alpha = new double[N];  //массивы для прогоночных коэффициентов
@@ -106,7 +107,33 @@ void kazakovais::lab3()
 	{
 	x[j] = alpha[j]*x[j+1]+beta[j];
 	}
- 	
+ 	*/
+
+	double *alpha;
+	double *beta;
+	alpha = new double[N];  //массивы для прогоночных коэффициентов
+	beta = new double[N];
+
+	//прямой ход
+	alpha[0] = -A[0][1] / A[0][0];
+	beta[0] = b[0] / A[0][0];
+
+	for (int i = 1; i < n - 1; i++)
+	{
+		alpha[i] = -A[i][i + 1] / (A[i][i] + A[i][i - 1] * alpha[i - 1]);
+		beta[i] = (b[i] - A[i][i - 1] * beta[i - 1]) / (A[i][i] + A[i][i - 1] * alpha[i - 1]);
+	}
+
+	beta[n - 1] = (b[n - 1] - A[n - 1][n - 2] * beta[n - 2]) / (A[n - 1][n - 1] + A[n - 1][n - 2] * alpha[n - 2]);
+
+	//обратный ход
+	x[n - 1] = beta[n - 1];
+
+	for (int i = n - 2; i >= 0; i--)
+	{
+		x[i] = alpha[i] * x[i + 1] + beta[i];
+	}
+	
 	
 }
 
