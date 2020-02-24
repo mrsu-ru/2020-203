@@ -90,18 +90,18 @@ void kazakovais::lab3()
 	alpha[0] = -A[0][1] / A[0][0];
 	beta[0] = b[0] / A[0][0];
 
-	for (int i = 1; i < n - 1; i++)
+	for (int i = 1; i < N - 1; i++)
 	{
 		alpha[i] = -A[i][i + 1] / (A[i][i] + A[i][i - 1] * alpha[i - 1]);
 		beta[i] = (b[i] - A[i][i - 1] * beta[i - 1]) / (A[i][i] + A[i][i - 1] * alpha[i - 1]);
 	}
 
-	beta[n - 1] = (b[n - 1] - A[n - 1][n - 2] * beta[n - 2]) / (A[n - 1][n - 1] + A[n - 1][n - 2] * alpha[n - 2]);
+	beta[N - 1] = (b[N - 1] - A[N - 1][N - 2] * beta[N - 2]) / (A[N - 1][N - 1] + A[N - 1][N - 2] * alpha[N - 2]);
 
 	//обратный ход
-	x[n - 1] = beta[n - 1];
+	x[N - 1] = beta[N - 1];
 
-	for (int i = n - 2; i >= 0; i--)
+	for (int i = N - 2; i >= 0; i--)
 	{
 		x[i] = alpha[i] * x[i + 1] + beta[i];
 	}
