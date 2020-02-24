@@ -80,7 +80,7 @@ void kazakovais::lab2()
  */
 void kazakovais::lab3()
 {
-
+	//данный метод применяется для трёхдиагональных матриц
 	double *alpha;
 	double *beta;
 	alpha = new double[N];  //массивы для прогоночных коэффициентов
