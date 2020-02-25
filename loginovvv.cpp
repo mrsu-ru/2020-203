@@ -68,6 +68,21 @@ void loginovvv::lab2()
  */
 void loginovvv::lab3()
 {
+	double *a = new double[N];
+	double *v = new double[N];
+	a[1]=-A[0][1]/A[0][0];
+	v[1]=b[0]/A[0][0];
+	for(int i=2; i<N; i++)
+	{
+		a[i]=-A[i-1][i]/(A[i-1][i-2]*a[i-1]+A[i-1][i-1]);
+		v[i]=(b[i-1]-A[i-1][i-2]*v[i-1])/(A[i-1][i-2]*a[i-1]+A[i-1][i-1]);
+	}
+	x[N-1]=(b[N-1]-A[N-1][N-2]*v[N-1])/(A[N-1][N-1]+A[N-1][N-2]*a[N-1]);
+	for(int i=N-2; i>-1; i--)
+	{
+		x[i]=a[i+1]*x[i+1]+v[i+1];
+
+	}
 
 }
 
