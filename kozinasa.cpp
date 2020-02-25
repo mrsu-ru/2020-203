@@ -58,7 +58,23 @@ void kozinasa::lab2(){
  */
 void kozinasa::lab3()
 {
+	int n = N, i;
+  double *P, *Q;
+  P = new double[n];
+  Q = new double[n];
 
+  P[0]=A[0][1]/-A[0][0];
+  Q[0]=-b[0]/-A[0][0];
+  cout << P[0] << " " << Q[0] << endl;
+  for (i=1;i<n-1;i++){
+  	P[i]=A[i][i+1]/(-A[i][i] - A[i][i-1]*P[i-1]);
+  	Q[i]=(A[i][i-1]*Q[i-1] - b[i])/(-A[i][i] - A[i][i-1]*P[i-1]);
+  
+  }
+   x[n-1] = (A[i][i-1]*Q[i-1] - b[i])/(-A[i][i] - A[i][i-1]*P[i-1]);
+   for (int i=n-2;i>=0;i--){
+   	x[i] = P[i]*x[i+1] + Q[i];
+   }
 }
 
 
