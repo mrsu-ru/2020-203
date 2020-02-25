@@ -14,6 +14,7 @@ void zevaykinae::lab1()
  */
 void zevaykinae::lab2()
 {
+
 	for (int i = 0; i < N; i++) 
 		x[i] = b[i]; 
 	long double m; 
