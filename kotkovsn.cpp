@@ -85,6 +85,9 @@ void kotkovsn::lab3()
 
   for (int i = N - 2; i >= 0; i--)
     x[i] = beta[i] - alpha[i] * x[i + 1];
+
+  delete []alpha;
+  delete []beta;
 }
 
 
