@@ -117,6 +117,7 @@ int main(int argc, char** argv)
   l->check_result();
 
   //delete l; // TODO:
+  system("pause");
   return 0;
 }
 
