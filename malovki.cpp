@@ -31,40 +31,46 @@ void malovki::lab2()
 				index = k;
 			}
 		}
-		double* vrem;
-		vrem = A[index];
-		A[index] = A[i];
-		A[i] = vrem;
-
-		for (int j = N; j > i; A[i][j--] /= A[i][i]);
-			A[i][i] = 1;
+		if (i != index) {
+			double* vrem;
+			vrem = A[index];
+			A[index] = A[i];
+			A[i] = vrem;
+			double temp = b[index];
+			b[index] = b[i];
+			b[i] = temp;
+		}
+		for (int j = N-1; j > i; j--)
+		{
+			A[i][j] /= A[i][i];
+		}
+		b[i]/=A[i][i];
+		A[i][i] = 1;
+		
 		for (int j = i + 1; j < N; j++)
 		{
-			for (int k = N; k > i; k--)
-				A[j][k] -= A[i][k] * A[j][i];
-				A[j][i] = 0;
-		}
-
-	}
-	//обратный ход
-	float ved1 = 0, ved2 = 0;
-	for (int i = N - 1; i > 0; i--)
-	{
-		for (int k = i; k > 0; k--)
-		{
-			ved2 = A[k-1][i];
-			for (int j = k; j < N + 1; j++)
+			for (int k = N-1; k > i; k--)
 			{
-				ved1 = -A[i][j];
-				A[k-1][j] += ved1 * ved2;
+				A[j][k] -= A[j][i] * A[i][k];
 			}
+			b[j]-=A[j][i]*b[i];
+			A[j][i] = 0;
 		}
 	}
-	for(int i = 0; i < N; i++)
-        x[i] = A[i][N-1];
+
+	//обратный ход
+	x[N-1]=b[N-1];
+	float sum = 0;
+	for (int i = N - 2; i > -1; i--)
+	{
+		for (int j = i + 1; j < N; j++)
+		{
+			sum += x[j] * A[i][j];
+		}
+		x[i] = b[i] - sum;
+		sum = 0;
+	}
 }
-
-
 
 /**
  * Метод прогонки
