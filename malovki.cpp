@@ -40,16 +40,16 @@ void malovki::lab2()
 			b[index] = b[i];
 			b[i] = temp;
 		}
-		for (j = N-1; j > i; j--)
+		for (int j = N-1; j > i; j--)
 		{
 			A[i][j] /= A[i][i];
 		}
 		b[i]/=A[i][i];
 		A[i][i] = 1;
 		
-		for (j = i + 1; j < N; j++)
+		for (int j = i + 1; j < N; j++)
 		{
-			for (k = N-1; k > i; k--)
+			for (int k = N-1; k > i; k--)
 			{
 				A[j][k] -= A[j][i] * A[i][k];
 			}
@@ -60,9 +60,10 @@ void malovki::lab2()
 
 	//обратный ход
 	x[N-1]=b[N-1];
-	for (i = N - 2; i > -1; i--)
+	float sum = 0;
+	for (int i = N - 2; i > -1; i--)
 	{
-		for (j = i + 1; j < N; j++)
+		for (int j = i + 1; j < N; j++)
 		{
 			sum += x[j] * A[i][j];
 		}
