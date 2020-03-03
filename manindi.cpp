@@ -1,18 +1,19 @@
-﻿#include "zhalninrv.h"
+﻿#include "manindi.h"
 
 /**
  * Введение в дисциплину
  */
-void zhalninrv::lab1()
+void manindi::lab1()
 {
-  cout << "hello world!" << endl;
+  
+cout << "hello world!" << endl;
 }
 
 
 /**
  * Метод Гаусса с выбором главного элемента
  */
-void zhalninrv::lab2()
+void manindi::lab2()
 {
 
 }
@@ -22,7 +23,7 @@ void zhalninrv::lab2()
 /**
  * Метод прогонки
  */
-void zhalninrv::lab3()
+void manindi::lab3()
 {
 
 }
@@ -32,7 +33,7 @@ void zhalninrv::lab3()
 /**
  * Метод простых итераций
  */
-void zhalninrv::lab4()
+void manindi::lab4()
 {
 
 }
@@ -42,7 +43,7 @@ void zhalninrv::lab4()
 /**
  * Метод Якоби или Зейделя
  */
-void zhalninrv::lab5()
+void manindi::lab5()
 {
 
 }
@@ -52,7 +53,7 @@ void zhalninrv::lab5()
 /**
  * Метод минимальных невязок
  */
-void zhalninrv::lab6()
+void manindi::lab6()
 {
 
 }
@@ -62,25 +63,25 @@ void zhalninrv::lab6()
 /**
  * Метод сопряженных градиентов
  */
-void zhalninrv::lab7()
+void manindi::lab7()
 {
 
 }
 
 
-void zhalninrv::lab8()
+void manindi::lab8()
 {
 
 }
 
 
-void zhalninrv::lab9()
+void manindi::lab9()
 {
 
 }
 
 
-std::string zhalninrv::get_name()
+std::string manindi::get_name()
 {
-  return "Zhalnin R.V.";
+  return "Manin D.I.";
 }
