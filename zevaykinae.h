@@ -36,6 +36,6 @@ class zevaykinae : public lab
   virtual void lab9();
 
 
-  virtual std::string get_name("Zevaykin A. E.");
+  virtual std::string get_name();
 
 };
