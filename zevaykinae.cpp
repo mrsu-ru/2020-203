@@ -41,7 +41,7 @@ void zevaykinae::lab2()
  */
 void zevaykinae::lab3()
 {
-double *alpha = new double [N];
+	double *alpha = new double [N];
 	double *beta = new double [N];
 
 	alpha[0] = -A[0][1]/A[0][0];
