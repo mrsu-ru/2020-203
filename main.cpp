@@ -15,6 +15,7 @@
 #include "isokovaa.h"
 #include "maslovaes.h"
 #include "golovatyukam.h"
+#include "gorbunovaa.h"
 #include "puzinva.h"
 #include "parshinad.h"
 #include "malovki.h"
@@ -69,6 +70,9 @@ int main(int argc, char** argv)
   }
   else if (strcmp(argv[1], "golovatyukam") == 0) {
     l = new golovatyukam();
+  }
+  else if (strcmp(argv[1], "gorbunovaa") == 0) {
+    l = new gorbunovaa();
   }
   else if (strcmp(argv[1], "kirdyushkindv") == 0) {
     l = new kirdyushkindv();
