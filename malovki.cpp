@@ -40,23 +40,28 @@ void malovki::lab2()
 			b[index] = b[i];
 			b[i] = temp;
 		}
-
-		for (int j = N-1; j > i; A[i][j--] /= A[i][i]);
-		b[i] /= A[i][i];
+		for (int j = N-1; j > i; j--)
+		{
+			A[i][j] /= A[i][i];
+		}
+		b[i]/=A[i][i];
 		A[i][i] = 1;
+		
 		for (int j = i + 1; j < N; j++)
 		{
 			for (int k = N-1; k > i; k--)
-				A[j][k] -= A[i][k] * A[j][i];
-			b[j] = b[j] - A[j][i] * b[i];
+			{
+				A[j][k] -= A[j][i] * A[i][k];
+			}
+			b[j]-=A[j][i]*b[i];
 			A[j][i] = 0;
 		}
-
 	}
+
 	//обратный ход
-	x[N-1] = b[N-1];
-	double sum = 0;
-	for (int i = N - 2; i >= 0; i--)
+	x[N-1]=b[N-1];
+	float sum = 0;
+	for (int i = N - 2; i > -1; i--)
 	{
 		for (int j = i + 1; j < N; j++)
 		{
@@ -67,14 +72,27 @@ void malovki::lab2()
 	}
 }
 
-
-
 /**
  * Метод прогонки
  */
 void malovki::lab3()
 {
-
+	double* alpha = new double[N];
+	double* betta = new double[N];
+	alpha[0] = -A[0][1]/A[0][0]; betta[0] = b[0]/A[0][0];
+	for (int i = 1; i < N-2; i++)
+	{
+		alpha[i] = -A[i][i+1]/(A[i][i] + alpha[i-1]*A[i][i-1]);
+		betta[i] = (b[i] - A[i][i-1]*betta[i-1])/(A[i][i] + alpha[i-1] * A[i][i-1]);
+	}
+	betta[N-1] = (b[N-1] - A[N-1][N-2]*betta[N-2]) / (A[N-1][N-1] + A[N-1][N-2]*alpha[N-2]);
+	x[N-1] = betta[N-1];
+	for (int i = N - 2; i >= 0; i--) 
+	{
+		x[i] = alpha[i]*x[i+1] + betta[i];
+	}
+	delete[] alpha;
+	delete[] betta;
 }
 
 
