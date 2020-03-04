@@ -46,7 +46,22 @@ x[i] = x[i] / A[i][i];
  */
 void simatovvv::lab3()
 {
+double *alpha = new double[N];
+double *beta = new double[N];
+alpha[0] = -A[0][1] / A[0][0];
+beta[0] = b[0] / A[0][0];
+for (int i = 1; i <= N-2; i++)
+{
+alpha[i] = -A[i][i + 1] / (A[i][i] + A[i][i - 1] * alpha[i - 1]);
+beta[i] = (b[i] - A[i][i - 1] * beta[i - 1]) / (A[i][i] + A[i][i - 1] * alpha[i - 1]);
 
+}
+beta[N - 1] = (b[N - 1] - A[N - 1][N - 2] * beta[N - 2]) / (A[N - 1][N - 1] + A[N - 1][N - 2] * alpha[N - 2]);
+x[N - 1] = beta[N - 1];
+for (int i = N-2; i >= 0; i--)
+{
+x[i] = alpha[i] * x[i + 1] + beta[i];
+}
 }
 
 
