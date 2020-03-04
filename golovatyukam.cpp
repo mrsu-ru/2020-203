@@ -90,7 +90,30 @@ void golovatyukam::lab2()
  */
 void golovatyukam::lab3()
 {
+	int n =N;
+	
+	double *alfa = new double[n];
+	double *betta = new double[n];
+	double *F = new double[n];
 
+	alfa[0] = -A[0][1] / A[0][0];
+	betta[0] = b[0] / A[0][0];
+	F[0] = -b[0];
+
+	for (int i = 1; i < n - 1; i++) {
+		F[i] = -1 * b[i];
+
+		alfa[i] = -A[i][i + 1] / (A[i][i - 1] * alfa[i - 1] + A[i][i]);
+		betta[i] = (-A[i][i - 1] * betta[i - 1] - F[i]) / (A[i][i - 1] * alfa[i - 1] + A[i][i]);
+	}
+
+	betta[n - 1] = (-A[n - 1][n - 2] * betta[n - 2] + b[n - 1]) / (A[n - 1][n - 2] * alfa[n - 2] + A[n - 1][n - 1]);
+
+	x[n - 1] = betta[n - 1];
+
+	for (int i = n - 2; i >= 0; i--) {
+		x[i] = betta[i] + alfa[i] * x[i + 1];
+	}
 }
 
 

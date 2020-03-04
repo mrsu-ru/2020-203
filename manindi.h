@@ -2,7 +2,7 @@
 #include "lab.h"
 
 
-class zhalninrv : public lab
+class manindi : public lab
 {
   /**
    * Метод Гаусса
@@ -38,5 +38,4 @@ class zhalninrv : public lab
 
 
   virtual std::string get_name();
-
 };

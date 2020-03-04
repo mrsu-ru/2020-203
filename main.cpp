@@ -25,6 +25,9 @@
 #include "borisovayu.h"
 #include "kozlovaes.h"
 #include "loginovvv.h"
+#include "manindi.h"
+#include "zevaykinae.h"
+
 
 void print_usage(char* name);
 
@@ -105,6 +108,12 @@ int main(int argc, char** argv)
   }
   else if (strcmp(argv[1], "loginovvv") == 0) {
     l = new loginovvv();
+  }
+  else if (strcmp(argv[1], "manindi") == 0) {
+    l = new manindi();
+  }
+  else if (strcmp(argv[1], "zevaykinae") == 0) {
+    l = new zevaykinae();
   }
   else  {
     print_usage(argv[0]);
