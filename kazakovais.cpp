@@ -58,6 +58,7 @@ void kazakovais::lab2()
 			b[j]=b[j]-A[j][i]*b[i];
 			A[j][i] = 0;
 		}
+		delete[]vspom;
 	}
 
 	//обратный ход
@@ -71,6 +72,7 @@ void kazakovais::lab2()
 		x[i] = b[i] - sum;
 		sum = 0;
 	}
+
 }
 
 
@@ -108,7 +110,8 @@ void kazakovais::lab3()
 		x[i] = alpha[i] * x[i + 1] + beta[i];
 	}
 
-	
+	delete[]alpha;
+	delete[]beta;
 }
 
 
@@ -118,11 +121,9 @@ void kazakovais::lab3()
  */
 void kazakovais::lab4()
 {
-
 	//данный метод применяется для симметричных матриц
 	double *d;
-	//double **s;
-	double *sum; //массив вспомогательных сумм (см.лекции!!!)
+	double *sum; //массив вспомогательных сумм для вычисления d[i] и s[i][i]
 	double vspom = 0;
 	double *y; //вспомогательный массив для вычисления решений СЛАУ
 
@@ -208,6 +209,10 @@ void kazakovais::lab4()
 		vspom = 0;
 	}
 	
+	delete[]d;
+	delete[]sum;
+	delete[]y;
+	delete[]s;
 }
 
 
