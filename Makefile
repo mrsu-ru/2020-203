@@ -5,11 +5,18 @@ SOURCES= \
     maslovaes.cpp \
     main.cpp \
     zhalninrv.cpp \
+    edelevaup.cpp \
+    ashryatovarr.cpp \
+    kotkovsn.cpp \
+    kvashninka.cpp \
+    bochkarevda.cpp \
+    kazakovais.cpp \
+    isokovaa.cpp \
     golovatyukam.cpp \
-	  kirdyushkindv.cpp \
-	  puzinva.cpp \
-	  parshinad.cpp \
-	  malovki.cpp \
+    kirdyushkindv.cpp \
+    puzinva.cpp \
+    parshinad.cpp \
+    malovki.cpp \
     landyshevav.cpp \
     garinma.cpp \
     simatovvv.cpp \
@@ -17,7 +24,11 @@ SOURCES= \
     kozinasa.cpp \
     sayfetdinovsf.cpp \
     borisovayu.cpp \
-    lab.cpp
+	kozlovaes.cpp \
+	loginovvv.cpp \
+    manindi.cpp \
+    zevaykinae.cpp \
+	lab.cpp
 
 OBJECTS=$(SOURCES:.cpp=.o)
 EXECUTABLE=vvm

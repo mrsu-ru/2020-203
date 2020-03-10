@@ -62,9 +62,33 @@ void guskovas::lab2()//int n, int m, double e, double** arr, double* x) {
 /**
  * Метод прогонки
  */
-void guskovas::lab3()
+void guskovas::lab3()//N, A, b, x
 {
+	double *ALFA = new double[N];
+	double *BETA = new double[N];
 
+	// ТУДА
+	//	находим ALFA и BETA
+	ALFA[0] = -A[0][1] / A[0][0];
+	BETA[0] = b[0] / A[0][0];
+	for (int i = 1; i < N; i++) {
+		ALFA[i] = -A[i][i + 1] 
+					/ 
+					(
+						A[i][i] + 
+						A[i][i - 1] * ALFA[i - 1]
+					);
+		BETA[i] =   (b[i] - A[i][i - 1] * BETA[i - 1]) 
+					/ 
+					(A[i][i] + A[i][i - 1] * ALFA[i - 1]);
+	}
+
+	// Обратная прогонка
+	//после общего вида формул подставляем иксы 
+	x[N - 1] = BETA[N - 1];
+	for (int i = N - 2; i >= 0; i--) {
+		x[i] = ALFA[i] * x[i + 1] + BETA[i];
+	}
 }
 
 

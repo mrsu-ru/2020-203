@@ -1,30 +1,134 @@
 ﻿#include "kozinasa.h"
 
-/**
- * Введение в дисциплину
- */
+
 void kozinasa::lab1()
 {
-  cout << "hello world!" << endl;
 }
-
-
 /**
  * Метод Гаусса с выбором главного элемента
  */
 void kozinasa::lab2()
 {
+  double y;
+  for (int k=0; k<N; k++) {
+	int mEl=k;
+	for(int i=k+1;i<N;i++)
+	  if(abs(A[i][k]) > abs(A[mEl][k])) mEl=i;
+	for(int i=0;i<N;i++)
+	std::swap(A[k][i],A[mEl][i]);
+	std::swap(b[k],b[mEl]);
 
+	y = A[k][k];
+	for (int j=0; j<N; j++)
+	  A[k][j] = A[k][j] / y;
+    b[k] = b[k]/y;
+
+    for (int i=k+1; i<N; i++){
+	  y = A[i][k];
+	  for (int j=0; j< N; j++){
+		  A[i][j] =A[i][j]- A[k][j] * y;
+	  }
+    b[i] =b[i]- b[k] * y;
+    }
+  }
+
+  for (int k=N-1; k>0; k--){
+  for (int i=k-1; i>=0; i--){
+    y = A[i][k];
+
+    for (int j=0; j<N; j++)
+      A[i][j] = A[i][j] - A[k][j] * y;
+    b[i] = b[i] - b[k] * y;
+    }
+  }
+
+  for(int i=0; i<N; i++)
+    x[i] = b[i];
 }
-
 
 
 /**
  * Метод прогонки
  */
-void kozinasa::lab3()
-{
 
+void kozinasa::lab3(){
+  int n = N, i;
+  double *P, *Q;
+  P = new double[n];
+  Q = new double[n];
+
+  P[0]=A[0][1]/-A[0][0];
+  Q[0]=-b[0]/-A[0][0];
+  cout << P[0] << " " << Q[0] << endl;
+  for (i=1;i<n-1;i++){
+  	P[i]=A[i][i+1]/(-A[i][i] - A[i][i-1]*P[i-1]);
+  	Q[i]=(A[i][i-1]*Q[i-1] - b[i])/(-A[i][i] - A[i][i-1]*P[i-1]);
+  
+  }
+   x[n-1] = (A[i][i-1]*Q[i-1] - b[i])/(-A[i][i] - A[i][i-1]*P[i-1]);
+   for (int i=n-2;i>=0;i--){
+   	x[i] = P[i]*x[i+1] + Q[i];
+   }
+}
+
+
+
+/**
+   * Метод квадратного корня (метод Холецкого)
+   */
+void kozinasa::lab4(){ 
+int n=N; double sum=0;
+  double *y;
+  double** L; 
+  
+  y = new double[n];
+
+  L = new double*[n];
+  
+  for (int i = 0; i < n; i++){
+    L[i] = new double[n];
+    for (int j=0; j<n; j++){
+	  L[i][j] = 0;
+  	}
+  	y[i] = 0;
+  	x[i] = 0;
+  }
+  
+  
+  for (int i=0; i<n; i++){
+  	for(int k = 0; k <= i; k++){
+        sum += L[i][k] * L[i][k];
+    }
+    L[i][i] = sqrt(A[i][i] - sum);
+    sum = 0;
+    for(int j = i + 1; j < n; j++){
+        for(int k = 0; k <= j - 1; k++){
+            sum += L[j][k] * L[i][k];
+        }
+		L[j][i] = (A[j][i] - sum) / L[i][i];
+        sum = 0;
+    }
+  }
+  
+  y[0] = b[0]/L[0][0];
+  
+  for (int i=1; i<n; i++){
+  	y[i] = b[i];
+  	for (int j=0; j<i; j++){
+  		y[i] -= L[i][j]*y[j];
+	  }
+	y[i] /= L[i][i];
+  }
+
+  x[n-1] = y[n-1]/L[n-1][n-1];
+  
+  for (int i=n-2; i>=0; i--){
+  	x[i] = y[i];
+  	for (int j=n-1; j>i; j--){
+  		x[i] -= L[j][i]*x[j];
+	  }
+	x[i] /= L[i][i];
+  }
 }
 
 
@@ -32,25 +136,15 @@ void kozinasa::lab3()
 /**
  * Метод простых итераций
  */
-void kozinasa::lab4()
-{
 
+void kozinasa::lab5()
+{
 }
 
 
 
 /**
  * Метод Якоби или Зейделя
- */
-void kozinasa::lab5()
-{
-
-}
-
-
-
-/**
- * Метод минимальных невязок
  */
 void kozinasa::lab6()
 {
@@ -60,7 +154,7 @@ void kozinasa::lab6()
 
 
 /**
- * Метод сопряженных градиентов
+ * Метод минимальных невязок
  */
 void kozinasa::lab7()
 {
@@ -68,6 +162,10 @@ void kozinasa::lab7()
 }
 
 
+
+/**
+ * Метод сопряженных градиентов
+ */
 void kozinasa::lab8()
 {
 
