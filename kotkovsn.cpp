@@ -1,7 +1,7 @@
-п»ї#include "kotkovsn.h"
+#include "kotkovsn.h"
 
 /**
- * Р’РІРµРґРµРЅРёРµ РІ РґРёСЃС†РёРїР»РёРЅСѓ
+ * Введение в дисциплину
  */
 void kotkovsn::lab1()
 {
@@ -10,7 +10,7 @@ void kotkovsn::lab1()
 
 
 /**
- * РњРµС‚РѕРґ Р“Р°СѓСЃСЃР° СЃ РІС‹Р±РѕСЂРѕРј РіР»Р°РІРЅРѕРіРѕ СЌР»РµРјРµРЅС‚Р°
+ * Метод Гаусса с выбором главного элемента
  */
 void kotkovsn::lab2()
 {
@@ -65,7 +65,7 @@ void kotkovsn::lab2()
 
  
 /**
- * РњРµС‚РѕРґ РїСЂРѕРіРѕРЅРєРё
+ * Метод прогонки
  */
 void kotkovsn::lab3()
 {
@@ -93,7 +93,7 @@ void kotkovsn::lab3()
 
 
 /**
- * РњРµС‚РѕРґ РҐРѕР»РµС†РєРѕРіРѕ
+ * Метод Холецкого
  */
 void kotkovsn::lab4()
 {
@@ -163,17 +163,62 @@ void kotkovsn::lab4()
 
 
 /**
- * РњРµС‚РѕРґ РЇРєРѕР±Рё РёР»Рё Р—РµР№РґРµР»СЏ
+ * Метод Якоби или Зейделя
  */
 void kotkovsn::lab5()
 {
+  const double eps = 1e-18;
+  double *z = new double[N];
 
+  for (int k = 0; k < N; k++)
+  {
+    double y = 0;
+    for (int i = 0; i < N; i++)
+      y += A[k][i] * x[i];
+    z[k] = b[k] - y;
+  }
+
+  double zNorm = 0;
+
+  for (int k = 0; k < N; k++)
+    zNorm += z[k] * z[k];
+    
+  while (zNorm > eps * eps)
+  {
+    for (int k = 0; k < N; k++)
+    {
+      double sum1 = 0;
+      double sum2 = 0;
+      for (int j = 0; j < k; j++)
+        sum1 += A[k][j] * x[j];
+
+      for (int j = k + 1; j < N; j++)
+        sum2 += A[k][j] * x[j];
+      
+      x[k] = (b[k] - sum1 - sum2) / A[k][k];
+    }
+
+    for (int k = 0; k < N; k++)
+    {
+      double y = 0;
+      for (int i = 0; i < N; i++)
+        y += A[k][i] * x[i];
+      z[k] = b[k] - y;
+    }
+
+    zNorm = 0;
+
+    for (int k = 0; k < N; k++)
+      zNorm += z[k] * z[k];
+  }
+  
+  delete []z;
 }
 
 
 
 /**
- * РњРµС‚РѕРґ РјРёРЅРёРјР°Р»СЊРЅС‹С… РЅРµРІСЏР·РѕРє
+ * Метод минимальных невязок
  */
 void kotkovsn::lab6()
 {
@@ -183,7 +228,7 @@ void kotkovsn::lab6()
 
 
 /**
- * РњРµС‚РѕРґ СЃРѕРїСЂСЏР¶РµРЅРЅС‹С… РіСЂР°РґРёРµРЅС‚РѕРІ
+ * Метод сопряженных градиентов
  */
 void kotkovsn::lab7()
 {
