@@ -84,59 +84,59 @@ void borisovayu::lab3(){
 void borisovayu::lab4()
 {
      int i,j,k;
-	 double tmp, tmp2;
+     double tmp, tmp2;
 	 
-	 int *D;
-	 D = new int[N];
+     int *D;
+     D = new int[N];
 	 
-	 double **S;
-	 S = new double*[N];
-	 for (i=0; i<N; i++){
-		 S[i] = new double[N];
-		 for (j=0; j<N; j++) S[i][j] = 0;
+     double **S;
+     S = new double*[N];
+     for (i=0; i<N; i++){
+	S[i] = new double[N];
+	for (j=0; j<N; j++) S[i][j] = 0;
      }
 	 
-	 for (i=0; i<N; i++){
-		 tmp = A[i][i];
-		 for (j=0; j<i; j++) tmp-=D[j]*S[j][i]*S[j][i];
+     for (i=0; i<N; i++){
+        tmp = A[i][i];
+	for (j=0; j<i; j++) tmp-=D[j]*S[j][i]*S[j][i];
 		 
-		 if (tmp>0) D[i] = 1;
-		 else       D[i] =-1;
+	if (tmp>0) D[i] = 1;
+	else       D[i] =-1;
 		 
-		 S[i][i] = sqrt(D[i]*tmp);
+	S[i][i] = sqrt(D[i]*tmp);
 		
-		 for (j=i+1; j<N; j++){
-			 tmp2 = A[i][j];
-			 for (k=0; k<j; k++) tmp2 -= D[k]*S[k][i]*S[k][j];
-			 S[i][j] = tmp2 / (D[i] * S[i][i]);
-		 }
-	 }
+	for (j=i+1; j<N; j++){
+		tmp2 = A[i][j];
+		for (k=0; k<j; k++) tmp2 -= D[k]*S[k][i]*S[k][j];
+		S[i][j] = tmp2 / (D[i] * S[i][i]);
+	}
+      }
 	 
-	 double *y;
-	 y = new double[N];
-	 y[0] = b[0]/S[0][0];
+     double *y;
+     y = new double[N];
+     y[0] = b[0]/S[0][0];
 	 
      for (i=1; i<N; i++){
-		 for (j=i; j<N; j++) b[j]-=S[i-1][j]*y[i-1];
-		 y[i] = b[i]/S[i][i];
-	 }
+	for (j=i; j<N; j++) b[j]-=S[i-1][j]*y[i-1];
+	y[i] = b[i]/S[i][i];
+     }
 	 
-	 for (i=0; i<N; i++)
+     for (i=0; i<N; i++)
        for (j=0; j<N; j++)
          S[i][j] *= D[i];
 
 	 
-	 x[N-1] = y[N-1]/S[N-1][N-1];
+     x[N-1] = y[N-1]/S[N-1][N-1];
 	 
      for (i=N-2; i>=0; i--){
-		 for (j=i ; j>=0; j--) y[j]-=S[j][i+1]*x[i+1];
-		 x[i] = y[i]/S[i][i];
-	 }	 
+	for (j=i ; j>=0; j--) y[j]-=S[j][i+1]*x[i+1];
+	x[i] = y[i]/S[i][i];
+     }	 
 	 
 	 
-	 delete []y;
+     delete []y;
      for (int i = 0; i < N; i++)  
-		 delete []S[i];
+	delete []S[i];
      delete []S;
      delete []D;
 }
@@ -148,7 +148,43 @@ void borisovayu::lab4()
  */
 void borisovayu::lab5()
 {
-
+    int i,j,k;
+    double *z;
+    z = new double[N];
+    for (i=0; i<N; i++)
+	    z[i]=b[i];
+   
+    for (i=0; i<N; i++)
+	    for (j=0; j<N; j++) 
+		    z[i]-=A[i][j]*x[j];
+		
+    double eps = 1e-17;
+    double Z=0;
+	
+    for (i=0; i<N; i++)
+	Z += z[i]*z[i];
+    
+    while (Z > eps * eps){
+	for (i=0; i<N; i++){
+		x[i] = b[i];
+	        for (j=0; j<i; j++)
+			x[i] -= A[i][j]*x[j];
+		for (j=i+1; j<N; j++)
+			x[i] -= A[i][j]*x[j];
+		x[i]/=A[i][i];
+		}
+		
+    
+    for (i=0; i<N; i++)
+	    z[i] = b[i];
+    for (i=0; i<N; i++)
+	    for (j=0; j<N; j++) 
+		    z[i] -= A[i][j]*x[j];		
+		
+    Z=0;
+    for (i=0; i<N; i++)
+	Z += z[i]*z[i];    	
+    }
 }
 
 
