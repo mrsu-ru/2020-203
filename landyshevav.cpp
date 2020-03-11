@@ -55,8 +55,7 @@ void landyshevav::lab2()
  */
 void landyshevav::lab3()
 {
-    int main()
-    {
+
         double* al = new double[N];
         double* bl = new double[N];
         al[0] = -A[0][1] / A[0][0]; bl[0] = b[0] / A[0][0];
@@ -73,7 +72,7 @@ void landyshevav::lab3()
         }
         delete[] al;
         delete[] bl;
-    }
+ 
 }
 
 
