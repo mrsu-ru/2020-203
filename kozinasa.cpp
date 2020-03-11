@@ -138,12 +138,12 @@ int n=N; double sum=0;
  */
 
 void kozinasa::lab5()
-{ int n=N; double e = pow(10,-35);//0.0000000000000000000000000000000000000000001;
+{ int n=N; double e = pow(10,-35); //0.0000000000000000000000000000000000000000001;
   for (int i=0;i<n;i++){
   	x[i]=b[i];
   }
 	
-	double xxx = 0, xx=0;
+	double xxx = 0;
   while (abs(xxx-x[n-1])>e){
   	xxx=x[n-1];
   	for (int i=0;i<n;i++){
