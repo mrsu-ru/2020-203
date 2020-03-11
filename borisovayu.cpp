@@ -185,6 +185,8 @@ void borisovayu::lab5()
     for (i=0; i<N; i++)
 	Z += z[i]*z[i];    	
     }
+	
+    delete []z;
 }
 
 
