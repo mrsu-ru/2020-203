@@ -1,11 +1,13 @@
 ﻿#include "kozinasa.h"
 
 
-
+void kozinasa::lab1()
+{
+}
 /**
  * Метод Гаусса с выбором главного элемента
  */
-void kozinasa::lab1()
+void kozinasa::lab2()
 {
   double y;
   for (int k=0; k<N; k++) {
@@ -49,7 +51,7 @@ void kozinasa::lab1()
  * Метод прогонки
  */
 
-void kozinasa::lab2(){
+void kozinasa::lab3(){
   int n = N, i;
   double *P, *Q;
   P = new double[n];
@@ -74,7 +76,7 @@ void kozinasa::lab2(){
 /**
    * Метод квадратного корня (метод Холецкого)
    */
-void kozinasa::lab3(){ 
+void kozinasa::lab4(){ 
 int n=N; double sum=0;
   double *y;
   double** L; 
@@ -135,24 +137,32 @@ int n=N; double sum=0;
  * Метод простых итераций
  */
 
-void kozinasa::lab4()
-{
+void kozinasa::lab5()
+{ int n=N; double e = pow(10,-35); //0.0000000000000000000000000000000000000000001;
+  for (int i=0;i<n;i++){
+  	x[i]=b[i];
+  }
+	
+	double xxx = 0;
+  while (abs(xxx-x[n-1])>e){
+  	xxx=x[n-1];
+  	for (int i=0;i<n;i++){
+  	  double s1=0, s2=0;
+  	  for (int j=0; j<i;j++)
+  		s1 += A[i][j]*x[j];
+  	  for (int j=i+1; j<n;j++)
+  		  s2 += A[i][j]*x[j];
+	  x[i] = (b[i] - s1 - s2)/A[i][i];
+	  }
+	  
+  }
+  
 }
 
 
 
 /**
  * Метод Якоби или Зейделя
- */
-void kozinasa::lab5()
-{
-
-}
-
-
-
-/**
- * Метод минимальных невязок
  */
 void kozinasa::lab6()
 {
@@ -162,7 +172,7 @@ void kozinasa::lab6()
 
 
 /**
- * Метод сопряженных градиентов
+ * Метод минимальных невязок
  */
 void kozinasa::lab7()
 {
@@ -170,6 +180,10 @@ void kozinasa::lab7()
 }
 
 
+
+/**
+ * Метод сопряженных градиентов
+ */
 void kozinasa::lab8()
 {
 

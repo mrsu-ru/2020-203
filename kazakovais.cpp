@@ -58,6 +58,7 @@ void kazakovais::lab2()
 			b[j]=b[j]-A[j][i]*b[i];
 			A[j][i] = 0;
 		}
+		delete[]vspom;
 	}
 
 	//обратный ход
@@ -71,6 +72,7 @@ void kazakovais::lab2()
 		x[i] = b[i] - sum;
 		sum = 0;
 	}
+
 }
 
 
@@ -80,6 +82,7 @@ void kazakovais::lab2()
  */
 void kazakovais::lab3()
 {
+
 	//данный метод применяется для трёхдиагональных матриц
 	double *alpha;
 	double *beta;
@@ -94,6 +97,7 @@ void kazakovais::lab3()
 	{
 		alpha[i] = -A[i][i + 1] / (A[i][i] + A[i][i - 1] * alpha[i - 1]);
 		beta[i] = (b[i] - A[i][i - 1] * beta[i - 1]) / (A[i][i] + A[i][i - 1] * alpha[i - 1]);
+		
 	}
 
 	beta[N - 1] = (b[N - 1] - A[N - 1][N - 2] * beta[N - 2]) / (A[N - 1][N - 1] + A[N - 1][N - 2] * alpha[N - 2]);
@@ -105,15 +109,118 @@ void kazakovais::lab3()
 	{
 		x[i] = alpha[i] * x[i + 1] + beta[i];
 	}
-	
+
+	delete[]alpha;
+	delete[]beta;
 }
 
 
 
 /**
- * Метод простых итераций
+ * Метод Холецкого (метод квадратного корня)
  */
 void kazakovais::lab4()
+{
+	//данный метод применяется для симметричных матриц
+	double *d;
+	double *sum; //массив вспомогательных сумм для вычисления d[i] и s[i][i]
+	double vspom = 0;
+	double *y; //вспомогательный массив для вычисления решений СЛАУ
+
+	int i,j,k;
+	
+	d = new double[N];	//массив для коэффициентов диагональной матрицы
+	sum = new double[N];
+	y = new double[N];
+	double **s = new double*[N];
+	
+	for (i=0; i<N;i++)
+	{
+		s[i] = new double[N];
+	}
+	
+	//первый этап - поиск LU-разложения
+	//начальная инициализация массива вспомогательных сумм
+	for (i = 0; i < N; i++)
+	{
+		sum[i] = A[i][i];
+	}
+
+	if (sum[0]>0)
+	{
+		d[0]=1;
+	}
+	else 
+	{
+		d[0]=-1;
+	}
+	s[0][0]=sqrt(fabs(sum[0]));
+	for (j=1;j<N;j++)
+	{
+		s[0][j]=A[0][j]/(d[0]*s[0][0]);
+	}
+	
+	for (i = 1; i < N; i++)
+	{
+		for (k = 0; k < i; k++)
+		{
+			sum[i] -= d[k] * pow(s[k][i],2);
+		}
+		if (sum[i] > 0)
+		{
+			d[i] = 1;
+		}
+		else
+		{
+			d[i] = -1;
+		}
+		s[i][i] = sqrt(fabs(sum[i]));
+		for (j = i+1; j < N; j++)
+		{
+			for (k = 0; k < i; k++)
+			{
+				vspom += d[k] * s[k][i] * s[k][j];
+			}
+
+			s[i][j] = (A[i][j]-vspom)/(d[i]*s[i][i]);
+			vspom = 0;
+		}
+	}
+
+	//второй этап - поиск корней
+	y[0] = b[0] / s[0][0];
+	for (i = 1; i < N; i++)
+	{
+		for (k = 0; k < i; k++)
+		{
+			vspom += s[k][i] * y[k];
+		}
+		y[i] = (b[i] - vspom) / s[i][i];
+		vspom = 0;
+	}
+	x[N - 1] = y[N - 1] / (d[N - 1] * s[N - 1][N - 1]);
+	for (i = N - 2; i >= 0; i--)
+	{
+		for (k = i + 1; k < N; k++)
+		{
+			vspom += s[i][k] * x[k];
+		}
+		x[i] = (y[i] - d[i] * vspom) / (d[i] * s[i][i]);
+		vspom = 0;
+	}
+	
+	delete[]d;
+	delete[]sum;
+	delete[]y;
+	delete[]s;
+}
+
+
+
+/**
+*Метод простых итераций
+*/
+void kazakovais::lab5()
 {
 
 }
@@ -123,7 +230,7 @@ void kazakovais::lab4()
 /**
  * Метод Якоби или Зейделя
  */
-void kazakovais::lab5()
+void kazakovais::lab6()
 {
 
 }
@@ -133,22 +240,14 @@ void kazakovais::lab5()
 /**
  * Метод минимальных невязок
  */
-void kazakovais::lab6()
-{
-
-}
-
-
-
-/**
- * Метод сопряженных градиентов
- */
 void kazakovais::lab7()
 {
 
 }
 
-
+/**
+ * Метод сопряженных градиентов
+ */
 void kazakovais::lab8()
 {
 
