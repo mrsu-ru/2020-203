@@ -108,6 +108,32 @@ void guskovas::lab4()
  */
 void guskovas::lab5()
 {
+	double *f = new double[N];
+
+	double norma = 0;
+	do {
+		for (int i = 0; i < N; i++) f[i] = x[i];
+
+		for (int i = 0; i < N; i++) {
+			double result = b[i];
+
+			for (int j = 0; j < N; j++) result = i != j ? 
+					result - (A[i][j] * f[j]) 
+					:
+					result
+			;
+
+			x[i] = result / A[i][i];
+		}
+
+		norma = 0;
+		for (int i = 0; i < N; i++) norma = abs(f[i] - x[i]) > norma ? 
+			abs(f[i] - x[i]) 
+			: 
+			norma
+		;
+
+	} while (norma > 1e-20);
 
 }
 
