@@ -365,7 +365,7 @@ void kazakovais::lab5()
 
 	delete[]alpha;
 	delete[]beta;
-	delete[]xx;
+	//delete[]xx;
 
 
 }
