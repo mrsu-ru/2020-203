@@ -106,11 +106,11 @@ void guskovas::lab4()
 /**
  * Метод Якоби или Зейделя
  */
-void guskovas::lab5()
+void guskovas::lab5()//якоби
 {
 	double *f = new double[N];
 
-	double norma = 0;
+	double norma = 0;//error
 	do {
 		for (int i = 0; i < N; i++) f[i] = x[i];
 
