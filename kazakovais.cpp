@@ -225,8 +225,6 @@ void kazakovais::lab5()
 	//Первоначальный вид СЛАУ A*x=b
 	//Приводим её к виду: x=alpha*x+beta
 	double eps = 1.0e-20;  //задаваемая точность
-	//double *f = new double[N];  //массив для хранения вспомогательных сумм
-
 	double **alpha = new double*[N];
 	double *beta = new double[N];
 	int i, j, k;
@@ -257,15 +255,12 @@ void kazakovais::lab5()
 		x[i] = beta[i];
 	}
 
-	//int k = 0; //шаг итерации
-
 	double *xx = new double[N]; //массив для итерационно вычисленных значений
 
 	for (i = 0; i < N; i++)
 	{
 		xx[i] = beta[i];
 	}
-
 
 	for (i = 0; i < N; i++)
 	{
@@ -291,7 +286,6 @@ void kazakovais::lab5()
 			Norm = abs(xx[i] - x[i]);
 		}
 	}
-
 
 	while (Norm > eps)
 	{
@@ -327,7 +321,6 @@ void kazakovais::lab5()
 				Norm = abs(xx[i] - x[i]);
 			}
 		}
-
 	}
 
 	for (i = 0; i < N; i++)
@@ -337,9 +330,7 @@ void kazakovais::lab5()
 
 	delete[]alpha;
 	delete[]beta;
-	//delete[]xx;
-
-
+	delete[]xx;
 }
 
 
