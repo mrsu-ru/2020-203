@@ -64,7 +64,7 @@ void kozlovaes::lab3()
 	double *betta = new double[N];
 	int i;
 	alfa[0] = A[0][1]/-A[0][0];
-	betta[0] = -b[0]/-A[0][0];
+	betta[0] = b[0]/A[0][0];
  
 
 	for(i = 1;i < N;i++){
@@ -86,7 +86,70 @@ void kozlovaes::lab3()
  */
 void kozlovaes::lab4()
 {
+double* d=new double[N];
+double** S = new double*[N];
+for (int i = 0; i < N; i++) { 
+S[i] = new double[N];
+}
 
+if(A[0][0]>0) d[0]=1;
+else d[0]=-1;
+S[0][0]=sqrt(abs(A[0][0]));
+
+for(int i=1;i<N;i++){
+S[0][i]=A[0][i]/(S[0][0]*d[0]);
+}
+
+///////Вычисление матрицы S
+double sumd=0;
+for(int i=1; i < N; i++){
+for(int k=0;k<i;k++){
+sumd += pow(S[k][i],2)*d[k];
+}
+if((A[i][i]-sumd)>0){
+	d[i]=1;
+} 
+else{
+	d[i]=-1;
+}
+S[i][i]=sqrt(d[i]*(A[i][i]-sumd));
+sumd=0;
+double sumS=0;
+for(int j=i+1;j < N;j++){
+for(int k=0;k<j;k++){
+sumS +=d[k]*S[k][i]*S[k][j];
+}
+S[i][j]=(A[i][j]-sumS)/(d[i]*S[i][i]);
+sumS=0;
+}
+}
+
+///////Решение уравнения S^t*y=b
+
+double* y=new double [N];
+y[0]=b[0]/S[0][0];
+
+double sumS=0;
+for(int i=1;i<N;i++){
+for(int j=0;j<i;j++){
+sumS +=S[j][i]*y[j];
+}
+y[i]=(b[i]-sumS)/S[i][i];
+sumS=0;
+}
+
+////////Решение уравнения (SD)*x=y
+
+x[N-1]=y[N-1]/(S[N-1][N-1]*d[N-1]);
+
+double sumSDx=0;
+for(int i=N-2;i>=0;i--){
+for(int k=i+1;k<N;k++){
+sumSDx +=S[i][k]*x[k];
+}
+x[i]=(y[i]-sumSDx)/(S[i][i]*d[i]);
+sumSDx=0;
+}
 }
 
 
