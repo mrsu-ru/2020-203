@@ -27,6 +27,7 @@ SOURCES= \
 	kozlovaes.cpp \
 	loginovvv.cpp \
     manindi.cpp \
+    zevaykinae.cpp \
 	lab.cpp
 
 OBJECTS=$(SOURCES:.cpp=.o)

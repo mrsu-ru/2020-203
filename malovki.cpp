@@ -77,7 +77,22 @@ void malovki::lab2()
  */
 void malovki::lab3()
 {
-
+	double* alpha = new double[N];
+	double* betta = new double[N];
+	alpha[0] = -A[0][1]/A[0][0]; betta[0] = b[0]/A[0][0];
+	for (int i = 1; i < N-2; i++)
+	{
+		alpha[i] = -A[i][i+1]/(A[i][i] + alpha[i-1]*A[i][i-1]);
+		betta[i] = (b[i] - A[i][i-1]*betta[i-1])/(A[i][i] + alpha[i-1] * A[i][i-1]);
+	}
+	betta[N-1] = (b[N-1] - A[N-1][N-2]*betta[N-2]) / (A[N-1][N-1] + A[N-1][N-2]*alpha[N-2]);
+	x[N-1] = betta[N-1];
+	for (int i = N - 2; i >= 0; i--) 
+	{
+		x[i] = alpha[i]*x[i+1] + betta[i];
+	}
+	delete[] alpha;
+	delete[] betta;
 }
 
 

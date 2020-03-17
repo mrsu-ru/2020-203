@@ -89,11 +89,56 @@ void loginovvv::lab3()
 
 
 /**
- * Метод простых итераций
+ * Метод Холецкого
  */
 void loginovvv::lab4()
 {
+	double **S = new double*[N];
+    for (int i = 0;  i < N; i++) {
+        S[i] = new double[N];
+		for(int j=0; j<N; j++)
+			S[i][j]=0.0;
+    }
+	double *d = new double[N];
 
+
+	for(int i=0; i<N; i++)
+	{
+		double temp=A[i][i];
+		for(int e=0; e<=i-1; e++){
+			 temp-=d[e]*S[e][i]*S[e][i];
+		}
+		d[i] = signbit(temp) == false ? 1 : -1;
+		S[i][i]=sqrt(temp*d[i]);
+	
+
+		for(int j=i+1; j<N; j++)
+		{
+			double t=0;
+			for(int k=0; k<=j-1; k++)
+				t+=d[k]*S[k][i]*S[k][j];
+			 S[i][j] = (A[i][j]-t)/(d[i]*S[i][i]);
+		}
+	}
+	
+	
+	for(int i=0; i<N; i++){
+		b[i]/=S[i][i];
+		for(int j=i+1; j<N; j++)
+			b[j]-=b[i]*S[i][j];
+	}
+
+	for(int i=0; i<N; i++)
+		for(int j=i; j<N; j++)
+			S[i][j]*=d[i];
+	
+	for(int i=N-1; i>=0; i--){
+		b[i]/=S[i][i];
+		for(int j=i-1; j>=0; j--)
+			b[j]-=b[i]*S[j][i];
+	}
+
+	x=b;
 }
 
 
@@ -103,7 +148,7 @@ void loginovvv::lab4()
  */
 void loginovvv::lab5()
 {
-
+	
 }
 
 

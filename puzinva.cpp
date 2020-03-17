@@ -94,7 +94,22 @@ void puzinva::lab2()
  */
 void puzinva::lab3()
 {
+	double k1[N - 1];
+	double k2[N];
+    k1[0] =- A[0][1] / A[0][0];
+    k2[0] = b[0] / A[0][0];
 
+    for (int i = 1; i < N - 1; i++) {
+        k1[i] =- A[i][i + 1] / (A[i][i] + A[i][i - 1] * k1[i - 1]);
+        k2[i] = (b[i] - A[i][i - 1] * k2[i - 1]) / (A[i][i] + A[i][i - 1] * k1[i - 1]);
+    }
+	
+    k2[N - 1] = (b[N - 1] - A[N - 1][N - 2] * k2[N - 2]) / (A[N - 1][N - 1] + A[N - 1][N - 2] * k1[N - 2]);
+    x[N - 1] = k2[N - 1];
+	
+    for (int i = N - 2; i >= 0; i--) {
+        x[i] = k1[i] * x[i + 1] + k2[i];
+    }
 }
 
 

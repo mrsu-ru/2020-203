@@ -78,11 +78,21 @@ void edelevaup::lab2()
  */
 void edelevaup::lab3()
 {
-
+	double *al = new double[N];
+    double *bet = new double[N];
+    al[0]=A[0][1]/-A[0][0]; 
+	bet[0]=b[0]/A[0][0];
+	for( int i=1; i<N; i++){
+		al[i]=A[i][i+1]/(-A[i][i]-A[i][i-1]*al[i-1]);
+		bet[i]=(A[i][i-1]*bet[i-1]-b[i])/(-A[i][i]-A[i][i-1]*al[i-1]);
 }
-
-
-
+ 
+  x[N-1]=bet[N-1];
+  for (int i=N-2; i>=0; i--){
+	  x[i]=al[i]*x[i+1]+bet[i];
+  }
+ 
+}
 /**
  * Метод простых итераций
  */

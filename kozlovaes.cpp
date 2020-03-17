@@ -60,7 +60,23 @@ void kozlovaes::lab2()
  */
 void kozlovaes::lab3()
 {
+	double *alfa = new double[N];
+	double *betta = new double[N];
+	int i;
+	alfa[0] = A[0][1]/-A[0][0];
+	betta[0] = -b[0]/-A[0][0];
+ 
 
+	for(i = 1;i < N;i++){
+		alfa[i] = A[i][i+1]/(-A[i][i]-alfa[i-1]*A[i][i-1]);
+		betta[i] = (-b[i]+A[i][i-1]*betta[i-1])/(-A[i][i]-alfa[i-1]*A[i][i-1]);
+	}
+	i=N-1;
+	x[N-1] = (-b[i]+A[i][i-1]*betta[i-1])/(-A[i][i]-alfa[i-1]*A[i][i-1]);
+
+	for(int i=N-1;i>=0;i--){
+		x[i] = alfa[i]*x[i+1]+betta[i];
+	}
 }
 
 

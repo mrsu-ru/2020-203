@@ -65,6 +65,22 @@ x[i]=b[i];
  */
 void garinma::lab3()
 {
+  int n1=N-1;
+double *alfa = new double[N];
+double *beta = new double[N];
+double y = A[0][0];
+alfa[0] = -A[0][1] / y;
+beta[0] = b[0] / y;
+for (int i = 1; i < n1; i++) {
+y = A[i][i] + A[i][i - 1] * alfa[i - 1];
+alfa[i] = -A[i][i + 1] / y;
+beta[i] = (b[i] - A[i][i - 1] * beta[i - 1]) / y;
+}
+
+x[n1] = (b[n1] - A[n1][n1-1] * beta[n1-1]) / (A[n1][n1] + A[n1][n1-1] * alfa[n1-1]);
+for (int i = n1-1; i >= 0; i--) {
+x[i] = alfa[i] * x[i + 1] + beta[i];
+}
 
 }
 
