@@ -218,17 +218,162 @@ void kazakovais::lab4()
 
 
 /**
-*Метод простых итераций
+* Метод Зейделя
 */
 void kazakovais::lab5()
 {
+	//доделать метод Зейделя!!!
+
+	/*
+	//Исходная СЛАУ имеет вид: Ax=b
+	//Приводим её к виду: x=Cx+d
+	//Для этого требуется вспомогательная матрица H
+	double **C = new double*[N];
+	double **H = new double*[N];
+	double *d = new double[N];
+	int i, j;
+	for (int i = 0; i < N; i++)
+	{
+		C[i] = new double[N];
+	}
+	for (int i = 0; i < N; i++)
+	{
+		H[i] = new double[N];
+	}
+
+	for (i = 0; i < N; i++)
+	{
+		for (j = 0; j < N; j++)
+		{
+			if (i == j)
+			{
+				H[i][j] = 1 / A[i][j];
+			}
+			else
+			{
+				H[i][j] = 0;
+			}
+		}
+	}
+	*/
+
+	//Первоначальный вид СЛАУ A*x=b
+	//Приводим её к виду: x=alpha*x+beta
+	double eps = 1.0e-20;  //задаваемая точность
+	//double *f = new double[N];  //массив для хранения вспомогательных сумм
+
+	double **alpha = new double*[N];
+	double *beta = new double[N];
+	int i, j, k;
+
+	for (i = 0; i < N; i++)
+	{
+		for (j = 0; j < N; j++)
+		{
+			if (i == j)
+			{
+				alpha[i][j] = 0;
+			}
+			else
+			{
+				alpha[i][j] = -A[i][j] / A[i][i];
+			}
+		}
+		beta[i] = b[i] / A[i][i];
+	}
+
+	for (i = 0; i < N; i++)
+	{
+		x[i] = beta[i];
+	}
+
+	//int k = 0; //шаг итерации
+
+	double *xx = new double[N]; //массив для итерационно вычисленных значений
+
+	for (i = 0; i < N; i++)
+	{
+		xx[i] = beta[i];
+	}
+
+
+	for (i = 0; i < N; i++)
+	{
+		for (j = 0; j < i; j++)
+		{
+			xx[i] += alpha[i][j] * xx[j];
+		}
+
+		for (k = i; k < N; k++)
+		{
+			xx[i] += alpha[i][j] * x[j];
+		}
+
+
+	}
+
+	double Norm = abs(xx[0] - x[0]);  //норма (для определения точки выхода из цикла)
+
+	for (i = 1; i < N; i++)
+	{
+		if ((abs(xx[i] - x[i])) > Norm)
+		{
+			Norm = abs(xx[i] - x[i]);
+		}
+	}
+
+
+	while (Norm > eps)
+	{
+		for (i = 0; i < N; i++)
+		{
+			x[i] = xx[i];
+			xx[i] = 0;
+		}
+
+		for (i = 0; i < N; i++)
+		{
+			for (j = 0; j < i; j++)
+			{
+				xx[i] += alpha[i][j] * xx[j];
+			}
+
+			for (k = i; k < N; k++)
+			{
+				xx[i] += alpha[i][j] * x[j];
+			}
+
+			xx[i] += beta[i];
+		}
+
+		Norm = abs(xx[0] - x[0]);
+
+		for (i = 1; i < N; i++)
+		{
+			if ((abs(xx[i] - x[i])) > Norm)
+			{
+				Norm = abs(xx[i] - x[i]);
+			}
+		}
+
+	}
+
+	for (i = 0; i < N; i++)
+	{
+		x[i] = xx[i];
+	}
+
+	delete[]alpha;
+	delete[]beta;
+	delete[]xx;
+
 
 }
 
 
 
 /**
- * Метод Якоби или Зейделя
+ * Метод простых итераций
  */
 void kazakovais::lab6()
 {
