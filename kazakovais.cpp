@@ -306,7 +306,7 @@ void kazakovais::lab5()
 
 		for (k = i; k < N; k++)
 		{
-			xx[i] += alpha[i][j] * x[j];
+			xx[i] += alpha[i][k] * x[k];
 		}
 
 
@@ -340,7 +340,7 @@ void kazakovais::lab5()
 
 			for (k = i; k < N; k++)
 			{
-				xx[i] += alpha[i][j] * x[j];
+				xx[i] += alpha[i][k] * x[k];
 			}
 
 			xx[i] += beta[i];
