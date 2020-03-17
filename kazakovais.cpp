@@ -222,41 +222,6 @@ void kazakovais::lab4()
 */
 void kazakovais::lab5()
 {
-	//доделать метод Зейделя!!!
-
-	/*
-	//Исходная СЛАУ имеет вид: Ax=b
-	//Приводим её к виду: x=Cx+d
-	//Для этого требуется вспомогательная матрица H
-	double **C = new double*[N];
-	double **H = new double*[N];
-	double *d = new double[N];
-	int i, j;
-	for (int i = 0; i < N; i++)
-	{
-		C[i] = new double[N];
-	}
-	for (int i = 0; i < N; i++)
-	{
-		H[i] = new double[N];
-	}
-
-	for (i = 0; i < N; i++)
-	{
-		for (j = 0; j < N; j++)
-		{
-			if (i == j)
-			{
-				H[i][j] = 1 / A[i][j];
-			}
-			else
-			{
-				H[i][j] = 0;
-			}
-		}
-	}
-	*/
-
 	//Первоначальный вид СЛАУ A*x=b
 	//Приводим её к виду: x=alpha*x+beta
 	double eps = 1.0e-20;  //задаваемая точность
@@ -265,6 +230,11 @@ void kazakovais::lab5()
 	double **alpha = new double*[N];
 	double *beta = new double[N];
 	int i, j, k;
+
+	for (i = 0; i < N; i++)
+	{
+		alpha[i] = new double[N];
+	}
 
 	for (i = 0; i < N; i++)
 	{
