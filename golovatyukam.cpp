@@ -119,11 +119,70 @@ void golovatyukam::lab3()
 
 
 /**
- * Метод простых итераций
+ * Метод Холецкого
  */
 void golovatyukam::lab4()
 {
+	int n =N;
+	double *D = new double[n];
 
+	if (A[0][0] > 0) D[0] = 1;
+	else D[0] = -1;
+
+
+	double **S = new double*[n];
+	for (int i = 0; i < n; i++) {
+		S[i] = new double[n];
+	}
+	S[0][0] = sqrt(fabs(A[0][0]));
+
+	//s[0][j] - первая строка 
+	for (int j = 1; j < n; j++) 
+		S[0][j] = A[0][j] / (D[0] * S[0][0]);
+	
+
+	for (int i = 1; i < n; i++) {
+		
+		//--------------- find d[i][i] && s[i][i] ------------------------------
+		double sum = 0;
+		for (int k = 0; k < i; k++) {
+			sum += D[k] * pow(S[k][i], 2);
+		}
+		D[i] = copysign(1, A[i][i] - sum);
+		S[i][i] = sqrt(fabs(A[i][i] - sum));
+		
+		
+		//-------------find s[i][j]---------------------------------- 
+		for (int j = i + 1; j < n; j++) {
+			double tmps = 0;
+			for (int k = 0; k < j; k++) {
+				tmps += D[k] * S[k][i] * S[k][j];
+			}
+			S[i][j] = (A[i][j] - tmps) / (D[i] * S[i][i]);
+		}
+
+	}
+
+	double* y = new double[n];
+	y[0] = b[0]/S[0][0];
+
+	for (int i = 1; i < n; i++) {
+    		double sum = 0;
+    		for (int j = 0; j < i; j++) {
+     			 sum += y[j]*S[j][i];
+    		}
+    		y[i] = (b[i] - sum) / S[i][i];
+ 	 }
+
+  x[n-1] = y[n-1]/(S[n-1][n-1]*D[n-1]);
+
+  for(int i = n-2; i>=0; i--){
+    double sum = 0;
+      for(int j = i+1; j<n; j++){
+        sum+=x[j]*D[j]*S[i][j];
+      }
+      x[i] = (y[i] - sum)/(D[i]*S[i][i]);
+  }
 }
 
 
