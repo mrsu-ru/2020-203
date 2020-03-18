@@ -56,6 +56,23 @@ void landyshevav::lab2()
 void landyshevav::lab3()
 {
 
+        double* al = new double[N];
+        double* bl = new double[N];
+        al[0] = -A[0][1] / A[0][0]; bl[0] = b[0] / A[0][0];
+        for (int i = 1; i < N - 2; i++)
+        {
+            al[i] = -A[i][i + 1] / (A[i][i] + al[i - 1] * A[i][i - 1]);
+            bl[i] = (b[i] - A[i][i - 1] * bl[i - 1]) / (A[i][i] + al[i - 1] * A[i][i - 1]);
+        }
+        bl[N - 1] = (b[N - 1] - A[N - 1][N - 2] * bl[N - 2]) / (A[N - 1][N - 1] + A[N - 1][N - 2] * al[N - 2]);
+        x[N - 1] = bl[N - 1];
+        for (int i = N - 2; i >= 0; i--)
+        {
+            x[i] = al[i] * x[i + 1] + bl[i];
+        }
+        delete[] al;
+        delete[] bl;
+ 
 }
 
 
