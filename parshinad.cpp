@@ -67,7 +67,22 @@ void parshinad::lab2()
  */
 void parshinad::lab3()
 {
-
+	double *alpha = new double[N];
+    double *beta = new double[N];
+    
+    alpha[0] = -A[0][1]/A[0][0];
+    beta[0] = b[0]/A[0][0];
+    
+    for (int i = 1; i <= N - 1; i++){
+        alpha[i] = -A[i][i+1]/(A[i][i] + A[i][i-1]*alpha[i-1]);
+        beta[i] = (-A[i][i-1]*beta[i-1] + b[i])/(A[i][i]+A[i][i-1]*alpha[i-1]);
+    }
+    
+    x[N-1] = beta[N-1];
+    
+    for (int i = N - 2; i >= 0; i--){
+        x[i] = alpha[i]*x[i+1] + beta[i];
+    }
 }
 
 
