@@ -1,4 +1,4 @@
-﻿#include "kotkovsn.h"
+#include "kotkovsn.h"
 
 /**
  * Введение в дисциплину
@@ -93,11 +93,71 @@ void kotkovsn::lab3()
 
 
 /**
- * Метод простых итераций
+ * Метод Холецкого
  */
 void kotkovsn::lab4()
 {
+  double **S = new double*[N];
+  double **D = new double*[N];
+  for (int i = 0; i < N; i++)
+  {
+    S[i] = new double[N];
+    memset(S[i], 0, sizeof(double) * N);
+    D[i] = new double[N];
+    memset(D[i], 0, sizeof(double) * N);
+  }
+ 
+  for (int i = 0; i < N; i++)
+  {
+    double tmp = A[i][i];
+    for (int k = 0; k <= i - 1; k++)
+      tmp -= D[k][k] * S[k][i] * S[k][i];
 
+    if (tmp > 0)   D[i][i] = 1;
+    else           D[i][i] = -1;
+
+    S[i][i] = sqrt(D[i][i] * tmp);
+
+    for (int j = i + 1; j < N; j++)
+    {
+      double sum = 0;
+      for (int k = 0; k <= j - 1; k++)
+        sum += D[k][k] * S[k][i] * S[k][j];
+      S[i][j] = (A[i][j] - sum) / (D[i][i] * S[i][i]);
+    }
+  }
+  
+  double *y = new double[N];
+  for (int i = 0; i < N; i++)
+  {
+    b[i] /= S[i][i];
+    y[i] = b[i];
+    for (int j = i + 1; j < N; j++)
+      b[j] -= b[i] * S[i][j];
+  }
+
+  for (int i = 0; i < N; i++)
+    for (int j = 0; j < N; j++)
+      S[i][j] *= D[i][i];
+
+  for (int i = N - 1; i >= 0; i--)
+  {
+    y[i] /= S[i][i];
+    x[i] = y[i];
+    for (int j = i - 1; j >= 0; j--)
+      y[j] -= y[i] * S[j][i];
+  }
+
+  delete []y;
+
+  for (int i = 0; i < N; i++)
+  {
+    delete []S[i];
+    delete []D[i];
+  }
+
+  delete []S;
+  delete []D;
 }
 
 
@@ -107,7 +167,52 @@ void kotkovsn::lab4()
  */
 void kotkovsn::lab5()
 {
+  const double eps = 1e-18;
+  double *z = new double[N];
 
+  for (int k = 0; k < N; k++)
+  {
+    double y = 0;
+    for (int i = 0; i < N; i++)
+      y += A[k][i] * x[i];
+    z[k] = b[k] - y;
+  }
+
+  double zNorm = 0;
+
+  for (int k = 0; k < N; k++)
+    zNorm += z[k] * z[k];
+    
+  while (zNorm > eps * eps)
+  {
+    for (int k = 0; k < N; k++)
+    {
+      double sum1 = 0;
+      double sum2 = 0;
+      for (int j = 0; j < k; j++)
+        sum1 += A[k][j] * x[j];
+
+      for (int j = k + 1; j < N; j++)
+        sum2 += A[k][j] * x[j];
+      
+      x[k] = (b[k] - sum1 - sum2) / A[k][k];
+    }
+
+    for (int k = 0; k < N; k++)
+    {
+      double y = 0;
+      for (int i = 0; i < N; i++)
+        y += A[k][i] * x[i];
+      z[k] = b[k] - y;
+    }
+
+    zNorm = 0;
+
+    for (int k = 0; k < N; k++)
+      zNorm += z[k] * z[k];
+  }
+  
+  delete []z;
 }
 
 
