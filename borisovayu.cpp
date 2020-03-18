@@ -196,7 +196,52 @@ void borisovayu::lab5()
  */
 void borisovayu::lab6()
 {
+     double eps = 1e-17;    
+     double *z, *Az;
+     int i,j;
+	
+     z = new double[N];
+     Az = new double[N];
+     for (i=0; i<N; i++) x[i]=0;
+     for (i=0; i<N; i++) z[i]=b[i];
+	
+     for (i=0; i<N; i++)
+	    for (j=0; j<N; j++) 
+		    z[i]-=A[i][j]*x[j];
 
+     double Z=0;
+     double t=0;
+     double scalar=0;
+	
+     for (i=0; i<N; i++)
+	Z += z[i]*z[i];
+    
+     while (Z > eps*eps){
+	for (i=0; i<N; i++){
+	    Az[i] = 0;
+	    for (j=0; j<N; j++)	Az[i] += A[i][j]*z[j];
+	}
+		
+	scalar = 0;
+	for (i=0; i<N; i++) scalar += Az[i]*z[i];
+	t = -scalar;
+	scalar = 0;
+	for (i=0; i<N; i++) scalar += Az[i]*Az[i];
+	t/=scalar;
+	
+	for (i=0; i<N; i++) x[i] = x[i] - t*z[i];
+			
+	for (i=0; i<N; i++)  z[i] = b[i];
+        for (i=0; i<N; i++)
+	        for (j=0; j<N; j++) 
+		        z[i] -= A[i][j]*x[j];		
+		
+	Z=0;
+	for (i=0; i<N; i++)  Z += z[i]*z[i];
+	}
+	
+	delete[] Az;
+	delete[] z;
 }
 
 
