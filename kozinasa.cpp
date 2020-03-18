@@ -164,9 +164,62 @@ void kozinasa::lab5()
 /**
  * РњРµС‚РѕРґ РЇРєРѕР±Рё РёР»Рё Р—РµР№РґРµР»СЏ
  */
-void kozinasa::lab6()
-{
-
+void kozinasa::lab6(){
+ int n=N,i,j; double e = 1.0e-19;
+ double *r, *h, *x1;
+ 
+  x1 = new double[n];
+  r = new double[n];
+  h = new double[n];
+  
+  for (int i=0;i<n;i++){
+  	x[i]=b[i];
+  	x1[i]=0;
+  }
+  
+  
+  double xxx = 1;
+  while (xxx>e){
+	//вычисление rn
+	for (i=0;i<n;i++){
+  	  double s = 0;
+  	  for (j=0;j<n;j++){
+  		 s += A[i][j]*x[j];
+	   }
+	  r[i]=s-b[i];
+      }
+    for (i=0;i<n;i++){
+  	  double s = 0;
+  	  for (j=0;j<n;j++){
+  		 s += A[i][j]*r[j];
+	   }
+	  h[i]=s;
+	  //cout<<h[i]<<" ";
+      } //cout<<endl;
+    //числитель для вычисления <тау>
+    double sum1 = 0;
+  	for (i=0;i<n;i++){
+  		sum1 += r[i]*h[i];
+  	}
+  	//знаменатель для вычисления <тау>
+  	double sum2 = 0;
+  	for (i=0;i<n;i++){
+  		sum2 += h[i]*h[i];
+  	}
+  	double ta = sum1/sum2;
+  	for(i=0;i<n;i++){
+  		x[i]=x[i]-ta*r[i];
+		  //cout<<x[i]<<" ";
+	  }
+	//cout<<endl;
+	xxx=0;
+	for (i=0;i<n;i++){
+		xxx+=(x1[i]-x[i])*(x1[i]-x[i]);
+  		x1[i]=x[i];
+  	}
+  	xxx = sqrt(xxx);
+  }
+  
 }
 
 
