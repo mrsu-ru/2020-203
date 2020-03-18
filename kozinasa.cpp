@@ -165,17 +165,21 @@ void kozinasa::lab5()
  * Метод Якоби или Зейделя
  */
 void kozinasa::lab6(){
- int n=N,i,j; double e = 1.0e-30;
-  for (int i=0;i<n;i++){
-  	x[i]=b[i];
-  }
-  double *c, *r, *h;
-  c = new double[n];
+ int n=N,i,j; double e = 1.0e-19;
+ double *r, *h, *x1;
+ 
+  x1 = new double[n];
   r = new double[n];
   h = new double[n];
-  double xxx = 0;
-  while (abs(xxx-x[n-1])>e){
-	xxx=x[n-1];
+  
+  for (int i=0;i<n;i++){
+  	x[i]=b[i];
+  	x1[i]=0;
+  }
+  
+  
+  double xxx = 1;
+  while (xxx>e){
 	//���������� rn
 	for (i=0;i<n;i++){
   	  double s = 0;
@@ -208,11 +212,14 @@ void kozinasa::lab6(){
 		  //cout<<x[i]<<" ";
 	  }
 	//cout<<endl;
+	xxx=0;
+	for (i=0;i<n;i++){
+		xxx+=(x1[i]-x[i])*(x1[i]-x[i]);
+  		x1[i]=x[i];
+  	}
+  	xxx = sqrt(xxx);
   }
   
-  for (i=0;i<n;i++){
-  	cout<<x[i]<<" ";
-  }
 }
 
 
