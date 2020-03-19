@@ -92,7 +92,7 @@ void kazakovais::lab3()
 	for (int i=1;i<N;i++)
 	{
 		alpha[i] = A[i][i+1]/(A[i][i]-A[i][i-1]*alpha[i-1]);
-		beta[i] = (A[i][i-1]*beta[i-1]-b[i])/(A[i][i]-A[i][i-1]*alpha[i-1])
+		beta[i] = (A[i][i-1]*beta[i-1]-b[i])/(A[i][i]-A[i][i-1]*alpha[i-1]);
 	
 	}
 	
