@@ -80,7 +80,8 @@ void kazakovais::lab2()
  */
 void kazakovais::lab3()
 {
-
+	double *alpha;
+	double *beta;
 	alpha = new double[N];  //массивы для прогоночных коэффициентов
 	beta = new double[N];
 	
