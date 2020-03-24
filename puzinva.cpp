@@ -115,11 +115,33 @@ void puzinva::lab3()
 
 
 /**
- * Метод простых итераций
+ * Метод Холецкого
  */
 void puzinva::lab4()
 {
-
+	double eps = 1e-20;
+    double t = 0.0001;
+    double y[N];
+    double sum;
+    double maxRes = 1;
+    for (; maxRes > eps;) {
+        for (int i = 0; i < N; i++) {
+            y[i] = x[i];
+        }
+        for (int i = 0; i < N; i++) {
+            sum = 0;
+            for (int j = 0; j < N; j++) {
+                sum += A[i][j] * y[j];
+            }
+            x[i] = y[i] - t * (sum - b[i]);
+        }
+        maxRes = abs(x[0] - y[0]);
+        for (int i = 1; i < N; i++) {
+            if (abs(x[i] - y[i]) > maxRes) {
+                maxRes = abs(x[i] - y[i]);
+            }
+        }
+    }
 }
 
 
@@ -129,7 +151,31 @@ void puzinva::lab4()
  */
 void puzinva::lab5()
 {
-
+	double eps = 1e-20;
+    double y[N];
+    double sum;
+    double maxRes = 1;
+    for (; maxRes > eps;) {
+        for (int i = 0; i < N; i++) {
+            y[i] = x[i];
+        }
+        for (int i = 0; i < N; i++) {
+            sum = 0;
+            for (int j = 0; j < i; j++) {
+                sum += A[i][j] * x[j];
+            }
+            for (int j = i + 1; j < N; j++) {
+                sum += A[i][j] * y[j];
+            }
+            x[i] = (1 / A[i][i]) * (b[i] - sum);
+        }
+        maxRes = abs(x[0] - y[0]);
+        for (int i = 1; i < N; i++) {
+            if (abs(x[i] - y[i]) > maxRes) {
+                maxRes = abs(x[i] - y[i]);
+            }
+        }
+    }
 }
 
 
