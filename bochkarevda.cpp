@@ -30,7 +30,7 @@ void bochkarevda::lab3()
 
 
 /**
- * Метод простых итераций
+ * Метод Холецкого
  */
 void bochkarevda::lab4()
 {

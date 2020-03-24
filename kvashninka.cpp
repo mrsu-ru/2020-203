@@ -30,7 +30,7 @@ void kvashninka::lab3()
 
 
 /**
- * Метод простых итераций
+ * Метод Холецкого
  */
 void kvashninka::lab4()
 {

@@ -336,7 +336,7 @@ void kazakovais::lab5()
 
 
 /**
- * Метод простых итераций
+ * Метод Холецкого
  */
 void kazakovais::lab6()
 {

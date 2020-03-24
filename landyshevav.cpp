@@ -78,7 +78,7 @@ void landyshevav::lab3()
 
 
 /**
- * Метод простых итераций
+ * Метод Холецкого
  */
 void landyshevav::lab4()
 {
