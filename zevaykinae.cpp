@@ -64,7 +64,7 @@ void zevaykinae::lab3()
 
 
 /**
- * Метод простых итераций
+ * Метод Холецкого
  */
 void zevaykinae::lab4()
 {

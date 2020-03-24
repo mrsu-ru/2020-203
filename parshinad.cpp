@@ -88,7 +88,7 @@ void parshinad::lab3()
 
 
 /**
- * Метод простых итераций
+ * Метод Холецкого
  */
 void parshinad::lab4()
 {

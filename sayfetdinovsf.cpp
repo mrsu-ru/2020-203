@@ -30,7 +30,7 @@ void sayfetdinovsf::lab3()
 
 
 /**
- * Метод простых итераций
+ * Метод Холецкого
  */
 void sayfetdinovsf::lab4()
 {

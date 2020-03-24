@@ -83,7 +83,7 @@ void ashryatovarr::lab3()
 
 
 /**
- * Метод простых итераций
+ * Метод Холецкого
  */
 void ashryatovarr::lab4()
 {
