@@ -227,9 +227,76 @@ void kozinasa::lab6(){
 /**
  * РњРµС‚РѕРґ РјРёРЅРёРјР°Р»СЊРЅС‹С… РЅРµРІСЏР·РѕРє
  */
-void kozinasa::lab7()
-{
-
+void kozinasa::lab7(){
+int n=N,i,j; double e = 1.0e-21;
+ double *c, *r, *z, *r1;
+ 
+  z = new double[n];
+  c = new double[n];
+  r = new double[n];
+  r1 = new double[n];
+  
+  for (int i=0;i<n;i++){
+  	x[i]=b[i];
+  }
+   //вычисление r0
+	for (i=0;i<n;i++){
+  	  double s = 0;
+  	  for (j=0;j<n;j++){
+  		 s += A[i][j]*x[j];
+	   }
+	  r[i]=-s+b[i];
+	  z[i]=-s+b[i];
+      }
+  
+  double xxx = 1;
+  double k=0;
+  while (xxx>e){
+	double al1=0,al2=0;
+	k++;
+	//числитель alpha
+  	for (i=0;i<n;i++){
+  		al1 += r[i]*r[i];
+  	}
+  	//  A*z[n]
+  	for (i=0;i<n;i++){
+  	  double s = 0;
+  	  for (j=0;j<n;j++){
+  		 s += A[i][j]*z[j];
+	   }
+	  c[i]=s;
+      }
+    //знаменатель alpha (и знаменатель betta)
+    for (i=0;i<n;i++){
+  		al2 += c[i]*z[i];
+  	}
+   double al=al1/al2;
+   cout<<al<<endl;
+   // x[n+1]
+   for (i=0;i<n;i++){
+  	  x[i]+=al*z[i];
+    }
+    //r[n+1]
+   for (i=0;i<n;i++){
+  	  r1[i] = r[i] - al*c[i];
+    }
+    double bt1=0;
+	//числитель betta
+  	for (i=0;i<n;i++){
+  		bt1 += r1[i]*r1[i];
+  	}
+  	double bt=bt1/al1;
+  	double u1=0,u2=0;
+  	for (i=0;i<n;i++){
+  	  z[i] = r1[i] + bt*z[i];
+  	  r[i] = r1[i];
+  	  u1+=r1[i]*r1[i];
+  	  u2+=b[i]*b[i];
+    }
+    xxx = sqrt(u1)/sqrt(u2);
+    cout<<xxx<<endl;
+  
+  }
 }
 
 
