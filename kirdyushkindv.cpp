@@ -94,7 +94,7 @@ double alpha[N-1], beta[N];
 
 
 /**
- * Метод простых итераций
+ * Метод Холецкого
  */
 void kirdyushkindv::lab4()
 {
