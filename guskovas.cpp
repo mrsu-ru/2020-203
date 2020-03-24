@@ -94,7 +94,7 @@ void guskovas::lab3()//N, A, b, x
 
 
 /**
- * Метод простых итераций
+ * Метод Холецкого
  */
 void guskovas::lab4()
 {

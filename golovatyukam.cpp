@@ -119,7 +119,7 @@ void golovatyukam::lab3()
 
 
 /**
- * Метод простых итераций
+ * Метод Холецкого
  */
 void golovatyukam::lab4()
 {
