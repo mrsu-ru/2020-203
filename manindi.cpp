@@ -107,7 +107,7 @@ double *p = new double[N];
 
 
 /**
- * Метод простых итераций
+ * Метод Холецкого
  */
 void manindi::lab4()
 {
