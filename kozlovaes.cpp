@@ -39,9 +39,9 @@ void kozlovaes::lab2()
 			A[j][i] = 0;
 		}
 	}
-	
+	double s;
 	for (int i = N - 1; i > 0; i--) {
-		double s = 0;
+		s = 0;
 		for (int j = i ; j < N; j++) {
 			s += b[j] * A[i - 1][j];
 			A[i - 1][j] = 0;
@@ -82,7 +82,7 @@ void kozlovaes::lab3()
 
 
 /**
- * Метод простых итераций
+ * Метод квадратного корня (метод Холецкого)
  */
 void kozlovaes::lab4()
 {
@@ -159,6 +159,28 @@ sumSDx=0;
  */
 void kozlovaes::lab5()
 {
+double *f = new double[N];
+double eps = 1.e-30;
+double norm =0;
+
+do{
+	for(int i=0;i<N;i++){
+	f[i]=x[i];
+	}
+	
+	for(int i=0;i<N;i++){
+		double sum1=0,sum2=0;
+		for(int j=0;j<i;j++) sum1+=A[i][j]*x[j];	
+		for(int j=i+1;j<N;j++) sum2+=A[i][j]*x[j];
+		x[i]=(b[i]-sum1-sum2)/A[i][i];
+	}
+	
+norm=0;
+for(int i=0;i<N;i++){
+	if(abs(x[i]-f[i])>norm)	norm=abs(x[i]-f[i]);
+}
+
+}while(norm>eps);
 
 }
 
