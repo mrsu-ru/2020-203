@@ -123,7 +123,7 @@ void golovatyukam::lab3()
  */
 void golovatyukam::lab4()
 {
-	int n =N;
+	int n = N;
 	double *D = new double[n];
 
 	if (A[0][0] > 0) D[0] = 1;
@@ -192,6 +192,7 @@ void golovatyukam::lab4()
  */
 void golovatyukam::lab5()
 {
+int n = N;	
 double eps = 1e-69, norma;
 double *y = new double [n];
   do{
