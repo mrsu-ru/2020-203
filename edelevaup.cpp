@@ -94,17 +94,78 @@ void edelevaup::lab3()
  
 }
 /**
- * Метод простых итераций
+ * Метод Холецкого (метод квадратного корня)
  */
 void edelevaup::lab4()
 {
+  double *D = new double[N];
+  double **S = new double* [N];  
+   double *y = new double[N];
+   //double l=0, temp=0;
+  for (int i=0; i<N; i++){
+	  S[i]=new double[N];
+	  for(int j=0; j<N; j++)
+		S[i][j]=0;
+  } 
+   if (A[0][0]>0)
+		  D[0]=1;
+	  else 
+		  D[0]=-1;
+	  S[0][0]=sqrt(fabs(A[0][0]));
+	  
+   for (int i=1; i<N; i++){
+   S[0][i]=A[0][i]/(D[0]*S[0][0]);
+   }
+   
+	  for (int i=1; i<N; i++){
+	  //temp = A[i][i];
+	  double temp =0;
+      for (int j=0; j<i; j++){
+		  temp+=D[j]*S[j][i]*S[j][i];
+	  }
+	  if (A[i][i]-temp>=0)
+		  D[i]=1;
+	  else 
+		  D[i]=-1;
+	  S[i][i]=sqrt(D[i]*(A[i][i]-temp));
+	  
+	  for (int j=i+1; j<N; j++) {
+		//  l =A[i][j];
+			  double l =0;
 
+	   for (int k=0; k<j; k++){
+	   l+=D[k]*S[k][i]*S[k][j];
+	   }
+	   
+		  S[i][j]=(A[i][j]-l)/(D[i]*S[i][i]);
+	   }
+		  }
+		  
+		  y[0]=b[0]/S[0][0];
+		  for (int i=1; i<N; i++){
+			  	  double temp =0;
+
+			  for (int j=0; j<i; j++){
+				  temp+=y[j]*S[j][i];
+			  }
+			  y[i]=(b[i]-temp)/S[i][i];
+		  }		
+	 x[N-1]=y[N-1]/(D[N-1]*S[N-1][N-1]);
+	 
+for (int i=N-2; i>=0; i--){
+		  double temp =0;
+	for (int j=i+1; j<N; j++){
+		temp+=x[j]*D[j]*S[i][j];
+	}
+	x[i]=(y[i]-temp)/(D[i]*S[i][i]);
+}
+			  
 }
 
 
 
 /**
- * Метод Якоби или Зейделя
+ * Метод простых итераций
  */
 void edelevaup::lab5()
 {
@@ -114,9 +175,52 @@ void edelevaup::lab5()
 
 
 /**
+ * Метод Якоби или Зейделя
+ */
+void
+edelevaup::lab6 ()
+{
+  double *f = new double[N];
+  double e = pow(10, -30);
+  double temp =0;
+   
+   do{
+		for (int i = 0; i < N; i++)
+		{
+			f[i] = x[i];
+		}
+     
+      for (int i = 0; i < N; i++) {
+
+	  double sum1 = 0, sum2 = 0;
+
+	  for (int j = 0; j < i; j++)
+
+	    sum1 += A[i][j] * x[j];
+
+	  for (int j = i + 1; j < N; j++)
+
+	    sum2 += A[i][j] * x[j];
+
+	  x[i] = (b[i] - sum1 - sum2) / A[i][i];
+	}
+	
+	temp =0;
+	  for (int i = 0; i < N; i++)
+    {
+
+      if (abs(x[i] - f[i]) > temp)
+	      temp = abs (x[i] - f[i]);
+    }
+} while (temp>e);
+	
+}
+
+
+/**
  * Метод минимальных невязок
  */
-void edelevaup::lab6()
+void edelevaup::lab7()
 {
 
 }
@@ -126,12 +230,6 @@ void edelevaup::lab6()
 /**
  * Метод сопряженных градиентов
  */
-void edelevaup::lab7()
-{
-
-}
-
-
 void edelevaup::lab8()
 {
 
@@ -143,6 +241,12 @@ void edelevaup::lab9()
 
 }
 
+
+/*void edelevaup::lab10()
+{
+
+}
+*/
 
 std::string edelevaup::get_name()
 {

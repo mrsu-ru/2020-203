@@ -18,7 +18,7 @@
 #include "puzinva.h"
 #include "parshinad.h"
 #include "malovki.h"
-#include "LandyshevAV.h"
+#include "landyshevav.h"
 #include "simatovvv.h"
 #include "guskovas.h"
 #include "kozinasa.h"
