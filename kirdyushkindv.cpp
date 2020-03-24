@@ -98,6 +98,16 @@ double alpha[N-1], beta[N];
  */
 void kirdyushkindv::lab4()
 {
+
+}
+
+
+
+/**
+ * Метод Якоби или Зейделя
+ */
+void kirdyushkindv::lab5()
+{
     double eps = 1e-20;
 	double *prev_x = new double[N];
 	double norm = 0;
@@ -131,17 +141,7 @@ void kirdyushkindv::lab4()
 
 	delete[] prev_x;
 }
-}
 
-
-
-/**
- * Метод Якоби или Зейделя
- */
-void kirdyushkindv::lab5()
-{
-
-}
 
 
 
