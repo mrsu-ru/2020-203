@@ -98,7 +98,39 @@ double alpha[N-1], beta[N];
  */
 void kirdyushkindv::lab4()
 {
+    double eps = 1e-20;
+	double *prev_x = new double[N];
+	double norm = 0;
 
+	for (int i = 0; i < N; i++) {
+		x[i] = 0;
+	}
+
+	do {
+		for (int i = 0; i < N; i++)
+			prev_x[i] = x[i];
+
+		for (int i = 0; i < N; i++) {
+			double result = b[i];
+			for (int j = 0; j < N; j++) {
+				if (i != j) {
+					result -= (A[i][j] * prev_x[j]);
+				}
+			}
+
+			x[i] = result / A[i][i];
+		}
+
+		norm = 0;
+		for (int i = 0; i < N; i++) {
+			if (abs(prev_x[i] - x[i]) > norm) {
+				norm = abs(prev_x[i] - x[i]);
+			}
+		}
+	} while (norm > eps);
+
+	delete[] prev_x;
+}
 }
 
 
