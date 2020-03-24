@@ -192,7 +192,29 @@ void golovatyukam::lab4()
  */
 void golovatyukam::lab5()
 {
-
+double eps = 1e-69, norma;
+double *y = new double [n];
+  do{
+    for(int i = 0; i<n; i++)
+      y[i]=x[i];
+    
+	norma = 0;
+	
+    for(int i = 0; i<n; i++){
+      double sum1 = 0, sum2 = 0;
+      for(int j = i + 1; j < n; j++)
+      sum1 += A[i][j]*x[j];
+    
+      for(int j = i-1; j>= 0; j--)
+      sum2 += A[i][j]*x[j];
+    
+      x[i] = (b[i] - sum1 - sum2)/A[i][i];
+    }
+  
+    for (int i = 0; i < n; i++){
+      norma += abs(x[i] - y[i]);
+    }
+  } while (norma>eps);
 }
 
 
