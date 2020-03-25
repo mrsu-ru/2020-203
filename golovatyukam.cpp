@@ -225,7 +225,56 @@ double *y = new double [n];
  */
 void golovatyukam::lab6()
 {
+	int n = N;
 
+	double* F = new double[n];
+	double* r = new double[n];
+	double* alfa = new double[n];
+	double a, norma, k = 0;
+	double eps = 1e-19;
+
+	do {
+		//r  - вектор невязки, F - функционал 
+		for (int i = 0; i < n; i++) {
+			double tmp = 0;
+			for (int j = 0; j < n; j++) {
+				tmp += A[i][j] * x[j];
+			}
+			r[i] = tmp - b[i];
+			F[i] = 2 * r[i];
+		}
+		//alfa
+		double* Ar = new double[n];
+		for (int i = 0; i < n; i++) {
+			double tmps = 0;
+			for (int j = 0; j < n; j++) {
+				tmps += A[i][j] * r[j];
+			}
+			Ar[i] = tmps;
+		}
+		double ts1 = 0, ts2 = 0;
+		for (int i = 0; i < n; i++) {
+			ts1 += abs(Ar[i] * r[i]);
+			ts2 += abs(Ar[i] * Ar[i]);
+		}
+		a = ts1 / (2 * ts2);
+
+		//x[k+1]
+		double*y = new double[n];
+		for (int i = 0; i < n; i++) {
+			y[i] = x[i];
+		}
+		for (int i = 0; i < n; i++) {
+			x[i] = x[i] - a * F[i];
+		}
+
+		norma = 0;
+		for (int i = 0; i < n; i++) {
+			norma += (y[i] - x[i])*(y[i] - x[i]);
+		}
+		//cout << k++ << " " << norma << endl;
+
+	} while (sqrt(norma) > eps);
 }
 
 
