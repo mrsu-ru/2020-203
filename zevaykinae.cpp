@@ -68,41 +68,52 @@ void zevaykinae::lab3()
  */
 void zevaykinae::lab4()
 {
-double eps = 1e-15; //чтобы выйти из цикла
-double t = 1e-5; //(приближенный парметр) достаточно малое число, ПРИ ПОИМОМЩИ КОТОРОГО МЫ ПОЛУЧАЕМ КАЖДЫЙ РАЗ ВСЁ БОЛЕЕ И БОЛЕЕ ТОЧНОЕ ЧИСЛО
-
-for (int i = 0; i < N; i++) //берем первое приближенное значение и прогоняем его
-    {
-		x[i] = 0;
+	double** S = new double* [N];
+	for (int i = 0; i < N; i++) {
+		S[i] = new double[N];
+		for(int j = 0; j < N; j++)
+			S[i][j] = 0;
 	}
-
-	double x1;
-	double *xr = new double[N];//рассчитываем новые значения x-ов
-	int step = 0;
-
-	do {
-		step++;
-
-		for (int i = 0; i < N; i++) //рассчитываем новое точное значение в цикле
-        {
-			xr[i] = x[i];
-			for (int k = 0; k < N; k++)
-				xr[i] -= t*A[i][k] * x[k];
-			xr[i] += t * b[i];
-
-		}
-
-		x1 = 0;
-		for (int i = 0; i < N; i++) { //рассчитываем норму (с её помощью ведем учет того, что значение достаточно близкое к необходимое)
-			x1 += (xr[i]-x[i])*(xr[i]-x[i]);
-		}
-
-		for (int i = 0; i < N; i++)
-        {
-			x[i] = xr[i]; //осуществляем перепресвоение, новое становится старым и мы возобновляем цикл
+	int* D = new int[N];
+	for (int i = 0; i < N; i++)
+		D[i] = 0;
+	double temp;
+	for(int i = 0; i < N; i++){
+		temp = A[i][i];
+		for (int j = 0; j < i; j++)
+			temp -= D[j] * S[j][i] * S[j][i];
+		D[i] = (temp > 0)? 1: -1;
+		S[i][i] = sqrt(D[i] * temp);
+		double nakSum;
+		for (int j = i + 1; j < N; j++) {
+			nakSum = 0;
+			for (int k = 0; k < j; k++) 
+				nakSum += D[k] * S[k][i] * S[k][j];
+			S[i][j] = (A[i][j] - nakSum) / (D[i] * S[i][i]);
 		}
 	}
-	while (sqrt(x1)>eps); //как меньш8е, то выходим из цимкла
+	double* y = new double[N];
+	for (int i = 0; i < N; i++) {
+		b[i] /= S[i][i];
+		y[i] = b[i];
+		for (int j = i + 1; j < N; j++)
+			b[j] -= b[i] * S[i][j];
+	}
+	for (int i = 0; i < N; i++)
+		for (int j = 0; j < N; j++)
+			S[i][j] *= D[i];
+	for (int i = N - 1; i >= 0; i--) {
+		y[i] /= S[i][i];
+		x[i] = y[i];
+		for(int j = i - 1; j >= 0; j--)
+			y[j] -= y[i] * S[j][i];
+	}
+	
+	for (int i = 0; i < N; i++)
+		delete[]S[i];
+	delete[]S;
+	delete[]D;
+	delete[]y;
 }
 
 
