@@ -222,7 +222,63 @@ void kotkovsn::lab5()
  */
 void kotkovsn::lab6()
 {
+    const double eps = 1e-18;
 
+    double *r = new double[N];    
+    for (int i = 0; i < N; i++)
+      r[i] = -b[i];
+    for (int i = 0; i < N; i++) 
+      for (int j = 0; j < N; j++)
+            r[i] += A[i][j] * x[j];
+
+    double rNorm = 0;
+    for (int i = 0; i < N; i++)
+      rNorm += r[i] * r[i];
+
+    double *Ar = new double[N];
+    memset(Ar, 0, sizeof(double) * N);
+    for (int i = 0; i < N; i++) 
+      for (int j = 0; j < N; j++)
+            Ar[i] += A[i][j] * r[j];
+
+    double ArNorm = 0;
+    for (int i = 0; i < N; i++)
+      ArNorm += Ar[i] * Ar[i];
+
+    double tau = 0;
+    for (int i = 0; i < N; i++)
+      tau += Ar[i] * r[i];
+    tau /= ArNorm;
+
+    while (rNorm > eps * eps)
+    {
+      for (int i = 0; i < N; i++)
+        x[i] = x[i] - tau * r[i];
+
+      for (int i = 0; i < N; i++)
+        r[i] = -b[i];
+      for (int i = 0; i < N; i++) 
+        for (int j = 0; j < N; j++)
+              r[i] += A[i][j] * x[j];      
+
+      memset(Ar, 0, sizeof(double) * N);
+      for (int i = 0; i < N; i++) 
+        for (int j = 0; j < N; j++)
+              Ar[i] += A[i][j] * r[j];
+
+      ArNorm = 0;
+      for (int i = 0; i < N; i++)
+        ArNorm += Ar[i] * Ar[i];
+
+      tau = 0;
+      for (int i = 0; i < N; i++)
+        tau += Ar[i] * r[i];
+      tau /= ArNorm;
+
+      rNorm = 0;
+      for (int i = 0; i < N; i++)
+        rNorm += r[i] * r[i];
+    }
 }
 
 
@@ -232,7 +288,7 @@ void kotkovsn::lab6()
  */
 void kotkovsn::lab7()
 {
-
+  
 }
 
 
