@@ -340,7 +340,7 @@ void kazakovais::lab5()
  */
 void kazakovais::lab6()
 {
-	double eps = 1e-18;
+	double eps = 1e-20;
 	double *x1 = new double[N];	//x1 - вспомогательный вектор для решений
 	double *r = new double[N];	//r - вектор невязки
 	double *Ar = new double[N];	//Ar - произведение матрицы A на вектор невязок
