@@ -450,12 +450,12 @@ void kazakovais::lab6()
 		}
 	}
 
-	for (i = 0; i < n; i++)
+	for (i = 0; i < N; i++)
 	{
 		x[i] = x1[i];
 	}
 
-	delete[]x1;
+	//delete[]x1;
 	delete[]r;
 	delete[]Ar;
 }
