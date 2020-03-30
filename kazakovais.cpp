@@ -348,12 +348,11 @@ void kazakovais::lab6()
 	double Arr = 0;
 	double t = 0;	//приближение
 	double norma = 0;	//норма
-	//double *F = new double[N];	//F - функционал
 	int i,j;
 
 	for (i = 0; i < N; i++)
 	{
-		x[i] = b[i];	//можно ли так задавать начальное приближение???
+		x[i] = b[i];
 		x1[i] = 0;
 		Ar[i] = 0;
 	}
@@ -381,7 +380,7 @@ void kazakovais::lab6()
 		Arr += Ar[i] * r[i];
 	}
 
-	t = -Ar2 / Arr;
+	t = -Arr / Ar2;
 
 	for (i = 0; i < N; i++)
 	{
@@ -409,6 +408,7 @@ void kazakovais::lab6()
 		Ar2 = 0;
 		Arr = 0;
 		t = 0;
+		norma = 0;
 		
 		for (i = 0; i < N; i++)
 		{
@@ -433,7 +433,7 @@ void kazakovais::lab6()
 			Arr += Ar[i] * r[i];
 		}
 
-		t = -Ar2 / Arr;
+		t = -Arr / Ar2;
 
 		for (i = 0; i < N; i++)
 		{
@@ -455,7 +455,7 @@ void kazakovais::lab6()
 		x[i] = x1[i];
 	}
 
-	//delete[]x1;
+	delete[]x1;
 	delete[]r;
 	delete[]Ar;
 }
