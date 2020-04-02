@@ -336,26 +336,142 @@ void kazakovais::lab5()
 
 
 /**
- * Метод Холецкого
+ * Метод минимальных невязок
  */
 void kazakovais::lab6()
 {
+	double eps = 1e-20;
+	double *x1 = new double[N];	//x1 - вспомогательный вектор для решений
+	double *r = new double[N];	//r - вектор невязки
+	double *Ar = new double[N];	//Ar - произведение матрицы A на вектор невязок
+	double Ar2 = 0;
+	double Arr = 0;
+	double t = 0;	//приближение
+	double norma = 0;	//норма
+	int i,j;
 
+	for (i = 0; i < N; i++)
+	{
+		x[i] = b[i];
+		x1[i] = 0;
+		Ar[i] = 0;
+	}
+
+	for (i = 0; i < N; i++)
+	{
+		r[i] = b[i];
+		for (j = 0; j < N; j++)
+		{
+			r[i] -= A[i][j] * x[j];
+		}
+	}
+
+	for (i = 0; i < N; i++)
+	{
+		for (j = 0; j < N; j++)
+		{
+			Ar[i] += A[i][j] * r[j];
+		}
+	}
+
+	for (i = 0; i < N; i++)
+	{
+		Ar2 += Ar[i] * Ar[i];
+		Arr += Ar[i] * r[i];
+	}
+
+	t = -Arr / Ar2;
+
+	for (i = 0; i < N; i++)
+	{
+		x1[i] = x[i] - t * r[i];
+	}
+	
+	norma = abs(x1[0] - x[0]);
+	for (i = 1; i < N; i++)
+	{
+		if ((abs(x1[i] - x[i])) > norma)
+		{
+			norma = abs(x1[i] - x[i]);
+		}
+	}
+
+	while (norma > eps)
+	{
+		for (i = 0; i < N; i++)
+		{
+			x[i] = x1[i];
+			x1[i] = 0;
+			Ar[i] = 0;
+			r[i] = 0;
+		}
+		Ar2 = 0;
+		Arr = 0;
+		t = 0;
+		norma = 0;
+		
+		for (i = 0; i < N; i++)
+		{
+			r[i] = b[i];
+			for (j = 0; j < N; j++)
+			{
+				r[i] -= A[i][j] * x[j];
+			}
+		}
+
+		for (i = 0; i < N; i++)
+		{
+			for (j = 0; j < N; j++)
+			{
+				Ar[i] += A[i][j] * r[j];
+			}
+		}
+
+		for (i = 0; i < N; i++)
+		{
+			Ar2 += Ar[i] * Ar[i];
+			Arr += Ar[i] * r[i];
+		}
+
+		t = -Arr / Ar2;
+
+		for (i = 0; i < N; i++)
+		{
+			x1[i] = x[i] - t * r[i];
+		}
+
+		norma = abs(x1[0] - x[0]);
+		for (i = 1; i < N; i++)
+		{
+			if ((abs(x1[i] - x[i])) > norma)
+			{
+				norma = abs(x1[i] - x[i]);
+			}
+		}
+	}
+
+	for (i = 0; i < N; i++)
+	{
+		x[i] = x1[i];
+	}
+
+	delete[]x1;
+	delete[]r;
+	delete[]Ar;
 }
 
 
 
 /**
- * Метод минимальных невязок
+ * Метод сопряженных градиентов
  */
 void kazakovais::lab7()
 {
 
 }
 
-/**
- * Метод сопряженных градиентов
- */
+
+
 void kazakovais::lab8()
 {
 
