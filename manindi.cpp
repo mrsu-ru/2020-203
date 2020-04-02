@@ -191,7 +191,35 @@ void manindi::lab4()
  */
 void manindi::lab5()
 {
+   double epsilon = 1e-20;
 
+  for (int i = 0; i < N; i++) {
+     x[i] = 0;
+   }
+   double *prev = new double[N];
+   double nor = 0;
+      do {
+      for (int i = 0; i < N; i++) {
+      prev[i] = x[i];
+   }
+    for (int i = 0; i < N; i++) {
+     double result = b[i];
+
+      for (int j = 0; j < N; j++) {
+      if (i != j) {
+     result -= (A[i][j] * prev[j]);
+          } 
+      }
+     x[i] = result / A[i][i];
+   }
+     nor = 0;
+     for (int i = 0; i < N; i++) {
+      if (abs(prev[i] - x[i]) > nor) {
+      nor = abs(prev[i] - x[i]);
+       }
+     }
+    } while (nor > epsilon);
+      delete[] prev;
 }
 
 
