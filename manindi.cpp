@@ -111,29 +111,76 @@ double *p = new double[N];
  */
 void manindi::lab4()
 {
-        double eps = 1e-20;
-        double tau = 1e-5;
-        double* pX = new double[N];
+  double *d;
+  double *sum;
+  double vs = 0;
+  double *m;
+  int i,j,k;
+  d = new double[N];
+  sum = new double[N];
+  m = new double[N];
+  double **s = new double*[N];
 
-       while (true) {
-      for (int i = 0; i < N; i++)
+    for (i=0; i<N;i++){
+       s[i] = new double[N];
+    }
 
-	pX[i] = x[i];
-         for (int i = 0; i < N; i++) {
-                  double sum = 0;
-                    for (int j = 0; j < N; j++) 
-                   sum += A[i][j] * pX[j];
-                   x[i] = pX[i] - tau * (sum - b[i]);
-                          }
-                 double maxEr = abs(x[0] - pX[0]);
-                  for (int i = 1; i < N; i++)
-                    if (abs(x[i] - pX[i]) > maxEr)
+    for (i = 0; i < N; i++){
+       sum[i] = A[i][i];
+    }
+      if (sum[0]>0){
+        d[0]=1;
+    }else {
+        d[0]=-1;
+    }
+  s[0][0]=sqrt(fabs(sum[0]));
 
-				maxEr = abs(x[i] - pX[i]);
+    for (j=1;j<N;j++){
+       s[0][j]=A[0][j]/(d[0]*s[0][0]);
+    }
 
-                     if (maxEr < eps)
-                         break;
-                                }
+    for (i = 1; i < N; i++){
+
+    for (k = 0; k < i; k++){
+       sum[i] -= d[k] * pow(s[k][i],2);
+    }
+       if (sum[i] > 0){
+         d[i] = 1;
+     }else{
+         d[i] = -1;
+    }
+  s[i][i] = sqrt(fabs(sum[i]));
+
+    for (j = i+1; j < N; j++){
+    
+    for (k = 0; k < i; k++){
+        vs += d[k] * s[k][i] * s[k][j];
+    }
+
+  s[i][j] = (A[i][j]-vs)/(d[i]*s[i][i]);
+
+    vs = 0;
+    }}
+  m[0] = b[0] / s[0][0];
+    
+     for (i = 1; i < N; i++){
+     
+      for (k = 0; k < i; k++){
+      vs += s[k][i] * m[k];
+   }
+    m[i] = (b[i] - vs) / s[i][i];
+
+     vs = 0;
+   }
+  x[N - 1] = m[N - 1] / (d[N - 1] * s[N - 1][N - 1]);
+    for (i = N - 2; i >= 0; i--){
+    for (k = i + 1; k < N; k++){
+      vs += s[i][k] * x[k];
+   }
+   x[i] = (m[i] - d[i] * vs) / (d[i] * s[i][i]);
+   vs = 0;
+    }
+
                
 }
 
@@ -144,7 +191,35 @@ void manindi::lab4()
  */
 void manindi::lab5()
 {
+   double epsilon = 1e-20;
 
+  for (int i = 0; i < N; i++) {
+     x[i] = 0;
+   }
+   double *prev = new double[N];
+   double nor = 0;
+      do {
+      for (int i = 0; i < N; i++) {
+      prev[i] = x[i];
+   }
+    for (int i = 0; i < N; i++) {
+     double result = b[i];
+
+      for (int j = 0; j < N; j++) {
+      if (i != j) {
+     result -= (A[i][j] * prev[j]);
+          } 
+      }
+     x[i] = result / A[i][i];
+   }
+     nor = 0;
+     for (int i = 0; i < N; i++) {
+      if (abs(prev[i] - x[i]) > nor) {
+      nor = abs(prev[i] - x[i]);
+       }
+     }
+    } while (nor > epsilon);
+      delete[] prev;
 }
 
 
