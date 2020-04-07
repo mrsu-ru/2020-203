@@ -119,11 +119,39 @@ void zevaykinae::lab4()
 
 
 /**
- * Метод Якоби или Зейделя
+ * Метод Якоби
  */
 void zevaykinae::lab5()
 {
+	double eps = 1e-14;
+	for (int i = 0; i < N; i++) {
+		x[i] = 0;
+	}
+	double *p_x = new double[N];
+	double norma = 0;
+	do {
+		for (int i = 0; i < N; i++) {
+			p_x[i] = x[i];
+		}
+		for (int i = 0; i < N; i++) {
+			double sum = 0;
+			for (int j = 0; j < N; j++) {
+				if (i != j) {
+					sum += (A[i][j] * p_x[j]);
+				}
+			}
 
+			x[i] = (b[i] - sum) / A[i][i];
+		}
+		norma = 0;
+		for (int i = 0; i < N; i++) {
+			if ((p_x[i] - x[i]) > norma) {
+				norma = abs(p_x[i] - x[i]);
+			}
+		}
+	} while (norma > eps);
+
+	delete[] p_x;
 }
 
 
