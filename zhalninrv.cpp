@@ -30,7 +30,7 @@ void zhalninrv::lab3()
 
 
 /**
- * Метод простых итераций
+ * Метод Холецкого
  */
 void zhalninrv::lab4()
 {

@@ -98,7 +98,7 @@ void malovki::lab3()
 
 
 /**
- * Метод простых итераций
+ * Метод Холецкого
  */
 void malovki::lab4()
 {
@@ -157,7 +157,36 @@ void malovki::lab4()
  */
 void malovki::lab5()
 {
-
+        const double eps = 1e-18;
+	double sum = 0;
+	double* xx = new double[N]; //вектор приближённых решений
+	for (int i = 0; i < N; i++)
+	{
+		xx[i] = x[i];
+	}
+	while (true) 
+	{
+		label:
+		for (int i = 0; i < N; i++)
+		{
+			sum = 0;
+			for (int j = 0; j < i; j++)
+				sum += A[i][j] * x[j];
+			for (int j = i + 1; j < N; j++)
+				sum += A[i][j] * xx[j];
+			x[i] = (b[i] - sum)/A[i][i];
+		}
+		for (int i = 0; i < N; i++)
+		{
+			if (fabs(x[i] - xx[i]) > eps)
+			{
+				for (int k = 0; k < N; k++)
+					xx[i] = x[i];
+				goto label;
+			}
+		}
+		break;
+	}
 }
 
 

@@ -30,7 +30,7 @@ void isokovaa::lab3()
 
 
 /**
- * Метод простых итераций
+ * Метод Холецкого
  */
 void isokovaa::lab4()
 {
