@@ -92,7 +92,67 @@ void parshinad::lab3()
  */
 void parshinad::lab4()
 {
+	double** S = new double* [N];
+    double* D = new double[N];
 
+    for (int i = 0; i < N; i++)
+    {
+        S[i] = new double[N];
+        memset(S[i], 0, sizeof(double) * N);
+    }
+
+
+
+    for (int i = 0; i < N; i++)
+    {
+        double sum1 = A[i][i];
+
+        for (int k = 0; k <= i - 1; k++) {
+            sum1 -= D[k] * S[k][i] * S[k][i];
+        }
+
+        D[i]=sum1/fabs(sum1);
+
+        S[i][i] = sqrt(sum1);
+
+        for (int j = i + 1; j < N; j++)
+        {
+            double sum2 = 0;
+            for (int k = 0; k <= j - 1; k++) {
+                sum2 += S[k][i] * S[k][j]* D[k];
+            }
+
+            S[i][j] = (A[i][j] - sum2) / (D[i] * S[i][i]);
+        }
+    }
+
+    for (int i = 0; i < N; i++)
+    {
+        b[i] /= S[i][i];
+        x[i] = b[i];
+
+        for (int j = i + 1; j < N; j++) {
+            b[j] -= b[i] * S[i][j];
+        }
+    }
+
+
+
+    for (int i = 0; i < N; i++) {
+        for (int j = 0; j < N; j++) {
+            S[i][j] *= D[i];
+        }
+    }
+
+
+    for (int i = N - 1; i >= 0; i--)
+    {
+        x[i] /= S[i][i];
+
+        for (int j = i - 1; j >= 0; j--) {
+            x[j] -= x[i] * S[j][i];
+        }
+    }
 }
 
 
