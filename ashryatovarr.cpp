@@ -87,6 +87,63 @@ void ashryatovarr::lab3()
  */
 void ashryatovarr::lab4()
 {
+    double **S = new double*[N];
+    for (int i=0; i<N; i++)
+    {
+        S[i]=new double[N];
+        for(int j=0; j<N; j++)
+            S[i][j]=0;
+    }
+    double *D = new double[N];
+    if (A[0][0]>0)
+        D[0]=1;
+    else
+        D[0]=-1;
+    S[0][0]=sqrt(fabs(A[0][0]));
+
+    for (int i=1; i<N; i++)
+    {
+        S[0][i]=A[0][i]/(D[0]*S[0][0]);
+    }
+
+    for (int i=1; i<N; i++)
+    {
+        double temp =0;
+        for (int j=0; j<i; j++)
+            temp+=D[j]*S[j][i]*S[j][i];
+        if (A[i][i]-temp>=0)
+            D[i]=1;
+        else
+            D[i]=-1;
+        S[i][i]=sqrt(D[i]*(A[i][i]-temp));
+
+        for (int j=i+1; j<N; j++)
+        {
+            double l = 0;
+            for (int k=0; k<j; k++)
+                l+=D[k]*S[k][i]*S[k][j];
+
+            S[i][j]=(A[i][j]-l)/(D[i]*S[i][i]);
+        }
+    }
+    double *y = new double[N];
+    y[0]=b[0]/S[0][0];
+    for (int i=1; i<N; i++)
+    {
+        double temp = 0;
+        for (int j=0; j<i; j++)
+            temp+=y[j]*S[j][i];
+        y[i]=(b[i]-temp)/S[i][i];
+    }
+    x[N-1]=y[N-1]/(D[N-1]*S[N-1][N-1]);
+
+    for (int i=N-2; i>=0; i--)
+    {
+        double temp =0;
+        for (int j=i+1; j<N; j++)
+            temp+=x[j]*D[j]*S[i][j];      
+        x[i]=(y[i]-temp)/(D[i]*S[i][i]);
+    }
 
 }
 

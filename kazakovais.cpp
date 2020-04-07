@@ -336,26 +336,257 @@ void kazakovais::lab5()
 
 
 /**
- * Метод Холецкого
+ * Метод минимальных невязок
  */
 void kazakovais::lab6()
 {
+	double eps = 1e-20;
+	double *x1 = new double[N];	//x1 - вспомогательный вектор для решений
+	double *r = new double[N];	//r - вектор невязки
+	double *Ar = new double[N];	//Ar - произведение матрицы A на вектор невязок
+	double Ar2 = 0;
+	double Arr = 0;
+	double t = 0;	//приближение
+	double norma = 0;	//норма
+	int i,j;
 
+	for (i = 0; i < N; i++)
+	{
+		x[i] = b[i];
+		x1[i] = 0;
+		Ar[i] = 0;
+	}
+
+	for (i = 0; i < N; i++)
+	{
+		r[i] = b[i];
+		for (j = 0; j < N; j++)
+		{
+			r[i] -= A[i][j] * x[j];
+		}
+	}
+
+	for (i = 0; i < N; i++)
+	{
+		for (j = 0; j < N; j++)
+		{
+			Ar[i] += A[i][j] * r[j];
+		}
+	}
+
+	for (i = 0; i < N; i++)
+	{
+		Ar2 += Ar[i] * Ar[i];
+		Arr += Ar[i] * r[i];
+	}
+
+	t = -Arr / Ar2;
+
+	for (i = 0; i < N; i++)
+	{
+		x1[i] = x[i] - t * r[i];
+	}
+	
+	norma = abs(x1[0] - x[0]);
+	for (i = 1; i < N; i++)
+	{
+		if ((abs(x1[i] - x[i])) > norma)
+		{
+			norma = abs(x1[i] - x[i]);
+		}
+	}
+
+	while (norma > eps)
+	{
+		for (i = 0; i < N; i++)
+		{
+			x[i] = x1[i];
+			x1[i] = 0;
+			Ar[i] = 0;
+			r[i] = 0;
+		}
+		Ar2 = 0;
+		Arr = 0;
+		t = 0;
+		norma = 0;
+		
+		for (i = 0; i < N; i++)
+		{
+			r[i] = b[i];
+			for (j = 0; j < N; j++)
+			{
+				r[i] -= A[i][j] * x[j];
+			}
+		}
+
+		for (i = 0; i < N; i++)
+		{
+			for (j = 0; j < N; j++)
+			{
+				Ar[i] += A[i][j] * r[j];
+			}
+		}
+
+		for (i = 0; i < N; i++)
+		{
+			Ar2 += Ar[i] * Ar[i];
+			Arr += Ar[i] * r[i];
+		}
+
+		t = -Arr / Ar2;
+
+		for (i = 0; i < N; i++)
+		{
+			x1[i] = x[i] - t * r[i];
+		}
+
+		norma = abs(x1[0] - x[0]);
+		for (i = 1; i < N; i++)
+		{
+			if ((abs(x1[i] - x[i])) > norma)
+			{
+				norma = abs(x1[i] - x[i]);
+			}
+		}
+	}
+
+	for (i = 0; i < N; i++)
+	{
+		x[i] = x1[i];
+	}
+
+	delete[]x1;
+	delete[]r;
+	delete[]Ar;
 }
 
 
-
-/**
- * Метод минимальных невязок
- */
-void kazakovais::lab7()
-{
-
-}
 
 /**
  * Метод сопряженных градиентов
  */
+void kazakovais::lab7()
+{
+	double eps = 1e-24;
+	double *r = new double[N];
+	double *r1 = new double[N];
+	double *z = new double[N];
+	double alpha = 0;
+	double beta = 0;
+	double r0scal = 0;
+	double r1scal = 0;
+	double *Az = new double[N];
+	double Azzscal = 0;
+	double Norma = 0;
+	double norma1 = 0;
+	double norma2 = 0;
+	int i,j;
+
+	for (i = 0; i < N; i++)
+	{
+		x[i] = b[i];
+	}
+
+	for (i = 0; i < N; i++)
+	{
+		r[i] = b[i];
+		for (j = 0; j < N; j++)
+		{
+			r[i] -= A[i][j] * x[j];
+		}
+	}
+
+	for (i = 0; i < N; i++)
+	{
+		z[i] = r[i];
+	}
+
+	for (i = 0; i < N; i++)
+	{
+		r0scal += r[i] * r[i];
+		for (j = 0; j < N; j++)
+		{
+			Az[i] += A[i][j] * z[j];
+		}
+		Azzscal += Az[i] * z[i];
+	}
+	alpha = r0scal / Azzscal;
+	
+	for (i = 0; i < N; i++)
+	{
+		x[i] = x[i] + alpha * z[i];
+		r1[i] = r[i] - alpha * Az[i];
+	}
+
+	for (i = 0; i < N; i++)
+	{
+		r1scal += r1[i] * r1[i];
+	}
+	beta = r1scal / r0scal;
+
+	for (i = 0; i < N; i++)
+	{
+		z[i] = r1[i] + beta * z[i];
+	}
+
+	norma1 = sqrt(r0scal);
+	for (i = 0; i < N; i++)
+	{
+		norma2 += b[i] * b[i];
+	}
+	norma2 = sqrt(norma2);
+	Norma = norma1 / norma2;
+
+	while (Norma >= eps)
+	{
+		alpha = 0;
+		beta = 0;
+		r0scal = r1scal;
+		r1scal = 0;
+		for (i = 0; i < N; i++)
+		{
+			Az[i] = 0;
+			r[i] = r1[i];
+			r1[i] = 0;
+		}
+		Azzscal = 0;
+		norma1 = 0;
+		Norma = 0;
+
+		for (i = 0; i < N; i++)
+		{
+			for (j = 0; j < N; j++)
+			{
+				Az[i] += A[i][j] * z[j];
+			}
+			Azzscal += Az[i] * z[i];
+		}
+		alpha = r0scal / Azzscal;
+
+		for (i = 0; i < N; i++)
+		{
+			x[i] = x[i] + alpha * z[i];
+			r1[i] = r[i] - alpha * Az[i];
+		}
+
+		for (i = 0; i < N; i++)
+		{
+			r1scal += r1[i] * r1[i];
+		}
+		beta = r1scal / r0scal;
+
+		for (i = 0; i < N; i++)
+		{
+			z[i] = r1[i] + beta * z[i];
+		}
+
+		norma1 = sqrt(r0scal);
+		Norma = norma1 / norma2;
+	}
+}
+
+
+
 void kazakovais::lab8()
 {
 

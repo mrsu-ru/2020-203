@@ -91,8 +91,79 @@ x[i] = alfa[i] * x[i + 1] + beta[i];
  */
 void garinma::lab4()
 {
+  double **S = new double*[N];
+    double **ST = new double*[N];
+    double *D = new double[N];
+    for(int i=0; i<N; i++)
+    {
+       S[i] = new double[N];
+       ST[i] = new double[N];
+       D[i]=0;
+       for(int j=0; j<N; j++)
+       {
+           S[i][j]=0;
+       }
+    }
+    //вычисляем D и S
+    for(int i=0; i<N; i++)
+    {
+        double isum = 0;
+        for(int k=0; k<i; k++)
+                isum += std::abs(S[k][i]) * std::abs(S[k][i]) * D[k];
 
+        if((A[i][i] - isum) > 0)
+            D[i] = 1;
+        else
+            D[i] = -1;
+
+        S[i][i] = sqrt(std::abs(A[i][i] - isum));
+
+        for(int j=i+1; j<N; j++)
+        {
+            double sum=0;
+            for(int k=0; k<i; k++)
+                sum += S[k][i] * S[k][j] * D[k];
+            S[i][j] = (A[i][j] - sum) / (S[i][i] * D[i]);
+        }
+    }
+    //транспонируем S
+    for(int i=0; i<N; i++)
+        for(int j=0; j<N; j++)
+            ST[i][j] = S[j][i];
+    //умножаем ST на D
+    for(int i = 0; i < N; i++)
+        for(int j = 0; j < N; j++)
+            ST[i][j] *= D[j];
+    //ST*D * y = b
+    double *y = new double[N];
+    for(int i=0; i<N; i++)
+    {
+        double s=0;
+        for(int j=0; j<i; j++)
+            s += y[j] * ST[i][j];
+        y[i]=(b[i]-s)/ST[i][i];
+    }
+    //S * x = y
+    for(int i=N-1; i>=0; i--)
+    {
+        double s=0;
+        for(int j=i+1; j<N; j++)
+            s += x[j] * S[i][j];
+        x[i]=(y[i] - s)/S[i][i];
+    }
+
+    for(int i=0; i<N; i++)
+    {
+        delete [] S[i];
+        delete [] ST[i];
+    }
+    delete [] S;
+    delete [] ST;
+    delete [] D;
+    delete [] y;
 }
+
+
 
 
 
