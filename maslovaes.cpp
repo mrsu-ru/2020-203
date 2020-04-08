@@ -78,7 +78,54 @@ for(int i=N - 2; i>=0; i--){
  */
 void maslovaes::lab4()
 {
+double *D = new double[N];
+double **S = new double* [N];  
+for (int i=0; i<N; i++){
+	S[i]=new double[N];
+	for(int j=0; j<N; j++)
+		S[i][j]=0;
+}
+if (A[0][0]>0) D[0] = 1;
+else D[0] = -1;
 
+S[0][0]=sqrt(fabs(A[0][0]));
+for (int j = 1; j<N ;j++)
+	S[0][j]=A[0][j]/(D[0]*S[0][0]);
+	
+for (int i=1; i<N; i++){
+	double tmp =0;
+    for (int j=0; j<i; j++){
+		tmp+=D[j]*S[j][i]*S[j][i];
+	}
+	D[i] = copysign(1, A[i][i] - tmp);
+	S[i][i]=sqrt(D[i]*(A[i][i]-tmp));
+	  
+	for (int j=i+1; j<N; j++) {
+		double sum =0;
+		for (int k=0; k<j; k++){
+			sum+=D[k]*S[k][i]*S[k][j];
+	    }	   
+	S[i][j]=(A[i][j]-sum)/(D[i]*S[i][i]);
+	}
+}
+double* y = new double[N];
+y[0]=b[0]/S[0][0];
+for (int i=1; i<N; i++){
+	double tmp =0;
+	for (int j=0; j<i; j++){
+		tmp+=y[j]*S[j][i];
+	}
+		y[i]=(b[i]-tmp)/S[i][i];
+}		
+x[N-1]=y[N-1]/(D[N-1]*S[N-1][N-1]);
+	 
+for (int i=N-2; i>=0; i--){
+		  double tmp =0;
+	for (int j=i+1; j<N; j++){
+		tmp+=x[j]*D[j]*S[i][j];
+	}
+	x[i]=(y[i]-tmp)/(D[i]*S[i][i]);
+}
 }
 
 
