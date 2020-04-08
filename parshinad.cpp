@@ -162,7 +162,50 @@ void parshinad::lab4()
  */
 void parshinad::lab5()
 {
+    double eps = 1e-35;
+    double* z = new double[N];
 
+    for (int i = 0; i < N; i++) {
+		z[i] = b[i];
+        for (int j = 0; j < N; j++) {
+            z[i] -= A[i][j] * x[j];
+        }
+    }
+
+    double norma = 0;
+
+    for (int i = 0; i < N; i++) {
+        norma += z[i] * z[i];
+    }
+
+    while (norma > eps) {
+        for (int i = 0; i < N; i++) {
+            double sum1 = 0;
+            double sum2 = 0;
+            for (int j = 0; j < i; j++) {
+                sum1 += A[i][j] * x[j];
+            }
+
+            for (int j = i + 1; j < N; j++) {
+                sum2 += A[i][j] * x[j];
+            }
+			
+            x[i] = (b[i] - sum1 - sum2) / A[i][i];
+        }
+
+        for (int i = 0; i < N; i++) {
+			z[i] = b[i];
+			for (int j = 0; j < N; j++) {
+				z[i] -= A[i][j] * x[j];
+			}
+		}
+
+        norma = 0;
+
+        for (int i = 0; i < N; i++) {
+            norma += z[i] * z[i];
+        }
+    }
 }
 
 
