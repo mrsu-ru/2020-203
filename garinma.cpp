@@ -173,6 +173,33 @@ void garinma::lab4()
 void garinma::lab5()
 {
 
+    double *new_x = new double[N],
+    eps = 1.e-10;
+    bool c;
+
+  for (int i = 0; i < N; i++)
+        x[i] = 1;
+
+    do
+    {
+        c = false;
+        for (int i = 0; i < N; i++)
+        {
+            new_x[i] = b[i];
+            for (int j = 0; j < N; j++)
+            {
+                if (i == j) continue;
+                new_x[i] -= A[i][j]*x[j];
+            }
+
+            new_x[i] /= A[i][i];
+            if (!c) c = (fabs(new_x[i] - x[i]) > eps);
+            x[i] = new_x[i];
+        }
+
+    }while(c);
+
+    delete[] new_x;
 }
 
 
