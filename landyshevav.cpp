@@ -155,7 +155,39 @@ void landyshevav::lab4()
  */
 void landyshevav::lab5()
 {
+    double eps = 1e-20;
+    for (int i = 0; i < N; i++) {
+        x[i] = 0;
+    }
 
+    double* prev_x = new double[N];
+
+    double norma = 0;
+    do {
+        for (int i = 0; i < N; i++) {
+            prev_x[i] = x[i];
+        }
+
+        for (int i = 0; i < N; i++) {
+            double result = b[i];
+            for (int j = 0; j < N; j++) {
+                if (i != j) {
+                    result -= (A[i][j] * prev_x[j]);
+                }
+            }
+
+            x[i] = result / A[i][i];
+        }
+
+        norma = 0;
+        for (int i = 0; i < N; i++) {
+            if (abs(prev_x[i] - x[i]) > norma) {
+                norma = abs(prev_x[i] - x[i]);
+            }
+        }
+    } while (norma > eps);
+
+    delete[] prev_x;
 }
 
 
