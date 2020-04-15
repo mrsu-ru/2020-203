@@ -122,7 +122,31 @@ delete[] y;
  */
 void simatovvv::lab5()
 {
-
+long double eps = 0.00000001;
+    long double* p = new long double[N];
+	long double norm;
+    for (int i = 0; i < N; i++)
+        x[i] = 0;
+    do {
+		for (int i = 0; i < N; i++)
+        {
+			p[i] = b[i];
+			for (int j = 0; j < N; j++)
+				{
+				    if (i != j)
+                     p[i] -= A[i][j] * x[j];
+				}
+			p[i] /= A[i][i];
+		}
+        norm = fabs(x[0] - p[0]);
+		for (int h = 0; h < N; h++)
+        {
+			if (fabs(x[h] - p[h]) > norm)
+				norm = fabs(x[h] - p[h]);
+			x[h] = p[h];
+		}
+	} while (norm > eps);
+    delete[] p;
 }
 
 
