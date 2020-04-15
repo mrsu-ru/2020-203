@@ -135,7 +135,29 @@ for (int i=N-2; i>=0; i--){
  */
 void maslovaes::lab5()
 {
+double e = 1e-30;
+double *f = new double [N];
+double tmp;
+  do{
+    for(int i = 0; i<N; i++)
+      f[i]=x[i];
 
+    for(int i = 0; i<N; i++){
+      double sum1 = 0, sum2 = 0;
+      for(int j = i + 1; j < N; j++)
+      sum1 += A[i][j]*x[j];
+
+      for(int j = i-1; j>= 0; j--)
+      sum2 += A[i][j]*x[j];
+
+      x[i] = (b[i] - sum1 - sum2)/A[i][i];
+    }
+	tmp = 0;
+	  for (int i = 0; i < N; i++)
+    {
+	    tmp += abs (x[i] - f[i]);
+    }
+  } while (tmp>e);
 }
 
 
