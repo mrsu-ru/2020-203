@@ -1,0 +1,4 @@
+/.idea
+*.o
+/cmake-build-*
+vvm.exe
