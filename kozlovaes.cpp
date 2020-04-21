@@ -201,7 +201,7 @@ void kozlovaes::lab6()
 	do
     {
 		for (int i=0; i<N; i++){
-			TempX[i]=x[i];//первое приближение задаём нулевым
+			TempX[i]=x[i];//первое приближение
 		}
 		
 		double Temp=0;
