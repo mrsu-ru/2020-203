@@ -135,6 +135,7 @@ void kirdyushkindv::lab4()
                 S[i][j]=(A[i][j]-l)/(S[i][i]*D[i]);
             }
         }
+
     double *y = new double[N];
         y[0]=b[0]/S[0][0];
         for (int i=1; i<N; i++)
