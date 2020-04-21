@@ -119,11 +119,70 @@ void golovatyukam::lab3()
 
 
 /**
- * Метод простых итераций
+ * Метод Холецкого
  */
 void golovatyukam::lab4()
 {
+	int n = N;
+	double *D = new double[n];
 
+	if (A[0][0] > 0) D[0] = 1;
+	else D[0] = -1;
+
+
+	double **S = new double*[n];
+	for (int i = 0; i < n; i++) {
+		S[i] = new double[n];
+	}
+	S[0][0] = sqrt(fabs(A[0][0]));
+
+	//s[0][j] - первая строка 
+	for (int j = 1; j < n; j++) 
+		S[0][j] = A[0][j] / (D[0] * S[0][0]);
+	
+
+	for (int i = 1; i < n; i++) {
+		
+		//--------------- find d[i][i] && s[i][i] ------------------------------
+		double sum = 0;
+		for (int k = 0; k < i; k++) {
+			sum += D[k] * pow(S[k][i], 2);
+		}
+		D[i] = copysign(1, A[i][i] - sum);
+		S[i][i] = sqrt(fabs(A[i][i] - sum));
+		
+		
+		//-------------find s[i][j]---------------------------------- 
+		for (int j = i + 1; j < n; j++) {
+			double tmps = 0;
+			for (int k = 0; k < j; k++) {
+				tmps += D[k] * S[k][i] * S[k][j];
+			}
+			S[i][j] = (A[i][j] - tmps) / (D[i] * S[i][i]);
+		}
+
+	}
+
+	double* y = new double[n];
+	y[0] = b[0]/S[0][0];
+
+	for (int i = 1; i < n; i++) {
+    		double sum = 0;
+    		for (int j = 0; j < i; j++) {
+     			 sum += y[j]*S[j][i];
+    		}
+    		y[i] = (b[i] - sum) / S[i][i];
+ 	 }
+
+  x[n-1] = y[n-1]/(S[n-1][n-1]*D[n-1]);
+
+  for(int i = n-2; i>=0; i--){
+    double sum = 0;
+      for(int j = i+1; j<n; j++){
+        sum+=x[j]*D[j]*S[i][j];
+      }
+      x[i] = (y[i] - sum)/(D[i]*S[i][i]);
+  }
 }
 
 
@@ -133,7 +192,30 @@ void golovatyukam::lab4()
  */
 void golovatyukam::lab5()
 {
-
+int n = N;	
+double eps = 1e-69, norma;
+double *y = new double [n];
+  do{
+    for(int i = 0; i<n; i++)
+      y[i]=x[i];
+    
+	norma = 0;
+	
+    for(int i = 0; i<n; i++){
+      double sum1 = 0, sum2 = 0;
+      for(int j = i + 1; j < n; j++)
+      sum1 += A[i][j]*x[j];
+    
+      for(int j = i-1; j>= 0; j--)
+      sum2 += A[i][j]*x[j];
+    
+      x[i] = (b[i] - sum1 - sum2)/A[i][i];
+    }
+  
+    for (int i = 0; i < n; i++){
+      norma += abs(x[i] - y[i]);
+    }
+  } while (norma>eps);
 }
 
 
@@ -143,7 +225,56 @@ void golovatyukam::lab5()
  */
 void golovatyukam::lab6()
 {
+	int n = N;
 
+	double* F = new double[n];
+	double* r = new double[n];
+	double* alfa = new double[n];
+	double a, norma, k = 0;
+	double eps = 1e-19;
+
+	do {
+		//r  - вектор невязки, F - функционал 
+		for (int i = 0; i < n; i++) {
+			double tmp = 0;
+			for (int j = 0; j < n; j++) {
+				tmp += A[i][j] * x[j];
+			}
+			r[i] = tmp - b[i];
+			F[i] = 2 * r[i];
+		}
+		//alfa
+		double* Ar = new double[n];
+		for (int i = 0; i < n; i++) {
+			double tmps = 0;
+			for (int j = 0; j < n; j++) {
+				tmps += A[i][j] * r[j];
+			}
+			Ar[i] = tmps;
+		}
+		double ts1 = 0, ts2 = 0;
+		for (int i = 0; i < n; i++) {
+			ts1 += abs(Ar[i] * r[i]);
+			ts2 += abs(Ar[i] * Ar[i]);
+		}
+		a = ts1 / (2 * ts2);
+
+		//x[k+1]
+		double*y = new double[n];
+		for (int i = 0; i < n; i++) {
+			y[i] = x[i];
+		}
+		for (int i = 0; i < n; i++) {
+			x[i] = x[i] - a * F[i];
+		}
+
+		norma = 0;
+		for (int i = 0; i < n; i++) {
+			norma += (y[i] - x[i])*(y[i] - x[i]);
+		}
+		//cout << k++ << " " << norma << endl;
+
+	} while (sqrt(norma) > eps);
 }
 
 
@@ -154,6 +285,117 @@ void golovatyukam::lab6()
 void golovatyukam::lab7()
 {
 
+  int n = N;
+  double* r = new double[n];
+  double* r0 = new double[n];
+  double  eps = 1e-21, norma_b, norma;
+  double* Az = new double[n];
+  double* z = new double[n];
+
+  //for(int i = 0; i<n; i++)
+  //x[i] = b[i];
+
+  for(int i = 0; i<n; i++)
+  norma_b += b[i]*b[i]; 
+
+  //r0 = (Ах0 - b)
+  for (int i = 0; i< n; i++){
+    double tmp=0;
+    for(int j = 0; j< n; j++){
+      tmp +=A[i][j]*x[j]; 
+    }
+    r[i] = b[i] - tmp;
+    z[i] = r[i];
+  }
+
+  double alfa, betta;
+  //Az
+  for (int i = 0; i< n; i++){
+    double tmp=0;
+    for(int j = 0; j< n; j++){
+      tmp +=A[i][j]*z[j]; 
+    }
+    Az[i] = tmp;
+  }
+  //alfa
+  double ts1 = 0, ts2 = 0;
+    for (int i = 0; i<n; i++){
+      ts1 += abs(r[i]*r[i]);
+      ts2 += abs(Az[i]*z[i]); 
+    }
+  alfa = ts1/ts2;
+
+  //запоминаем r[i]
+  for(int i=0; i<n; i++){
+    r0[i] = r[i];
+  }
+
+  for(int i=0; i<n; i++){
+    x[i] = x[i] + alfa*z[i];
+    r[i] = r[i] - alfa*Az[i];
+  }
+
+   for (int i = 0; i<n; i++){
+      ts1 += abs(r[i]*r[i]);
+      ts2 += abs(r0[i]*r0[i]); //abs(As[i]*r[i])
+    }
+  betta = ts1/ts2;
+
+  for(int i = 0; i<n; i++){
+    z[i] = r[i] + betta*z[i];
+  }
+  double tr = 0;
+  for(int i = 0; i<n; i++){
+    tr +=r[i]*r[i];
+  }
+
+  norma = sqrt(tr/norma_b);
+
+do{
+  //Az
+  for (int i = 0; i< n; i++){
+    double tmp=0;
+    for(int j = 0; j< n; j++){
+      tmp +=A[i][j]*z[j]; 
+    }
+    Az[i] = tmp;
+  }
+  //tao / alfa
+  double ts1 = 0, ts2 = 0;
+    for (int i = 0; i<n; i++){
+      ts1 += abs(r[i]*r[i]);
+      ts2 += abs(Az[i]*z[i]); //abs(As[i]*r[i])
+    }
+  alfa = ts1/ts2;
+
+  //запоминаем r[i]
+  for(int i=0; i<n; i++){
+    r0[i] = r[i];
+  }
+
+  for(int i=0; i<n; i++){
+    x[i] = x[i] + alfa*z[i];
+    r[i] = r[i] - alfa*Az[i];
+  }
+
+   for (int i = 0; i<n; i++){
+      ts1 += abs(r[i]*r[i]);
+      ts2 += abs(r0[i]*r0[i]); //abs(As[i]*r[i])
+    }
+  betta = ts1/ts2;
+
+  for(int i = 0; i<n; i++){
+    z[i] = r[i] + betta*z[i];
+  }
+  double tr = 0;
+  for(int i = 0; i<n; i++){
+    tr +=r[i]*r[i];
+  }
+
+  norma = sqrt(tr/norma_b);
+
+}while(norma>=eps);
+ 
 }
 
 

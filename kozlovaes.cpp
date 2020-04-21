@@ -39,9 +39,9 @@ void kozlovaes::lab2()
 			A[j][i] = 0;
 		}
 	}
-	
+	double s;
 	for (int i = N - 1; i > 0; i--) {
-		double s = 0;
+		s = 0;
 		for (int j = i ; j < N; j++) {
 			s += b[j] * A[i - 1][j];
 			A[i - 1][j] = 0;
@@ -64,7 +64,7 @@ void kozlovaes::lab3()
 	double *betta = new double[N];
 	int i;
 	alfa[0] = A[0][1]/-A[0][0];
-	betta[0] = -b[0]/-A[0][0];
+	betta[0] = b[0]/A[0][0];
  
 
 	for(i = 1;i < N;i++){
@@ -82,11 +82,74 @@ void kozlovaes::lab3()
 
 
 /**
- * Метод простых итераций
+ * Метод Холецкого
  */
 void kozlovaes::lab4()
 {
+double* d=new double[N];
+double** S = new double*[N];
+for (int i = 0; i < N; i++) { 
+S[i] = new double[N];
+}
 
+if(A[0][0]>0) d[0]=1;
+else d[0]=-1;
+S[0][0]=sqrt(abs(A[0][0]));
+
+for(int i=1;i<N;i++){
+S[0][i]=A[0][i]/(S[0][0]*d[0]);
+}
+
+///////Вычисление матрицы S
+double sumd=0;
+for(int i=1; i < N; i++){
+for(int k=0;k<i;k++){
+sumd += pow(S[k][i],2)*d[k];
+}
+if((A[i][i]-sumd)>0){
+	d[i]=1;
+} 
+else{
+	d[i]=-1;
+}
+S[i][i]=sqrt(d[i]*(A[i][i]-sumd));
+sumd=0;
+double sumS=0;
+for(int j=i+1;j < N;j++){
+for(int k=0;k<j;k++){
+sumS +=d[k]*S[k][i]*S[k][j];
+}
+S[i][j]=(A[i][j]-sumS)/(d[i]*S[i][i]);
+sumS=0;
+}
+}
+
+///////Решение уравнения S^t*y=b
+
+double* y=new double [N];
+y[0]=b[0]/S[0][0];
+
+double sumS=0;
+for(int i=1;i<N;i++){
+for(int j=0;j<i;j++){
+sumS +=S[j][i]*y[j];
+}
+y[i]=(b[i]-sumS)/S[i][i];
+sumS=0;
+}
+
+////////Решение уравнения (SD)*x=y
+
+x[N-1]=y[N-1]/(S[N-1][N-1]*d[N-1]);
+
+double sumSDx=0;
+for(int i=N-2;i>=0;i--){
+for(int k=i+1;k<N;k++){
+sumSDx +=S[i][k]*x[k];
+}
+x[i]=(y[i]-sumSDx)/(S[i][i]*d[i]);
+sumSDx=0;
+}
 }
 
 
@@ -96,6 +159,28 @@ void kozlovaes::lab4()
  */
 void kozlovaes::lab5()
 {
+double *f = new double[N];
+double eps = 1.e-30;
+double norm =0;
+
+do{
+	for(int i=0;i<N;i++){
+	f[i]=x[i];
+	}
+	
+	for(int i=0;i<N;i++){
+		double sum1=0,sum2=0;
+		for(int j=0;j<i;j++) sum1+=A[i][j]*x[j];	
+		for(int j=i+1;j<N;j++) sum2+=A[i][j]*x[j];
+		x[i]=(b[i]-sum1-sum2)/A[i][i];
+	}
+	
+norm=0;
+for(int i=0;i<N;i++){
+	if(abs(x[i]-f[i])>norm)	norm=abs(x[i]-f[i]);
+}
+
+}while(norm>eps);
 
 }
 
@@ -106,7 +191,59 @@ void kozlovaes::lab5()
  */
 void kozlovaes::lab6()
 {
-
+    double eps = 1.e-20;
+    double *r0 = new double [N];
+    double *Fi = new double [N];
+	double *Ar0 = new double [N];
+    double *TempX = new double[N];
+    double a, norma=0, u=0, Tu=0;
+	
+	do
+    {
+		for (int i=0; i<N; i++){
+			TempX[i]=x[i];//первое приближение
+		}
+		
+		double Temp=0;
+        for(int i=0; i<N; i++)
+        {
+			Temp=0;
+			for(int j=0; j<N; j++){
+				Temp+= A[i][j]*TempX[j];
+			}
+			r0[i]=Temp-b[i];//Вектор невязок
+			Fi[i]=2*r0[i];
+        }
+		
+		Temp=0;
+        for(int i=0; i<N; i++)
+        {
+			for(int j=0; j<N; j++){
+				Temp+= A[i][j]*r0[j];
+			}
+			Ar0[i]=Temp;
+		}
+		
+        u=0.0; 
+        Tu=0.0;
+        for(int i=0; i<N; i++)
+        {
+            u+=abs(Ar0[i]*r0[i]);
+            Tu+=abs(Ar0[i]*Ar0[i]);
+        } 
+		
+        a=u/(2*Tu); 
+        for(int i=0; i<N; i++){
+			x[i]=TempX[i]-a*Fi[i];
+		}
+		
+        norma=0;
+        for(int i=0; i<N; i++)
+        {
+            norma+=(TempX[i]-x[i]);
+        }
+		
+    }while (norma>eps);
 }
 
 

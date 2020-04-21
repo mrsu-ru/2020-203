@@ -94,11 +94,72 @@ void guskovas::lab3()//N, A, b, x
 
 
 /**
- * Метод простых итераций
+ * Метод Холецкого
  */
 void guskovas::lab4()
 {
+	double **S = new double* [N];  
+		for (int i = 0; i < N; ++i) S[i] = new double[N];
+		S[0][0] = sqrt( fabs(A[0][0]) );
+    double n; //
+    double *y = new double[N];
+    double *D = new double[N];
+    	A[0][0] > 0 ?
+		D[0] = 1
+		:
+		D[0] = -1;
 
+
+    for (int i = 1; i < N; ++i) S[0][i] = A[0][i] / ( D[0]*S[0][0] );
+  
+	    for (int i = 1; i < N; ++i){
+	    	n = 0;
+	    	for (int j=0; j<i; j++) n += D[j] * S[j][i] * S[j][i];
+
+		    A[i][i] - n >= 0 ?
+				D[i] = 1
+		  		:
+				D[i] = -1;
+
+		S[i][i] = sqrt( D[i]*(A[i][i] - n) );
+		  
+	    for (int j= i+1; j < N; ++j) {
+	    	double l = 0;
+		    for (int k = 0; k < j; ++k) l += D[k] * S[k][i] * S[k][j];
+
+		    S[i][j] = 
+		    ( A[i][j]-l )
+		    / 
+		    ( D[i]*S[i][i] );
+		}
+
+	}
+		  
+	
+	for (int i = 0; i < N; ++i){
+		n=0;
+		if(i == 0){
+			y[0] = b[0] / S[0][0];
+			++i;
+		}
+
+		for (int j=0; j < i; ++j){
+			n += y[j]*S[j][i];
+		}
+		y[i] = (b[i] - n) / S[i][i];
+	}
+
+	x[N-1] = y[N-1] / (D[N-1] * S[N-1][N-1]);
+	 
+	for (int i = N-2; i >= 0; --i){
+		n = 0;
+		for (int j = i+1; j < N; ++j) n += x[j] * D[j] * S[i][j];
+		
+		x[i]=
+		(y[i] - n)
+		/
+		( D[i]*S[i][i] );
+	}	  
 }
 
 
@@ -144,6 +205,37 @@ void guskovas::lab5()//якоби
  */
 void guskovas::lab6()
 {
+
+	double *prevX = new double[N];
+	double *y = new double[N];
+	double tau = 0.0, err = 0.0, Ay = 0.0, denom = 0.0;
+
+	do{
+
+		for (int i = 0; i < N; i++) {
+			y[i] = b[i];
+			for (int j = 0; j < N; j++) y[i] -= A[i][j] * prevX[j]; //y^n
+		}
+
+		tau = 0.0; denom = 0.0;
+
+		for (int i = 0; i < N; i++) {
+			Ay = 0.0;
+
+			for (int j = 0; j < N; j++) Ay += A[i][j] * y[j];
+
+			tau += Ay * y[i]; denom += Ay * Ay;
+		}
+		tau /= denom; //t^n
+
+		for (int i = 0; i < N; i++) x[i] = prevX[i] + (tau * y[i]);
+		
+		err = 0.0;
+		for (int i = 0; i < N; i++) if (abs(x[i] - prevX[i]) > err) err = abs(x[i] - prevX[i]);
+			
+		for (int i = 0; i < N; i++) prevX[i] = x[i];
+	}
+	while(err > 1e-20);
 
 }
 

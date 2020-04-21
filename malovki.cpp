@@ -98,11 +98,56 @@ void malovki::lab3()
 
 
 /**
- * Метод простых итераций
+ * Метод Холецкого
  */
 void malovki::lab4()
 {
-
+	double** S = new double* [N];
+	for (int i = 0; i < N; i++) {
+		S[i] = new double[N];
+		for(int j = 0; j < N; j++)
+			S[i][j] = 0;
+	}
+	int* D = new int[N];
+	for (int i = 0; i < N; i++)
+		D[i] = 0;
+	double temp;
+	for(int i = 0; i < N; i++){
+		temp = A[i][i];
+		for (int j = 0; j < i; j++)
+			temp -= D[j] * S[j][i] * S[j][i];
+		D[i] = (temp > 0)? 1: -1;
+		S[i][i] = sqrt(D[i] * temp);
+		double nakSum;
+		for (int j = i + 1; j < N; j++) {
+			nakSum = 0;
+			for (int k = 0; k < j; k++) 
+				nakSum += D[k] * S[k][i] * S[k][j];
+			S[i][j] = (A[i][j] - nakSum) / (D[i] * S[i][i]);
+		}
+	}
+	double* y = new double[N];
+	for (int i = 0; i < N; i++) {
+		b[i] /= S[i][i];
+		y[i] = b[i];
+		for (int j = i + 1; j < N; j++)
+			b[j] -= b[i] * S[i][j];
+	}
+	for (int i = 0; i < N; i++)
+		for (int j = 0; j < N; j++)
+			S[i][j] *= D[i];
+	for (int i = N - 1; i >= 0; i--) {
+		y[i] /= S[i][i];
+		x[i] = y[i];
+		for(int j = i - 1; j >= 0; j--)
+			y[j] -= y[i] * S[j][i];
+	}
+	
+	for (int i = 0; i < N; i++)
+		delete[]S[i];
+	delete[]S;
+	delete[]D;
+	delete[]y;
 }
 
 
@@ -112,7 +157,36 @@ void malovki::lab4()
  */
 void malovki::lab5()
 {
-
+        const double eps = 1e-18;
+	double sum = 0;
+	double* xx = new double[N]; //вектор приближённых решений
+	for (int i = 0; i < N; i++)
+	{
+		xx[i] = x[i];
+	}
+	while (true) 
+	{
+		label:
+		for (int i = 0; i < N; i++)
+		{
+			sum = 0;
+			for (int j = 0; j < i; j++)
+				sum += A[i][j] * x[j];
+			for (int j = i + 1; j < N; j++)
+				sum += A[i][j] * xx[j];
+			x[i] = (b[i] - sum)/A[i][i];
+		}
+		for (int i = 0; i < N; i++)
+		{
+			if (fabs(x[i] - xx[i]) > eps)
+			{
+				for (int k = 0; k < N; k++)
+					xx[i] = x[i];
+				goto label;
+			}
+		}
+		break;
+	}
 }
 
 

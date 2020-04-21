@@ -94,11 +94,67 @@ double alpha[N-1], beta[N];
 
 
 /**
- * Метод простых итераций
+ * Метод Холецкого
  */
 void kirdyushkindv::lab4()
 {
+    double **S = new double*[N];
+        for (int i=0; i<N; i++)
+        {
+            S[i]=new double[N];
+            for(int j=0; j<N; j++)
+                S[i][j]=0;
+        }
+    double *D = new double[N];
+        if (A[0][0]>0)    D[0]=1;
+        else              D[0]=-1;
 
+        S[0][0]=sqrt(fabs(A[0][0]));
+
+        for (int i=1; i<N; i++)
+        {
+            S[0][i]=A[0][i]/(S[0][0]*D[0]);
+        }
+
+        for (int i=1; i<N; i++)
+        {
+            double sum =0;
+            for (int j=0; j<i; j++)
+                sum+=S[j][i]*S[j][i]*D[j];
+            if (A[i][i]-sum>=0)    D[i]=1;
+            else                    D[i]=-1;
+
+            S[i][i]=sqrt((A[i][i]-sum)*D[i]);
+
+            for (int j=i+1; j<N; j++)
+            {
+                double l = 0;
+                for (int k=0; k<j; k++)
+                    l+=S[k][i]*S[k][j]*D[k];
+
+                S[i][j]=(A[i][j]-l)/(S[i][i]*D[i]);
+            }
+        }
+
+    double *y = new double[N];
+        y[0]=b[0]/S[0][0];
+        for (int i=1; i<N; i++)
+        {
+            double sum = 0;
+            for (int j=0; j<i; j++)
+                sum+=y[j]*S[j][i];
+            y[i]=(b[i]-sum)/S[i][i];
+        }
+
+        x[N-1]=y[N-1]/(S[N-1][N-1]*D[N-1]);
+
+        for (int i=N-2; i>=0; i--)
+        {
+            double sum =0;
+            for (int j=i+1; j<N; j++)
+                sum+=x[j]*S[i][j]*D[j];
+            x[i]=(y[i]-sum)/(S[i][i]*D[i]);
+        }
 }
 
 
@@ -108,8 +164,40 @@ void kirdyushkindv::lab4()
  */
 void kirdyushkindv::lab5()
 {
+    double eps = 1e-20;
+	double *prev_x = new double[N];
+	double norm = 0;
 
+	for (int i = 0; i < N; i++) {
+		x[i] = 0;
+	}
+
+	do {
+		for (int i = 0; i < N; i++)
+			prev_x[i] = x[i];
+
+		for (int i = 0; i < N; i++) {
+			double result = b[i];
+			for (int j = 0; j < N; j++) {
+				if (i != j) {
+					result -= (A[i][j] * prev_x[j]);
+				}
+			}
+
+			x[i] = result / A[i][i];
+		}
+
+		norm = 0;
+		for (int i = 0; i < N; i++) {
+			if (abs(prev_x[i] - x[i]) > norm) {
+				norm = abs(prev_x[i] - x[i]);
+			}
+		}
+	} while (norm > eps);
+
+	delete[] prev_x;
 }
+
 
 
 
