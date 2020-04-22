@@ -196,7 +196,43 @@ void malovki::lab5()
  */
 void malovki::lab6()
 {
+	const double eps = 1e-20;
+	double* r = new double[N];//вектор невязок
+	double rNorm = 0; //норма вектора невязок
+	double* Ar = new double[N]; //произведение матрицы A на вектор невязок
+	double ArNorm = 0; 
+	double tau = 0; //итерационный параметр
+	
+	do{
+		for (int i = 0; i < N; i++)
+			r[i] = -b[i];
+		for (int i = 0; i < N; i++)
+			for (int j = 0; j < N; j++)
+				r[i] += A[i][j] * x[j];
 
+		for (int i = 0; i < N; i++)
+			Ar[i] = 0;
+		for (int i = 0; i < N; i++)
+			for (int j = 0; j < N; j++)
+				Ar[i] += A[i][j] * r[j];
+
+		ArNorm = 0;
+		for (int i = 0; i < N; i++)
+			ArNorm += Ar[i] * Ar[i];
+
+		tau = 0;
+		for (int i = 0; i < N; i++)
+			tau += Ar[i] * r[i];
+		tau /= ArNorm;
+
+		rNorm = 0;
+		for (int i = 0; i < N; i++)
+			rNorm += r[i] * r[i];
+
+		for (int i = 0; i < N; i++)
+			x[i] = x[i] - tau * r[i];
+
+	} while (rNorm > eps);
 }
 
 
