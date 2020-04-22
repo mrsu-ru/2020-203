@@ -216,7 +216,7 @@ void loginovvv::lab6()
 		tau/=Ar_norm;
 
 		for(int i=0; i<N; i++)
-			x[i]-=tau*r[i];
+			x[i] = y[i] - tau * r[i];
 
 		norma = 0;
     	for (int i = 0; i < N; i++) 
