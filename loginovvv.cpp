@@ -208,7 +208,7 @@ void loginovvv::lab6()
 		for (int i = 0; i < N; i++) {
 			double Ar=0;	
         	for (int j = 0; j < N; j++)
-            	Ar= A[i][j] * r[j];
+            	Ar += A[i][j] * r[j];
 
 			tau+= Ar*r[i];
 			Ar_norm+=Ar*Ar;
