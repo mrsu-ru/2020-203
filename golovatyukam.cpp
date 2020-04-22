@@ -285,6 +285,117 @@ void golovatyukam::lab6()
 void golovatyukam::lab7()
 {
 
+  int n = N;
+  double* r = new double[n];
+  double* r0 = new double[n];
+  double  eps = 1e-21, norma_b, norma;
+  double* Az = new double[n];
+  double* z = new double[n];
+
+  //for(int i = 0; i<n; i++)
+  //x[i] = b[i];
+
+  for(int i = 0; i<n; i++)
+  norma_b += b[i]*b[i]; 
+
+  //r0 = (Ах0 - b)
+  for (int i = 0; i< n; i++){
+    double tmp=0;
+    for(int j = 0; j< n; j++){
+      tmp +=A[i][j]*x[j]; 
+    }
+    r[i] = b[i] - tmp;
+    z[i] = r[i];
+  }
+
+  double alfa, betta;
+  //Az
+  for (int i = 0; i< n; i++){
+    double tmp=0;
+    for(int j = 0; j< n; j++){
+      tmp +=A[i][j]*z[j]; 
+    }
+    Az[i] = tmp;
+  }
+  //alfa
+  double ts1 = 0, ts2 = 0;
+    for (int i = 0; i<n; i++){
+      ts1 += abs(r[i]*r[i]);
+      ts2 += abs(Az[i]*z[i]); 
+    }
+  alfa = ts1/ts2;
+
+  //запоминаем r[i]
+  for(int i=0; i<n; i++){
+    r0[i] = r[i];
+  }
+
+  for(int i=0; i<n; i++){
+    x[i] = x[i] + alfa*z[i];
+    r[i] = r[i] - alfa*Az[i];
+  }
+
+   for (int i = 0; i<n; i++){
+      ts1 += abs(r[i]*r[i]);
+      ts2 += abs(r0[i]*r0[i]); //abs(As[i]*r[i])
+    }
+  betta = ts1/ts2;
+
+  for(int i = 0; i<n; i++){
+    z[i] = r[i] + betta*z[i];
+  }
+  double tr = 0;
+  for(int i = 0; i<n; i++){
+    tr +=r[i]*r[i];
+  }
+
+  norma = sqrt(tr/norma_b);
+
+do{
+  //Az
+  for (int i = 0; i< n; i++){
+    double tmp=0;
+    for(int j = 0; j< n; j++){
+      tmp +=A[i][j]*z[j]; 
+    }
+    Az[i] = tmp;
+  }
+  //tao / alfa
+  double ts1 = 0, ts2 = 0;
+    for (int i = 0; i<n; i++){
+      ts1 += abs(r[i]*r[i]);
+      ts2 += abs(Az[i]*z[i]); //abs(As[i]*r[i])
+    }
+  alfa = ts1/ts2;
+
+  //запоминаем r[i]
+  for(int i=0; i<n; i++){
+    r0[i] = r[i];
+  }
+
+  for(int i=0; i<n; i++){
+    x[i] = x[i] + alfa*z[i];
+    r[i] = r[i] - alfa*Az[i];
+  }
+
+   for (int i = 0; i<n; i++){
+      ts1 += abs(r[i]*r[i]);
+      ts2 += abs(r0[i]*r0[i]); //abs(As[i]*r[i])
+    }
+  betta = ts1/ts2;
+
+  for(int i = 0; i<n; i++){
+    z[i] = r[i] + betta*z[i];
+  }
+  double tr = 0;
+  for(int i = 0; i<n; i++){
+    tr +=r[i]*r[i];
+  }
+
+  norma = sqrt(tr/norma_b);
+
+}while(norma>=eps);
+ 
 }
 
 

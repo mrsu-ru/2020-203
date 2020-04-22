@@ -225,7 +225,52 @@ void puzinva::lab5()
  */
 void puzinva::lab6()
 {
-
+	double eps = 1e-20; 
+	double err;
+    double Ax;
+	double Ar[N];
+    double r0[N];
+    double tau;
+	double xprev;
+    double sum1;
+	double sum2;
+	
+    do {
+        for (int i = 0; i < N; i++) {
+            Ax = 0;
+            for (int j = 0; j < N; j++) {
+                Ax += A[i][j] * x[j];
+            }
+            r0[i] = b[i] - Ax;
+        }
+		
+        for (int i = 0; i < N; i++) {
+            Ar[i] = 0;
+            for (int j = 0; j < N; j++) {
+                Ar[i] += A[i][j] * r0[j];
+            }
+        }
+		
+        sum1 = 0;
+		sum2 = 0;
+		
+        for (int i = 0; i < N; i++) {
+            sum1 += r0[i] * Ar[i];
+            sum2 += Ar[i] * Ar[i];
+        }
+		
+        tau = sum1 / sum2;
+        err = 0;
+		
+        for (int i = 0; i < N; i++) {
+            xprev = x[i];
+            x[i] += tau * r0[i];
+            if (abs(x[i] - xprev) > err) {
+                err = abs(x[i] - xprev);
+            }
+        }
+		
+    } while (err > eps);
 }
 
 
@@ -235,7 +280,65 @@ void puzinva::lab6()
  */
 void puzinva::lab7()
 {
+	double const eps = 1e-10;
+    double r0[N];
+    double z0[N];
+    double Az[N];
+    double err;
 
+    for (int i = 0; i < N; i++) {
+        double Ax = 0;
+        for (int j = 0; j < N; j++) {
+            Ax += A[i][j] * x[j];
+        }
+
+        r0[i] = b[i] - Ax;
+        z0[i] = r0[i];
+    }
+
+    do {
+        for (int i = 0; i < N; i++) {
+            Az[i] = 0;
+            for (int j = 0; j < N; j++) {
+                Az[i] += A[i][j] * z0[j];
+            }
+        }
+
+        double sum1 = 0; 
+        double sum2 = 0;
+
+        for (int i = 0; i < N; i++) {
+            sum1 += r0[i] * r0[i];
+            sum2 += Az[i] * z0[i];
+        }
+
+        double alpha = sum1 / sum2;
+        err = 0;
+
+        for (int i = 0; i < N; i++) {
+            double temp = x[i];
+            x[i] = x[i] + alpha * z0[i];
+            if (abs(temp - x[i]) > err) {
+                err = abs(temp - x[i]);
+            } 
+        }
+
+        sum1 = 0; 
+        sum2 = 0;
+
+        for (int i = 0; i < N; i++) {
+            sum2 += r0[i] * r0[i];
+            r0[i] = r0[i] - alpha * Az[i];
+           
+            sum1 += r0[i] * r0[i];
+        }
+
+        double beta = sum1 / sum2;
+
+        for (int i = 0; i < N; i++) {
+            z0[i] = r0[i] + beta * z0[i];
+        }
+    } while (err > eps);
 }
 
 
