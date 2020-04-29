@@ -156,7 +156,36 @@ long double eps = 0.00000001;
  */
 void simatovvv::lab6()
 {
+double *prevX = new double[N];
+	double *y = new double[N];
+	double tau = 0.0, err = 0.0, Ay = 0.0, denom = 0.0;
 
+	do{
+
+		for (int i = 0; i < N; i++) {
+			y[i] = b[i];
+			for (int j = 0; j < N; j++) y[i] -= A[i][j] * prevX[j]; 
+		}
+
+		tau = 0.0; denom = 0.0;
+
+		for (int i = 0; i < N; i++) {
+			Ay = 0.0;
+
+			for (int j = 0; j < N; j++) Ay += A[i][j] * y[j];
+
+			tau += Ay * y[i]; denom += Ay * Ay;
+		}
+		tau /= denom; 
+
+		for (int i = 0; i < N; i++) x[i] = prevX[i] + (tau * y[i]);
+		
+		err = 0.0;
+		for (int i = 0; i < N; i++) if (abs(x[i] - prevX[i]) > err) err = abs(x[i] - prevX[i]);
+			
+		for (int i = 0; i < N; i++) prevX[i] = x[i];
+	}
+	while(err > 1e-20);
 }
 
 
