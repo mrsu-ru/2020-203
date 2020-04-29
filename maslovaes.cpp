@@ -169,7 +169,7 @@ void maslovaes::lab6()
 {
 double* F = new double[N];
 double* r = new double[N];
-double norma, eps = 1e-20;
+double norma, eps = 1e-15;
 
 do {
 	for (int i = 0; i < N; i++) {
