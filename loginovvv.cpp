@@ -186,7 +186,43 @@ void loginovvv::lab5()
  */
 void loginovvv::lab6()
 {
-	
+	const double eps = 1e-20;
+	double *r = new double[N]; 
+	double *y = new double[N];
+	double norma;
+
+	do{
+		for (int i = 0; i < N; i++) 
+			y[i] = x[i];
+			
+		//вычисляем невязку
+		for(int i=0; i<N; i++){
+			r[i]=-b[i];
+			for(int j=0; j<N; j++)
+				r[i]+=A[i][j]*x[j];
+		}
+
+		//найдем итерационный параметр
+		double tau=0;
+		double Ar_norm=0;
+		for (int i = 0; i < N; i++) {
+			double Ar=0;	
+        	for (int j = 0; j < N; j++)
+            	Ar += A[i][j] * r[j];
+
+			tau+= Ar*r[i];
+			Ar_norm+=Ar*Ar;
+		}
+		tau/=Ar_norm;
+
+		for(int i=0; i<N; i++)
+			x[i] = y[i] - tau * r[i];
+
+		norma = 0;
+    	for (int i = 0; i < N; i++) 
+			if (abs(y[i] - x[i]) > norma)
+				norma = abs(y[i] - x[i]);
+	}	while(norma>eps);
 }
 
 
