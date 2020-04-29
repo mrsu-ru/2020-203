@@ -206,7 +206,41 @@ void kirdyushkindv::lab5()
  */
 void kirdyushkindv::lab6()
 {
-
+    double eps = 1e-19;
+    double err;
+    double Ax, Ay[N];
+    double y0[N];
+    double t, x_prev;
+    double sum1, sum2;
+    do{
+        for (int i=0; i<N; i++){
+            Ax=0;
+            for (int j=0; j<N; j++){
+                Ax+=A[i][j]*x[j];
+            }
+            y0[i]=b[i]-Ax;
+        }
+        for (int i=0; i<N; i++){
+            Ay[i]=0;
+            for (int j=0; j<N; j++){
+                Ay[i]+=A[i][j]*y0[j];
+            }
+        }
+        sum1=0; sum2=0;
+        for (int i=0; i<N; i++){
+            sum1+=y0[i]*Ay[i];
+            sum2+=Ay[i]*Ay[i];
+        }
+        t=sum1/sum2;
+        err=0;
+        for(int i=0; i<N; i++){
+            x_prev=x[i];
+            x[i]+=t*y0[i];
+            if (abs(x[i]-x_prev)>err){
+                err=abs(x[i]-x_prev);
+            }
+        }
+    }while (err>eps);
 }
 
 
