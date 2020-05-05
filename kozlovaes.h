@@ -1,8 +1,7 @@
 #pragma once
 #include "lab.h"
 
-
-class zhalninrv : public lab
+class kozlovaes : public lab
 {
   /**
    * Метод Гаусса
@@ -13,11 +12,11 @@ class zhalninrv : public lab
    */
   virtual void lab2();
   /**
-   * Метод квадратного корня (метод Холецкого)
+   * Метод прогонки
    */
   virtual void lab3();
   /**
-   * Метод прогонки
+   * Метод квадратного корня (метод Холецкого)
    */
   virtual void lab4();
   /**

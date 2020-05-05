@@ -62,19 +62,104 @@ void guskovas::lab2()//int n, int m, double e, double** arr, double* x) {
 /**
  * Метод прогонки
  */
-void guskovas::lab3()
+void guskovas::lab3()//N, A, b, x
 {
+	double *ALFA = new double[N];
+	double *BETA = new double[N];
 
+	// ТУДА
+	//	находим ALFA и BETA
+	ALFA[0] = -A[0][1] / A[0][0];
+	BETA[0] = b[0] / A[0][0];
+	for (int i = 1; i < N; i++) {
+		ALFA[i] = -A[i][i + 1] 
+					/ 
+					(
+						A[i][i] + 
+						A[i][i - 1] * ALFA[i - 1]
+					);
+		BETA[i] =   (b[i] - A[i][i - 1] * BETA[i - 1]) 
+					/ 
+					(A[i][i] + A[i][i - 1] * ALFA[i - 1]);
+	}
+
+	// Обратная прогонка
+	//после общего вида формул подставляем иксы 
+	x[N - 1] = BETA[N - 1];
+	for (int i = N - 2; i >= 0; i--) {
+		x[i] = ALFA[i] * x[i + 1] + BETA[i];
+	}
 }
 
 
 
 /**
- * Метод простых итераций
+ * Метод Холецкого
  */
 void guskovas::lab4()
 {
+	double **S = new double* [N];  
+		for (int i = 0; i < N; ++i) S[i] = new double[N];
+		S[0][0] = sqrt( fabs(A[0][0]) );
+    double n; //
+    double *y = new double[N];
+    double *D = new double[N];
+    	A[0][0] > 0 ?
+		D[0] = 1
+		:
+		D[0] = -1;
 
+
+    for (int i = 1; i < N; ++i) S[0][i] = A[0][i] / ( D[0]*S[0][0] );
+  
+	    for (int i = 1; i < N; ++i){
+	    	n = 0;
+	    	for (int j=0; j<i; j++) n += D[j] * S[j][i] * S[j][i];
+
+		    A[i][i] - n >= 0 ?
+				D[i] = 1
+		  		:
+				D[i] = -1;
+
+		S[i][i] = sqrt( D[i]*(A[i][i] - n) );
+		  
+	    for (int j= i+1; j < N; ++j) {
+	    	double l = 0;
+		    for (int k = 0; k < j; ++k) l += D[k] * S[k][i] * S[k][j];
+
+		    S[i][j] = 
+		    ( A[i][j]-l )
+		    / 
+		    ( D[i]*S[i][i] );
+		}
+
+	}
+		  
+	
+	for (int i = 0; i < N; ++i){
+		n=0;
+		if(i == 0){
+			y[0] = b[0] / S[0][0];
+			++i;
+		}
+
+		for (int j=0; j < i; ++j){
+			n += y[j]*S[j][i];
+		}
+		y[i] = (b[i] - n) / S[i][i];
+	}
+
+	x[N-1] = y[N-1] / (D[N-1] * S[N-1][N-1]);
+	 
+	for (int i = N-2; i >= 0; --i){
+		n = 0;
+		for (int j = i+1; j < N; ++j) n += x[j] * D[j] * S[i][j];
+		
+		x[i]=
+		(y[i] - n)
+		/
+		( D[i]*S[i][i] );
+	}	  
 }
 
 
@@ -82,8 +167,34 @@ void guskovas::lab4()
 /**
  * Метод Якоби или Зейделя
  */
-void guskovas::lab5()
+void guskovas::lab5()//якоби
 {
+	double *f = new double[N];
+
+	double norma = 0;//error
+	do {
+		for (int i = 0; i < N; i++) f[i] = x[i];
+
+		for (int i = 0; i < N; i++) {
+			double result = b[i];
+
+			for (int j = 0; j < N; j++) result = i != j ? 
+					result - (A[i][j] * f[j]) 
+					:
+					result
+			;
+
+			x[i] = result / A[i][i];
+		}
+
+		norma = 0;
+		for (int i = 0; i < N; i++) norma = abs(f[i] - x[i]) > norma ? 
+			abs(f[i] - x[i]) 
+			: 
+			norma
+		;
+
+	} while (norma > 1e-20);
 
 }
 
