@@ -246,17 +246,17 @@ double eps = 1e-19;
 		Ar[i]=t;
 	}
 	double s1=0, s2 =0;
-	for (i=0;i<n;i++){
+	for (int i=0;i<N;i++){
   		s1 += r[i]*Ar[i];
 		s2 += Ar[i]*Ar[i];
   	}
-	double tau=sum1/sum2;
-	for(i=0;i<n;i++){
+	double tau=s1/s2;
+	for(int i=0;i<N;i++){
   		x[i]=x[i]-tau*r[i];
 		  
 	  }
 	norma =0;
-	for (i=0;i<n;i++){
+	for (int i=0;i<N;i++){
 		norma+=(x1[i]-x[i])*(x1[i]-x[i]);
   		x1[i]=x[i];
   	}
