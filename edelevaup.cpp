@@ -222,7 +222,7 @@ double eps = 1e-19;
 	double *Ar = new double[N];	
 	double norma =0;
 
-	
+	cout<<"BECIT"<<endl;
 
 	for (int i = 0; i < N; i++)
 	{
