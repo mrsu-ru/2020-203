@@ -261,7 +261,7 @@ double eps = 1e-19;
   		x1[i]=x[i];
   	}
 	} while (sqrt(norma) > eps);
-	
+	jk
 }
 
 
