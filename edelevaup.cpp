@@ -171,8 +171,7 @@ for (int i=N-2; i>=0; i--){
 /**
  * Метод Якоби или Зейделя
  */
-void
-edelevaup::lab5 ()
+void edelevaup::lab5 ()
 {
   double *f = new double[N];
   double e = pow(10, -30);
@@ -222,7 +221,7 @@ double eps = 1e-19;
 	double *Ar = new double[N];	
 	double norma =0;
 
-	cout<<"BECIT"<<endl;
+	
 
 	for (int i = 0; i < N; i++)
 	{
