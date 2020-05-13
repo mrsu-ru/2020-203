@@ -1,5 +1,15 @@
 ﻿#include "borisovayu.h"
 
+
+
+
+double scal(double *z1, double *z2, int N)
+{
+	double result = 0;
+	for (int i=0; i<N; i++) 
+		result += z1[i]*z2[i];
+	return result;
+}
 /**
  * Введение в дисциплину
  */
@@ -12,6 +22,7 @@ void borisovayu::lab1()
 /**
  * Метод Гаусса с выбором главного элемента
  */
+
 void borisovayu::lab2()
 {
 int i,j,k,max;
@@ -166,12 +177,12 @@ void borisovayu::lab5()
     
     while (Z > eps * eps){
 	    for (i=0; i<N; i++){
-		  x[i] = b[i];
-	      for (j=0; j<i; j++)
-			 x[i] -= A[i][j]*x[j];
-		  for (j=i+1; j<N; j++)
-			 x[i] -= A[i][j]*x[j];
-		  x[i]/=A[i][i];
+		   x[i] = b[i];
+	       for (j=0; j<i; j++)
+			  x[i] -= A[i][j]*x[j];
+		   for (j=i+1; j<N; j++)
+			  x[i] -= A[i][j]*x[j];
+		   x[i]/=A[i][i];
 		}
 		
     
@@ -199,7 +210,6 @@ void borisovayu::lab6()
     double eps = 1e-17;    
     double *z, *Az;
     int i,j;
-	
     z = new double[N];
     Az = new double[N];
     for (i=0; i<N; i++) x[i]=0;
@@ -251,7 +261,36 @@ void borisovayu::lab6()
  */
 void borisovayu::lab7()
 {
+    double *z;
+	double *r;
+	double *Az;
+	double alpha, beta, eps = 1e-17;
+	int i,j, sum = 1, k=0;
 
+    z = new double[N];
+    r = new double[N];
+	Az = new double[N];
+	
+	for (i=0; i<N; i++){
+		r[i] = b[i];
+        x[i] = 0;
+        z[i] = r[i];		
+	}
+	sum = scal(r, r, N);
+    do {
+		for (i=0; i<N; i++){
+			Az[i] = 0;
+			for (j=0; j<N; j++)  Az[i] += A[i][j] * z[j];	
+		}
+		alpha = scal(r, r, N)/scal(Az, z, N);
+		for (i=0; i<N; i++) x[i] = x[i] + alpha * z[i];	
+		for (i=0; i<N; i++) r[i] = r[i] - alpha * Az[i];
+		beta = sum/scal(r, r, N);
+		for (i=0; i<N; i++) z[i] = r[i] + beta * z[i];
+		sum = scal(r, r, N);
+		k++;	
+	} while (scal(r,r,N) > eps*eps);
+	
 }
 
 
