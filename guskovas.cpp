@@ -5,7 +5,7 @@
  */
 void guskovas::lab1()
 {
-  cout << "hello world!" << endl;
+  cout << "hello world!" << endl; 
 }
 
 
