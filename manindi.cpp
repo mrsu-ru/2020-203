@@ -287,7 +287,75 @@ void manindi::lab6()
  */
 void manindi::lab7()
 {
+double* pr_X = new double[N];
+double* pr_R = new double[N];
+double* r = new double[N];
+double* z = new double[N];
+double eps = 1e-20;
 
+for (int i = 0; i < N; i++) {
+	r[i] = b[i];
+	z[i] = r[i];
+	}
+	
+	while (true) {
+	for (int i = 0; i < N; i++) {
+		pr_R[i] = r[i];
+		pr_X[i] = x[i];
+		}
+	
+	double alpha = 0;
+	den_Alph = 0;
+
+	for (int i = 0; i < N; i++) {
+		double Az = 0;
+	
+	for (int j = 0; j < N; j++) {
+		Az += A[i][j] * z[j];
+		}
+
+	alpha += pr_R[i] * pr_R[i];
+	den_Alph += Az * z[i];
+		}
+	
+	alpha /= den_Alph;
+
+	for (int i = 0; i < N; i++) {
+		x[i] = pr_X[i] + alpha * z[i];
+		}
+	
+	double maxErr = abs(x[0] - pr_X[0]);
+	
+	for (int i = 1; i < N; i++)
+		if (abs(x[i] - pr_X[i]) > maxErr)
+			maxErr = abs(x[i] - pr_X[i]);
+		if (maxErr < eps)
+			break;
+		
+	for (int i = 0; i < N; i++) {
+		double Az = 0;
+	
+	for (int j = 0; j < N; j++) {
+		Az += A[i][j] * z[j];
+		}
+	
+	r[i] = pr_R[i] - alpha * Az;
+		}
+
+	double beta = 0;
+	denBeta = 0;
+	
+	for (int i = 0; i < N; i++) {
+		beta += r[i] * r[i];
+		denBeta += pr_R[i] * pr_R[i];
+		}
+	
+	beta /= denBeta;
+
+	for (int i = 0; i < N; i++) {
+		z[i] = r[i] + beta * z[i];
+		}
+	}
 }
 
 
