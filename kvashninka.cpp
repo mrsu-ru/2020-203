@@ -14,7 +14,7 @@ void kvashninka::lab1()
  */
 void kvashninka::lab2()
 {
-
+	//test
 }
 
 
