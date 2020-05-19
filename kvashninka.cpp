@@ -76,7 +76,22 @@ void kvashninka::lab2()
  */
 void kvashninka::lab3()
 {
+	double alpha[N - 1], beta[N];
+    alpha[0] = - A[0][1] / A[0][0];
+    beta[0] = b[0] / A[0][0];
 
+    for (int i = 1; i < N; i++)
+	{
+		double y = A[i][i] + A[i][i - 1] * alpha[i - 1];
+        alpha[i] = - A[i][i + 1] / y;
+        beta[i] = (b[i] - A[i][i - 1] * beta[i - 1]) / y;
+    }
+
+    x[N - 1] = beta[N - 1];
+    for (int i = N - 2; i >= 0; i--)
+	{
+        x[i] = alpha[i] * x[i + 1] + beta[i];
+    }
 }
 
 
