@@ -242,7 +242,68 @@ void malovki::lab6()
  */
 void malovki::lab7()
 {
+	const double eps = 1e-18;
 
+	double* xPrev = new double[N];
+	for (int i = 0; i < N; i++)
+		xPrev[i] = 0;
+	double* r = new double[N];
+	double* rPrev = new double[N];
+	double* A_xPrev = new double[N];
+	double r_r, rPrev_rPrev;
+	double Ax_x;
+	double alpha, betta;
+
+	do{
+		for (int i = 0; i < N; i++)
+			rPrev[i] = -b[i];
+		for (int i = 0; i < N; i++)
+			for (int j = 0; j < N; j++)
+				rPrev[i] += A[i][j] * x[j];
+
+		for (int i = 0; i < N; i++)
+			xPrev[i] = rPrev[i];
+
+		for (int i = 0; i < N; i++)
+			A_xPrev[i] = 0;
+		for (int i = 0; i < N; i++)
+			for (int j = 0; j < N; j++)
+				A_xPrev[i] += A[i][j] * xPrev[j];
+
+		rPrev_rPrev = 0;
+		for (int i = 0; i < N; i++)
+			rPrev_rPrev += rPrev[i] * rPrev[i];
+
+		Ax_x = 0;
+		for (int i = 0; i < N; i++)
+			Ax_x += A_xPrev[i] * xPrev[i];
+
+		alpha = rPrev_rPrev / Ax_x;
+
+		for (int i = 0; i < N; i++)
+			x[i] = x[i] + alpha * xPrev[i];
+		
+		for (int i = 0; i < N; i++)
+			r[i] = rPrev[i] - alpha * A_xPrev[i];
+
+		r_r = 0;
+		for (int i = 0; i < N; i++)
+			r_r += r[i] * r[i];
+
+		betta = r_r / rPrev_rPrev;
+
+		for (int i = 0; i < N; i++)
+			xPrev[i] = r[i] + betta * xPrev[i];
+
+		for (int i = 0; i < N; i++)
+			rPrev[i] = r[i];
+
+	} while (r_r > eps);
+
+	delete[]xPrev;
+	delete[]rPrev;
+	delete[]r;
+	delete[]A_xPrev;
 }
 
 
