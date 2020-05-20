@@ -13,6 +13,7 @@ SOURCES= \
     kazakovais.cpp \
     isokovaa.cpp \
     golovatyukam.cpp \
+	gorbunovaa.cpp \
     kirdyushkindv.cpp \
     puzinva.cpp \
     parshinad.cpp \
