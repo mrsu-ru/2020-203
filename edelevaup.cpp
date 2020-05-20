@@ -279,11 +279,11 @@ void edelevaup::lab8()
 }
 
 
-/*void edelevaup::lab10()
+void edelevaup::lab9()
 {
 
 }
-*/
+
 
 std::string edelevaup::get_name()
 {
