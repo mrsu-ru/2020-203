@@ -197,7 +197,56 @@ void landyshevav::lab5()
  */
 void landyshevav::lab6()
 {
+    double eps = 1e-15;
 
+    double* prevX = new double[N];
+    double* r = new double[N];
+
+    while (true) {
+
+        for (int i = 0; i < N; i++)
+            prevX[i] = x[i];
+
+        for (int i = 0; i < N; i++) {
+            r[i] = b[i];
+
+            for (int j = 0; j < N; j++) {
+                r[i] -= A[i][j] * x[j];
+            }
+        }
+
+        double tau = 0;
+        double denomTau = 0;
+
+        for (int i = 0; i < N; i++) {
+            double Ar = 0;
+
+            for (int j = 0; j < N; j++) {
+                Ar += A[i][j] * r[j];
+            }
+
+            tau += Ar * r[i];
+            denomTau += Ar * Ar;
+        }
+
+        tau /= denomTau;
+
+        for (int i = 0; i < N; i++) {
+            x[i] = prevX[i] + tau * r[i];
+        }
+
+        double maxErr = abs(x[0] - prevX[0]);
+        for (int i = 1; i < N; i++)
+            if (abs(x[i] - prevX[i]) > maxErr)
+                maxErr = abs(x[i] - prevX[i]);
+
+        if (maxErr < eps)
+            break;
+
+    }
+
+    delete[] prevX;
+    delete[] r;
 }
 
 
