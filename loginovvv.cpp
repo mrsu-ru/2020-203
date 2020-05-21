@@ -186,7 +186,43 @@ void loginovvv::lab5()
  */
 void loginovvv::lab6()
 {
-	
+	const double eps = 1e-20;
+	double *r = new double[N]; 
+	double *y = new double[N];
+	double norma;
+
+	do{
+		for (int i = 0; i < N; i++) 
+			y[i] = x[i];
+			
+		//вычисляем невязку
+		for(int i=0; i<N; i++){
+			r[i]=-b[i];
+			for(int j=0; j<N; j++)
+				r[i]+=A[i][j]*x[j];
+		}
+
+		//найдем итерационный параметр
+		double tau=0;
+		double Ar_norm=0;
+		for (int i = 0; i < N; i++) {
+			double Ar=0;	
+        	for (int j = 0; j < N; j++)
+            	Ar += A[i][j] * r[j];
+
+			tau+= Ar*r[i];
+			Ar_norm+=Ar*Ar;
+		}
+		tau/=Ar_norm;
+
+		for(int i=0; i<N; i++)
+			x[i] = y[i] - tau * r[i];
+
+		norma = 0;
+    	for (int i = 0; i < N; i++) 
+			if (abs(y[i] - x[i]) > norma)
+				norma = abs(y[i] - x[i]);
+	}	while(norma>eps);
 }
 
 
@@ -196,13 +232,52 @@ void loginovvv::lab6()
  */
 void loginovvv::lab7()
 {
+	const double eps = 1e-21;
+	double *r = new double[N];
+	double *z = new double[N];
+	double *Az = new double[N];
+	double alfa, betta, tmp, norma, b_norm=0;
 
+	for(int i=0; i<N; i++){
+		b_norm += b[i]*b[i]; 
+		r[i] = b[i];
+		for(int j=0; j<N; j++)
+			r[i]-=A[i][j]*x[j];
+		z[i]=r[i];
+	}
+
+	do{
+		for(int i=0; i<N; i++){
+			Az[i]=0;
+			for(int j=0; j<N; j++)
+				Az[i]+=A[i][j]*z[j];
+		}
+		alfa=0; tmp=0;
+		for(int i=0; i<N; i++){
+			alfa+=r[i]*r[i];
+			tmp+=Az[i]*r[i];
+		}
+		alfa/=tmp;
+
+		betta=0; tmp=0;
+    	for(int i=0; i<N; i++){
+			tmp+=r[i]*r[i];
+			x[i]+=alfa*z[i];
+			r[i]-=alfa*Az[i];
+			betta+=r[i]*r[i];
+		}
+		norma=sqrt(betta/b_norm);
+		betta/=tmp;
+		
+		for(int i=0; i<N; i++)
+			z[i]=r[i]+betta*z[i];
+	}while(norma>eps);
 }
 
 
 void loginovvv::lab8()
 {
-
+	
 }
 
 

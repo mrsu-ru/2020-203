@@ -87,12 +87,83 @@ x[i] = alfa[i] * x[i + 1] + beta[i];
 
 
 /**
- * Метод простых итераций
+ * Метод Холецкого
  */
 void garinma::lab4()
 {
+  double **S = new double*[N];
+    double **ST = new double*[N];
+    double *D = new double[N];
+    for(int i=0; i<N; i++)
+    {
+       S[i] = new double[N];
+       ST[i] = new double[N];
+       D[i]=0;
+       for(int j=0; j<N; j++)
+       {
+           S[i][j]=0;
+       }
+    }
+    //вычисляем D и S
+    for(int i=0; i<N; i++)
+    {
+        double isum = 0;
+        for(int k=0; k<i; k++)
+                isum += std::abs(S[k][i]) * std::abs(S[k][i]) * D[k];
 
+        if((A[i][i] - isum) > 0)
+            D[i] = 1;
+        else
+            D[i] = -1;
+
+        S[i][i] = sqrt(std::abs(A[i][i] - isum));
+
+        for(int j=i+1; j<N; j++)
+        {
+            double sum=0;
+            for(int k=0; k<i; k++)
+                sum += S[k][i] * S[k][j] * D[k];
+            S[i][j] = (A[i][j] - sum) / (S[i][i] * D[i]);
+        }
+    }
+    //транспонируем S
+    for(int i=0; i<N; i++)
+        for(int j=0; j<N; j++)
+            ST[i][j] = S[j][i];
+    //умножаем ST на D
+    for(int i = 0; i < N; i++)
+        for(int j = 0; j < N; j++)
+            ST[i][j] *= D[j];
+    //ST*D * y = b
+    double *y = new double[N];
+    for(int i=0; i<N; i++)
+    {
+        double s=0;
+        for(int j=0; j<i; j++)
+            s += y[j] * ST[i][j];
+        y[i]=(b[i]-s)/ST[i][i];
+    }
+    //S * x = y
+    for(int i=N-1; i>=0; i--)
+    {
+        double s=0;
+        for(int j=i+1; j<N; j++)
+            s += x[j] * S[i][j];
+        x[i]=(y[i] - s)/S[i][i];
+    }
+
+    for(int i=0; i<N; i++)
+    {
+        delete [] S[i];
+        delete [] ST[i];
+    }
+    delete [] S;
+    delete [] ST;
+    delete [] D;
+    delete [] y;
 }
+
+
 
 
 
@@ -102,6 +173,33 @@ void garinma::lab4()
 void garinma::lab5()
 {
 
+    double *new_x = new double[N],
+    eps = 1.e-10;
+    bool c;
+
+  for (int i = 0; i < N; i++)
+        x[i] = 1;
+
+    do
+    {
+        c = false;
+        for (int i = 0; i < N; i++)
+        {
+            new_x[i] = b[i];
+            for (int j = 0; j < N; j++)
+            {
+                if (i == j) continue;
+                new_x[i] -= A[i][j]*x[j];
+            }
+
+            new_x[i] /= A[i][i];
+            if (!c) c = (fabs(new_x[i] - x[i]) > eps);
+            x[i] = new_x[i];
+        }
+
+    }while(c);
+
+    delete[] new_x;
 }
 
 
@@ -111,8 +209,53 @@ void garinma::lab5()
  */
 void garinma::lab6()
 {
+double *new_x = new double[N],
+*r = new double[N],
+eps = 1.e-10;
 
+    for (int i = 0; i < N; i++)
+        x[i] = 0;
+
+    do
+    {
+        for (int i = 0; i < N; i++)
+        {
+            r[i] = b[i];
+            for (int j = 0; j < N; j++)
+                r[i] -= A[i][j] * x[j];
+        }
+
+        double tau, P = 0, Q = 0, t;
+        for (int i = 0; i < N; i++)
+        {
+            t = 0;
+            for (int j = 0; j < N; j++)
+                t += A[i][j] * r[j];
+
+
+            P += r[i] * t;
+            Q += t * t;
+        }
+
+        tau = P / Q;
+        for (int i = 0; i < N; i++)
+            new_x[i] = x[i] + tau * r[i];
+
+        double maxdif = 0;
+        for (int i = 0; i < N; i++)
+        {
+            if (fabs(x[i] - new_x[i]) > maxdif)
+				maxdif = fabs(x[i] - new_x[i]);
+            x[i] = new_x[i];
+        }
+
+        if (maxdif < eps) break;
+    }while(true);
+
+    delete[] new_x;
+    delete[] r;
 }
+
 
 
 
@@ -121,7 +264,74 @@ void garinma::lab6()
  */
 void garinma::lab7()
 {
+	double Del, s, sAbs;
+    double eps = 1.e-10;
 
+	double *K = new double[N];
+	double *L = new double[N];
+	double *M = new double[N];
+	double *xrez = new double[N];//итерационные решения
+
+
+	//задание начального приближения
+	for (int i = 0; i<N; i++){
+		xrez[i] = 0;
+	}
+
+
+	do {
+		//нахождение скалярного произведения матрицы системы и вектора приближенного решения
+		for (int i = 0; i < N; i++) {
+			K[i] = 0;
+			for (int j = 0; j < N; j++)
+				K[i] += A[i][j] * xrez[j];
+		}
+
+		//нахождение градиента
+		for (int i = 0; i < N; i++) {
+			L[i] = K[i] - b[i];
+		}
+
+		//скалярное произведение матрицы системы и градиента
+		for (int i = 0; i < N; i++) {
+			K[i] = 0;
+			for (int j = 0; j < N; j++)
+				K[i] += A[i][j] * L[j];
+		}
+
+
+		for (int i = 0; i < N; i++) {
+			M[i] = 0;
+			for (int j = 0; j < N; j++) {
+				M[i] += A[i][j] * K[j];
+			}
+		}
+
+		s = 0;
+		sAbs = 0;
+
+		//нахождение величины смещения по направлению градиента(скалярного шага)
+		for (int i = 0; i < N; i++) {
+			s += K[i] * L[i];
+			sAbs += M[i] * K[i];
+		}
+		if (s == sAbs)
+			s = 1;
+		else
+			s = s / sAbs;
+		//записываем новое приближенное решение
+		for (int i = 0; i < N; i++)
+			x[i] = xrez[i] - s*L[i];
+
+		//проверка на уменьшение погрешности
+		Del = abs(x[0] - xrez[0]);
+
+		for (int i = 0; i < N; i++) {
+			if (abs(x[i] - xrez[i])>Del)
+				Del = abs(x[i] - xrez[i]);
+				xrez[i] = x[i];
+		}
+	} while (eps < Del);
 }
 
 

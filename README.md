@@ -4,7 +4,7 @@
  git remote add mrsu https://github.com/mrsu-ru/2020-203.git
 
  // новая ветка (создаем и переключаемся)
- git checkout -b mrsu-master
+ git checkout -b mrsu-mastergit checkout -b mrsu-master
  
  // затягивает изменения из удаленного репозитория
  git pull mrsu master
