@@ -8,9 +8,7 @@
 #include "garinma.h"
 #include "sayfetdinovsf.h"
 #include "zhalninrv.h"
-<<<<<<< HEAD
 #include "dvoryaninovada.h"
-=======
 #include "ashryatovarr.h"
 #include "kotkovsn.h"
 #include "bochkarevda.h"
@@ -18,6 +16,7 @@
 #include "isokovaa.h"
 #include "maslovaes.h"
 #include "golovatyukam.h"
+#include "gorbunovaa.h"
 #include "puzinva.h"
 #include "parshinad.h"
 #include "malovki.h"
@@ -30,7 +29,6 @@
 #include "loginovvv.h"
 #include "manindi.h"
 #include "zevaykinae.h"
->>>>>>> 158eaaf8617dce4dbf57803db85ae123230ac838
 
 
 void print_usage(char* name);
@@ -47,10 +45,9 @@ int main(int argc, char** argv)
   if (strcmp(argv[1], "zhalninrv") == 0) {
     l = new zhalninrv();
   }
-<<<<<<< HEAD
   else if (strcmp(argv[1], "dvoryaninovada") == 0) {
-    l = new dvoryaninova();
-=======
+    l = new dvoryaninovada();
+  }
   else if (strcmp(argv[1], "edelevaup") == 0) {
     l = new edelevaup();
   }
@@ -77,6 +74,9 @@ int main(int argc, char** argv)
   }
   else if (strcmp(argv[1], "golovatyukam") == 0) {
     l = new golovatyukam();
+  }
+  else if (strcmp(argv[1], "gorbunovaa") == 0) {
+    l = new gorbunovaa();
   }
   else if (strcmp(argv[1], "kirdyushkindv") == 0) {
     l = new kirdyushkindv();
@@ -122,7 +122,6 @@ int main(int argc, char** argv)
   }
   else if (strcmp(argv[1], "zevaykinae") == 0) {
     l = new zevaykinae();
->>>>>>> 158eaaf8617dce4dbf57803db85ae123230ac838
   }
   else  {
     print_usage(argv[0]);

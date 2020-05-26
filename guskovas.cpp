@@ -231,7 +231,7 @@ void guskovas::lab6()
 		for (int i = 0; i < N; i++) x[i] = prevX[i] + (tau * y[i]);
 		
 		err = 0.0;
-		for (int i = 0; i < N; i++) if (abs(x[i] - prevX[i]) > err) err = abs(x[i] - prevX[i]);
+		for (int i = 0; i < N; i++) if ( abs(x[i] - prevX[i]) > err ){ err = abs( x[i] - prevX[i] ); break; };
 			
 		for (int i = 0; i < N; i++) prevX[i] = x[i];
 	}
@@ -246,6 +246,69 @@ void guskovas::lab6()
  */
 void guskovas::lab7()
 {
+
+	double* prevX = new double[N];
+	double* prevR = new double[N];
+	double* r = new double[N];
+	double* z = new double[N];
+
+	for (int i = 0; i < N; i++) {
+		r[i] = b[i];
+		z[i] = b[i];
+	}
+
+	double err = 0;
+	double a = 0;
+	double det = 0;
+	double beta = 0;
+	double Az = 0;
+
+	do {
+
+		for (int i = 0; i < N; i++) {
+			prevR[i] = r[i];
+			prevX[i] = x[i];
+		}
+
+		a = 0; det = 0;
+
+		for (int i = 0; i < N; i++) {
+			Az = 0;
+			
+			for (int j = 0; j < N; j++) Az += (A[i][j] * z[j]);
+			
+			a += (prevR[i] * prevR[i]); det += (Az * z[i]);
+		}
+		a /= det;
+
+		for (int i = 0; i < N; i++)	x[i] = prevX[i] + (a * z[i]);
+		
+
+		err = abs(x[0] - prevX[0]);
+
+		for (int i = 1; i < N; i++)
+			if (abs(x[i] - prevX[i]) > err)
+				err = abs(x[i] - prevX[i]);
+
+		for (int i = 0; i < N; i++) {
+			Az = 0;
+
+			for (int j = 0; j < N; j++) Az += (A[i][j] * z[j]);
+
+			r[i] = prevR[i] - (a * Az);
+		}
+
+		beta = 0; det = 0;
+
+		for (int i = 0; i < N; i++) {
+			beta += (r[i] * r[i]);
+			det += (prevR[i] * prevR[i]);
+		}
+		beta /= det;
+
+		for (int i = 0; i < N; i++) z[i] = r[i] + (beta * z[i]);
+
+	}while( !(err < 1e-20) );
 
 }
 
