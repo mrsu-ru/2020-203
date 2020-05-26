@@ -14,56 +14,56 @@ void dvoryaninovada ::lab1()
  */
 void dvoryaninovada::lab2()
 {
-	// double maxi;
-	// int k, u;
-	// double eps=0.000001;
+	double maxi;
+	int k, u;
+	double eps=0.000001;
 
-	// k=0;
-	// while (k<N)
-	// {
-	// 	maxi=abs(A[k][k]);
-	// 	u=k;
-	// 	for (int i=k+1;i<N;i++) {
-	// 		if (abs(A[i][k])>maxi) {
-	// 			maxi=abs(A[i][k]);
-	// 			u=i;
-	// 		}
-	// 	}
+	k=0;
+	while (k<N)
+	{
+		maxi=abs(A[k][k]);
+		u=k;
+		for (int i=k+1;i<N;i++) {
+			if (abs(A[i][k])>maxi) {
+				maxi=abs(A[i][k]);
+				u=i;
+			}
+		}
 
-	// 	for (int j=0;j<N;j++) {
-	// 		swap(A[k][j], A[ii][j]);
-	// 	}
+		for (int j=0;j<N;j++) {
+			swap(A[k][j], A[u][j]);
+		}
 
-	// 	swap(b[k], b[ii]);
-	// 	for (int i=k;i<N;i++) {
-	// 		double c=A[i][k];
-	// 		if (abs(c)<eps) continue;
-	// 		for (int j=0;j<N;j++) {
-	// 			A[i][j]=A[i][j]/c;
-	// 		}
+		swap(b[k], b[u]);
+		for (int i=k;i<N;i++) {
+			double c=A[i][k];
+			if (abs(c)<eps) continue;
+			for (int j=0;j<N;j++) {
+				A[i][j]=A[i][j]/c;
+			}
 
-	// 		b[i]=b[i]/c;
-	// 		if (i==k)	continue;
-	// 		for (int j=0;j<N;j++) {
-	// 			A[i][j]=A[i][j]-A[k][j];
-	// 		}
+			b[i]=b[i]/c;
+			if (i==k)	continue;
+			for (int j=0;j<N;j++) {
+				A[i][j]=A[i][j]-A[k][j];
+			}
 
-	// 		b[i]=b[i]-b[k];
-	// 	}
+			b[i]=b[i]-b[k];
+		}
 
-	// 	k++;
-	// }
+		k++;
+	}
 
-	// for (k=N-1;k>=0;k--) {
-	// 	x[k]=b[k];
-	// 	for (int i=k-1; i>=0;i--) {
-	// 		double c= A[i][k];
-	// 		for (int j=0;j<N; j++) { 
-	// 			A[i][j]=A[k][j]*c+A[i][j]; 
-	// 		}
-	// 		b[i]=-b[k]*c+b[i];
-	// 	}
-	// }
+	for (k=N-1;k>=0;k--) {
+		x[k]=b[k];
+		for (int i=k-1; i>=0;i--) {
+			double c= A[i][k];
+			for (int j=0;j<N; j++) { 
+				A[i][j]=A[k][j]*c+A[i][j]; 
+			}
+			b[i]=-b[k]*c+b[i];
+		}
+	}
 }
 
 
@@ -188,48 +188,64 @@ void dvoryaninovada::lab5()
 }
 
 
+void dvoryaninovada::MatrVect(double **M, double *V, double *R)
+{
+	for (int i = 0; i < N; i++)
+	{
+		R[i] = 0;
+		for (int j = 0; j < N; j++)
+			R[i] += M[i][j] * V[j];
+	}
+}
 
+double dvoryaninovada::ScalarVect(double* v1, double* v2)
+{
+	double result = 0;
+	for (int i = 0; i < N; i++)
+		result += (v1[i] * v2[i]);
+	return result;
+}
 /**
  * Метод минимальных невязок
  */
 void dvoryaninovada::lab6()
 {
-	// double eps=0.000001;
+	double eps=0.000001;
 
-	// int count=0; 
-	// double *U=new double[N];
-	// double *r=new double[N];
-	// double *TempX=new double[N];
-	// double *p=new double[N];
-	// double Tau=0.0;
+	int count=0; 
+	double *U=new double[N];
+	double *r=new double[N];
+	double *TempX=new double[N];
+	double *p=new double[N];
+	double Tau=0.0;
 
-	// for (int i=0;i<N;i++) TempX[i]=0; 
+	for (int i=0;i<N;i++) TempX[i]=0; 
 
-	// do	{
-	// 	MatrVect(A,TempX,U);
-	// 	for (int i=0;i<N;i++)	{
-	// 		r[i]=U[i]-b[i]; 
-	// 	}
+	do	{
+		MatrVect(A,TempX,U);
+		for (int i=0;i<N;i++)	{
+			r[i]=U[i]-b[i]; 
+		}
 
-	// 	MatrVect(A,r,U);
+		MatrVect(A,r,U);
 
-	// 	double TempTau1=ScalarVect(U,r);
-	// 	double TempTau2=ScalarVect(U,U);
-	// 	if (TempTau2==0) break;
+		double TempTau1=ScalarVect(U,r);
+		double TempTau2=ScalarVect(U,U);
+		if (TempTau2==0) break;
 
-	// 	Tau=TempTau1/TempTau2;
+		Tau=TempTau1/TempTau2;
 
-	// 	for (int i=0;i<N;i++) x[i]=TempX[i]-Tau*r[i];
+		for (int i=0;i<N;i++) x[i]=TempX[i]-Tau*r[i];
 
-	// 	for (int i=0;i<N;i++) p[i]=x[i]-TempX[i];
+		for (int i=0;i<N;i++) p[i]=x[i]-TempX[i];
 
-	// 	count++;
-	// } while ((sqrt(ScalarVect(p,p))>=eps)&&(count<500000));
+		count++;
+	} while ((sqrt(ScalarVect(p,p))>=eps)&&(count<500000));
 
-	// delete[] U;
-	// delete[] r;
-	// delete[] p;
-	// delete[] TempX;
+	delete[] U;
+	delete[] r;
+	delete[] p;
+	delete[] TempX;
 }
 
 
@@ -239,7 +255,7 @@ void dvoryaninovada::lab6()
  */
 void dvoryaninovada::lab7()
 {
-	double Eps=1.e-8;
+	double Eps=0.000005;
 	double Del,s,sAbs;//погрешность итерации, скалярный шаг, модуль шага
 
 
@@ -278,6 +294,7 @@ void dvoryaninovada::lab7()
 		s=0;
 		sAbs=0;
 
+		а
 		for (int i=0;i<N;i++) {
 			s+=K[i]*L[i];
 			sAbs+=M[i]*K[i]; //величина смещения по направлению градиент
