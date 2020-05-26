@@ -8,6 +8,7 @@
 #include "garinma.h"
 #include "sayfetdinovsf.h"
 #include "zhalninrv.h"
+#include "dvoryaninovada.h"
 #include "ashryatovarr.h"
 #include "kotkovsn.h"
 #include "bochkarevda.h"
@@ -43,6 +44,9 @@ int main(int argc, char** argv)
   lab *l = NULL;
   if (strcmp(argv[1], "zhalninrv") == 0) {
     l = new zhalninrv();
+  }
+  else if (strcmp(argv[1], "dvoryaninovada") == 0) {
+    l = new dvoryaninovada();
   }
   else if (strcmp(argv[1], "edelevaup") == 0) {
     l = new edelevaup();
