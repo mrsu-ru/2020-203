@@ -1,5 +1,6 @@
 ﻿#include "kazakovais.h"
 
+
 /**
  * Введение в дисциплину
  */
@@ -468,7 +469,7 @@ void kazakovais::lab6()
 void kazakovais::lab7()
 {
 	//данный метод работает только для симметричных матриц коэффициентов
-	double eps = 1e-24;
+	double eps = 1e-6;
 	double *r = new double[N];
 	double *r1 = new double[N];
 	double *z = new double[N];
@@ -592,7 +593,133 @@ void kazakovais::lab7()
 */
 void kazakovais::lab8()
 {
+	double eps = 1.0e-6;
+	double errc = 0;	//ошибка
+	int i, j, k, l;
+	int imax = 0;
+	int jmax = 1;
+	double Amax = A[0][1];
+	double alpha = 0;
+	double c = 0, s = 0;
+	double **C = new double*[N];
 
+	for (i = 0; i < N; i++)
+	{
+		C[i] = new double[N];
+	}
+
+	for (i = 0; i < N; i++)
+	{
+		for (j = 0; j < N; j++)
+		{
+			C[i][j] = 0;
+		}
+	}
+	
+	for (i = 0; i < N; i++)
+	{
+		for (j = 0; j < N; j++)
+		{
+			if (i != j)
+				errc += A[i][j]*A[i][j];
+		}
+	}
+		
+	while (sqrt(errc)>eps)
+	{
+		//находим максимальный элемент матрицы A над диагональю
+		for (i = 0; i < N; i++)
+		{
+			for (j = i+1; j < N; j++)
+			{
+				if (abs(A[i][j]) >= abs(Amax))
+				{
+					Amax = A[i][j];
+					imax = i;
+					jmax = j;
+				}
+			}
+		}
+
+		if (A[imax][imax] == A[jmax][jmax])
+		{
+			alpha = M_PI / 4;
+		}
+		else alpha = 0.5*atan((2 * A[imax][jmax]) / (A[jmax][jmax] - A[imax][imax]));
+		
+		c = cos(alpha);
+		s = sin(alpha);
+
+		//построение матрицы C
+		C[imax][imax] = c*c*A[imax][imax] - 2*s*c*A[imax][jmax] + s*s*A[jmax][jmax];
+		C[jmax][jmax] = s*s*A[imax][imax] + 2*s*c*A[imax][jmax] + c*c*A[jmax][jmax];
+		C[imax][jmax] = (c*c - s*s)*A[imax][jmax] + s*c*(A[imax][imax] - A[jmax][jmax]);
+		C[jmax][imax] = C[imax][jmax];
+		for (k = 0; k < N; k++)
+		{
+			if (k != imax && k != jmax)
+			{
+				C[imax][k] = c*A[imax][k] - s*A[jmax][k];
+				C[k][imax] = C[imax][k];
+			}
+		}
+		for (k = 0; k < N; k++)
+		{
+			if (k != imax && k != jmax)
+			{
+				C[jmax][k] = s*A[imax][k] + c*A[jmax][k];
+				C[k][jmax] = C[jmax][k];
+			}
+		}
+		for (k = 0; k < N; k++)
+		{
+			for (l = 0; l < N; l++)
+			{
+				if (k != imax && k != jmax && l != imax && l != jmax)
+				{
+					C[k][l] = A[k][l];
+				}
+			}
+		}
+
+		errc = 0;
+		
+		for (i = 0; i < N; i++)
+		{
+			for (j = 0; j < N; j++)
+			{
+				if (i != j)
+					errc += C[i][j]*C[i][j];
+			}
+		}
+
+		for (i = 0; i < N; i++)
+		{
+			for (j = 0; j < N; j++)
+			{
+				A[i][j] = C[i][j];
+			}
+		}
+
+		imax = 0;
+		jmax = 0;
+		Amax = A[0][1];
+		alpha = 0;
+		c = 0, s = 0;
+		for (i = 0; i < N; i++)
+		{
+			for (j = 0; j < N; j++)
+			{
+				C[i][j] = 0;
+			}
+		}
+	}
+	
+	for (i = 0; i < N; i++)
+	{
+		x[i] = A[i][i];
+	}
+	cout << "Собственные значения матрицы A помещены в элементы x[i] вектора RESULT." << endl;
 }
 
 
