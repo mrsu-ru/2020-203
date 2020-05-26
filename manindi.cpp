@@ -287,7 +287,97 @@ void manindi::lab6()
  */
 void manindi::lab7()
 {
+const double eps = 1e-18;
+double *xPrev = new double[N];
 
+	memset(xPrev, 0, sizeof(double) * N);
+
+double *r = new double[N];
+
+	for (int i = 0; i < N; i++)
+		r[i] = -b[i];
+double *Ar = new double[N];
+	
+	memset(Ar, 0, sizeof(double) * N);
+
+	for (int i = 0; i < N; i++) 
+
+		for (int j = 0; j < N; j++)
+			Ar[i] += A[i][j] * r[j];
+
+double rrScalar = 0;
+
+	for (int i = 0; i < N; i++)
+		rrScalar += r[i] * r[i];
+
+double rArScalar = 0;
+
+	for (int i = 0; i < N; i++)
+		rArScalar += Ar[i] * r[i];
+
+double alpha = 1;
+double tau = rrScalar / rArScalar;
+
+	for (int i = 0; i < N; i++)
+		x[i] = tau * b[i];
+
+	for (int i = 0; i < N; i++) 
+
+		for (int j = 0; j < N; j++)
+			r[i] += A[i][j] * x[j];
+
+rrScalar = 0;
+
+	for (int i = 0; i < N; i++)
+		rrScalar += r[i] * r[i];
+
+	while (rrScalar > eps * eps)
+	{
+double rArScalarPrev = rArScalar;
+
+memset(Ar, 0, sizeof(double) * N);
+
+	for (int i = 0; i < N; i++) 
+
+		for (int j = 0; j < N; j++)
+			Ar[i] += A[i][j] * r[j];
+rArScalar = 0;
+
+	for (int i = 0; i < N; i++)
+		rArScalar += Ar[i] * r[i];
+
+double tauPrev = tau;
+tau = rrScalar / rArScalar;
+alpha = 1.0 / (1 - tau / tauPrev / alpha * rrScalar / rArScalarPrev);
+
+	for (int i = 0; i < N; i++)
+	{
+double tmp = x[i];
+x[i] = alpha * x[i] + (1 - alpha) * xPrev[i] - tau * alpha * r[i];
+xPrev[i] = tmp;
+
+	}
+
+	for (int i = 0; i < N; i++)
+		r[i] = -b[i];
+
+	for (int i = 0; i < N; i++) 
+	
+		for (int j = 0; j < N; j++)
+			r[i] += A[i][j] * x[j];
+
+		rrScalar = 0;
+	
+	for (int i = 0; i < N; i++)
+		rrScalar += r[i] * r[i];
+
+	}
+
+delete []xPrev;
+
+delete []r;
+
+delete []Ar;
 }
 
 
