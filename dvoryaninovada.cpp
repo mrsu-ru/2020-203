@@ -294,7 +294,6 @@ void dvoryaninovada::lab7()
 		s=0;
 		sAbs=0;
 
-		а
 		for (int i=0;i<N;i++) {
 			s+=K[i]*L[i];
 			sAbs+=M[i]*K[i]; //величина смещения по направлению градиент
