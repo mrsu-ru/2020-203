@@ -1,4 +1,6 @@
-п»ї#include "kozinasa.h"
+п»ї
+#include "kozinasa.h"
+#include <math.h>
 
 
 void kozinasa::lab1()
@@ -134,7 +136,7 @@ int n=N; double sum=0;
 
 
 /**
- * РњРµС‚РѕРґ РҐРѕР»РµС†РєРѕРіРѕ
+ * РњРµС‚РѕРґ РїСЂРѕСЃС‚С‹С… РёС‚РµСЂР°С†РёР№
  */
 
 void kozinasa::lab5()
@@ -239,7 +241,7 @@ int n=N,i,j; double e = 1.0e-21;
   for (int i=0;i<n;i++){
   	x[i]=b[i];
   }
-   //вычисление r0
+   //пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ r0
 	for (i=0;i<n;i++){
   	  double s = 0;
   	  for (j=0;j<n;j++){
@@ -254,7 +256,7 @@ int n=N,i,j; double e = 1.0e-21;
   while (xxx>e){
 	double al1=0,al2=0;
 	k++;
-	//числитель alpha
+	//пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ alpha
   	for (i=0;i<n;i++){
   		al1 += r[i]*r[i];
   	}
@@ -266,7 +268,7 @@ int n=N,i,j; double e = 1.0e-21;
 	   }
 	  c[i]=s;
       }
-    //знаменатель alpha (и знаменатель betta)
+    //пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ alpha (пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ betta)
     for (i=0;i<n;i++){
   		al2 += c[i]*z[i];
   	}
@@ -281,7 +283,7 @@ int n=N,i,j; double e = 1.0e-21;
   	  r1[i] = r[i] - al*c[i];
     }
     double bt1=0;
-	//числитель betta
+	//пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ betta
   	for (i=0;i<n;i++){
   		bt1 += r1[i]*r1[i];
   	}
@@ -304,14 +306,126 @@ int n=N,i,j; double e = 1.0e-21;
 /**
  * РњРµС‚РѕРґ СЃРѕРїСЂСЏР¶РµРЅРЅС‹С… РіСЂР°РґРёРµРЅС‚РѕРІ
  */
-void kozinasa::lab8()
-{
+void kozinasa::lab8(){
+  double eps = 1.0e-3;
+  double err_c = 0;
+  int n=N;
+  
+  double** C;
+	
+  C = new double*[n];
+  
+  for (int i=0; i<n; i++){
+  	C[i] = new double[n];
+    for (int j=i+1; j<n; j++){
+  	  if (i!=j){
+  	  	 err_c += A[i][j] * A[i][j];
+  	  	 
+		}
+	  }
+  }
+  for (int i=0; i<n; i++)
+    for (int j=i+1; j<n; j++)
+	  C[i][j]=0;
+	  
+  while (sqrt(err_c) > eps){
 
+  	double  alpha; 
+	int m_i = 0, m_j = 1;
+  	for (int i=0; i<n; i++){
+      for (int j=i+1; j<n; j++){
+  	    if (abs(A[i][j]) > abs(A[m_i][m_j])){
+  	    	m_i = i;
+  	    	m_j = j;
+		  }
+	  }
+	}
+	if (A[m_i][m_i] == A[m_j][m_j])
+	  alpha = M_PI/4;
+	else alpha = 0.5 *(atan(2*A[m_i][m_j] / (A[m_i][m_i]-A[m_j][m_j])));
+	
+	//Р¤Р»РµРєСЃ СЃ СѓРјРЅРѕР¶РµРЅРёРµРј РјР°С‚СЂРёС†
+	double c = cos(alpha), s = sin(alpha);
+	C[m_i][m_i]	= c*c*A[m_i][m_i] - 2*s*c*A[m_i][m_j] + s*s*A[m_j][m_j];
+	C[m_j][m_j]	= s*s*A[m_i][m_i] + 2*s*c*A[m_i][m_j] + c*c*A[m_j][m_j];
+	C[m_i][m_j] = (c*c - s*s)*A[m_i][m_j] + s*c*(A[m_j][m_j] - A[m_i][m_i]);
+	C[m_j][m_i] = C[m_i][m_j];
+	
+	
+	
+	for (int k=0; k<n; k++){
+	  if (k != m_i  &&  k != m_j){
+	  	C[m_i][k] = c*A[m_i][k] - s*c*A[m_j][k];
+	  	C[k][m_i] = C[m_i][k];
+	  	C[m_j][k] = s*A[m_i][k] + c*A[m_j][k];
+	  	C[k][m_j] = C[m_j][k];
+	  } 
+	  for (int l=0; l<n; l++){
+	    if (k != m_i  &&  k != m_j  &&  l != m_i  &&  l != m_j)
+	      C[k][l] = A[k][l];
+		  
+	  }
+	}
+	
+	err_c = 0.;
+	for (int i=0; i<n; i++){
+      for (int j=i+1; j<n; j++){
+  	    if (i != j){
+		  err_c += C[i][j] * C[i][j];
+		//cout<< err_c << endl;
+	    }
+  		  
+	  }
+    }
+	for (int i=0; i<n; i++)
+      for (int j=0; j<n; j++)
+	  A[i][j] = C[i][j];
+  }
+  
+  for (int i=0; i<n; i++)
+	  x[i] = A[i][i];
+
+  	
+    //cout << A[i][i] << " ";
+  //cout << endl;
 }
 
 
-void kozinasa::lab9()
-{
+void kozinasa::lab9(){
+
+  double eps = 1.0e-3;
+  double *yk, *yk_1;
+  double del_k1 = 0, del_k = 1;
+  int n=N;
+ 
+  yk_1 = new double[n];
+  yk = new double[n];
+
+  for (int i=0; i<n; i++)
+  	yk_1[i]=1;
+  
+  while(fabs(del_k - del_k1) > eps){
+  	del_k1 = del_k;
+  	
+	for(int i=0; i<n; i++){
+	  double s = 0;
+      for(int j=0; j<n; j++){
+        s += A[i][j]*yk_1[j];
+        }
+	  yk[i]=s;
+    }
+    
+   for (int i=0; i<n; i++){
+   	if (yk[0] != 0 && yk_1[0] != 0){
+   		del_k = yk[i]/yk_1[i];
+	   }
+   }
+   
+   for (int i=0; i<n; i++)
+   	yk_1[i]=yk[i];
+   	
+  }
+  cout<<"Answer by LabWork 9: " << del_k << endl;
 
 }
 
