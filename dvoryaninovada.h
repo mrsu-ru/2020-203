@@ -38,4 +38,6 @@ class dvoryaninovada : public lab
 
   virtual std::string get_name();
 
+  void MatrVect(double **M, double *V, double *R);
+  double ScalarVect(double* v1, double* v2);
 };
