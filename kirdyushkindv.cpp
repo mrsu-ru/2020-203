@@ -250,68 +250,63 @@ void kirdyushkindv::lab6()
  */
 void kirdyushkindv::lab7()
 {
-    const double eps = 1e-18;
-	double* xPrev = new double[N];
-	for (int i = 0; i < N; i++)
-		xPrev[i] = 0;
-	double* r = new double[N];
-	double* rPrev = new double[N];
-	double* A_xPrev = new double[N];
-	double scal_r, rPrev_rPrev;
-	double Ax_x;
-	double alpha, beta;
-	do{
-		for (int i = 0; i < N; i++)
-			rPrev[i] = -b[i];
+    double const eps = 1e-10;
+    double r0[N], z0[N], Az[N];
+    double err;
 
-		for (int i = 0; i < N; i++)
-			for (int j = 0; j < N; j++)
-				rPrev[i] += A[i][j] * x[j];
+    for (int i = 0; i < N; i++) {
+        double Ax = 0;
+        for (int j = 0; j < N; j++) {
+            Ax += A[i][j] * x[j];
+        }
 
-		for (int i = 0; i < N; i++)
-			xPrev[i] = rPrev[i];
+        r0[i] = b[i] - Ax;
+        z0[i] = r0[i];
+    }
 
-		for (int i = 0; i < N; i++)
-			A_xPrev[i] = 0;
+    do {
+        for (int i = 0; i < N; i++) {
+            Az[i] = 0;
+            for (int j = 0; j < N; j++) {
+                Az[i] += A[i][j] * z0[j];
+            }
+        }
 
-		for (int i = 0; i < N; i++)
-			for (int j = 0; j < N; j++)
-				A_xPrev[i] += A[i][j] * xPrev[j];
+        double sum1 = 0;
+        double sum2 = 0;
 
-		rPrev_rPrev = 0;
-		for (int i = 0; i < N; i++)
-			rPrev_rPrev += rPrev[i] * rPrev[i];
+        for (int i = 0; i < N; i++) {
+            sum1 += r0[i] * r0[i];
+            sum2 += Az[i] * z0[i];
+        }
 
-		Ax_x = 0;
-		for (int i = 0; i < N; i++)
-			Ax_x += A_xPrev[i] * xPrev[i];
+        double alpha = sum1 / sum2;
+        err = 0;
 
-		alpha = rPrev_rPrev / Ax_x;
+        for (int i = 0; i < N; i++) {
+            double temp = x[i];
+            x[i] = x[i] + alpha * z0[i];
+            if (abs(temp - x[i]) > err) {
+                err = abs(temp - x[i]);
+            }
+        }
 
-		for (int i = 0; i < N; i++)
-			x[i] = x[i] + alpha * xPrev[i];
+        sum1 = 0;
+        sum2 = 0;
 
-		for (int i = 0; i < N; i++)
-			r[i] = rPrev[i] - alpha * A_xPrev[i];
+        for (int i = 0; i < N; i++) {
+            sum2 += r0[i] * r0[i];
+            r0[i] = r0[i] - alpha * Az[i];
 
-		scal_r = 0;
-		for (int i = 0; i < N; i++)
-			scal_r += r[i] * r[i];
+            sum1 += r0[i] * r0[i];
+        }
 
-		beta = scal_r / rPrev_rPrev;
+        double beta = sum1 / sum2;
 
-		for (int i = 0; i < N; i++)
-			xPrev[i] = r[i] + beta * xPrev[i];
-
-		for (int i = 0; i < N; i++)
-			rPrev[i] = r[i];
-
-	} while (scal_r > eps);
-
-	delete[]xPrev;
-	delete[]rPrev;
-	delete[]r;
-	delete[]A_xPrev;
+        for (int i = 0; i < N; i++) {
+            z0[i] = r0[i] + beta * z0[i];
+        }
+    } while (err > eps);
 }
 
 
