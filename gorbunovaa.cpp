@@ -74,11 +74,39 @@ void gorbunovaa::lab2()
 
 
 /**
- * Ìåòîä ïðîãîíêè
+ * Метод прогонки
  */
 void gorbunovaa::lab3()
 {
+	float *a = new float[n];
+	float *b = new float[n];
 
+	cout << matr[0][1] << endl;
+
+	// Прямой ход
+	a[1] = -matr[0][1] / matr[0][0]; 
+	b[1] = matr[0][n + 1] / matr[0][0];
+	//F[0] = -b[0];
+
+	for (int i = 1; i < n - 1; i++) {
+		//F[i] = -b[i];
+		a[i + 1] = -matr[i][i + 1] / (matr[i][i] + matr[i][i - 1] * a[i]);
+		b[i + 1] = (-matr[i][i - 1] * b[i] + matr[i][n + 1]) / (matr[i][i] + matr[i][i - 1] * a[i]);
+	}
+
+	// Обрантый ход
+	float *x = new float[n];
+
+	x[n - 1] = (-matr[n - 1][n - 2] * b[n - 1] + matr[n - 1][n + 1]) / (matr[n - 1][n - 1] + matr[n - 1][n - 2] * a[n - 1]);
+
+	for (int i = n - 2; i >= 0; i--) {
+		x[i] = a[i + 1] * x[i + 1] + b[i + 1];
+	}
+
+	// Вывод
+	for (int i = 0; i < n; i++) {
+		cout << "x[" << i + 1 << "] = " << x[i] << endl;
+	}
 }
 
 
