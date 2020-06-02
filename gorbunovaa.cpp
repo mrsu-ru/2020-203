@@ -5,7 +5,7 @@
  */
 void gorbunovaa::lab1()
 {
-  cout << "hello world!" << endl;
+  cout << "Hello world!" << endl;
 }
 
 
