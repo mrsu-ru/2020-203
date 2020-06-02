@@ -167,18 +167,11 @@ for (int i=N-2; i>=0; i--){
 /**
  * Метод Холецкого
  */
-void edelevaup::lab5()
-{
-
-}
-
-
 
 /**
  * Метод Якоби или Зейделя
  */
-void
-edelevaup::lab6 ()
+void edelevaup::lab5 ()
 {
   double *f = new double[N];
   double e = pow(10, -30);
@@ -220,16 +213,66 @@ edelevaup::lab6 ()
 /**
  * Метод минимальных невязок
  */
+void edelevaup::lab6()
+{
+double eps = 1e-19;
+	double *x1 = new double[N];	
+	double *r = new double[N];	
+	double *Ar = new double[N];	
+	double norma =0;
+
+	
+
+	for (int i = 0; i < N; i++)
+	{
+		x[i] = b[i];
+		x1[i]=0;
+
+	}
+	do{
+	for (int i=0; i<N; i++){ 
+		double t=0;
+		for (int j=0; j<N; j++){
+			t+=A[i][j]*x[j];
+		}
+		r[i]=t-b[i];
+	}
+	for (int i=0; i<N; i++){ 
+		double t=0;
+		for (int j=0; j<N; j++){
+			t+=A[i][j]*r[j];
+		}
+		Ar[i]=t;
+	}
+	double s1=0, s2 =0;
+	for (int i=0;i<N;i++){
+  		s1 += r[i]*Ar[i];
+		s2 += Ar[i]*Ar[i];
+  	}
+	double tau=s1/s2;
+	for(int i=0;i<N;i++){
+  		x[i]=x[i]-tau*r[i];
+		  
+	  }
+	norma =0;
+	for (int i=0;i<N;i++){
+		norma+=(x1[i]-x[i])*(x1[i]-x[i]);
+  		x1[i]=x[i];
+  	}
+	} while (sqrt(norma) > eps);
+	
+}
+
+
+/**
+ * Метод сопряженных градиентов
+ */
 void edelevaup::lab7()
 {
 
 }
 
 
-
-/**
- * Метод сопряженных градиентов
- */
 void edelevaup::lab8()
 {
 
@@ -241,12 +284,6 @@ void edelevaup::lab9()
 
 }
 
-
-/*void edelevaup::lab10()
-{
-
-}
-*/
 
 std::string edelevaup::get_name()
 {

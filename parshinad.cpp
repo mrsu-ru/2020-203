@@ -162,7 +162,50 @@ void parshinad::lab4()
  */
 void parshinad::lab5()
 {
+    double eps = 1e-35;
+    double* z = new double[N];
 
+    for (int i = 0; i < N; i++) {
+		z[i] = b[i];
+        for (int j = 0; j < N; j++) {
+            z[i] -= A[i][j] * x[j];
+        }
+    }
+
+    double norma = 0;
+
+    for (int i = 0; i < N; i++) {
+        norma += z[i] * z[i];
+    }
+
+    while (norma > eps) {
+        for (int i = 0; i < N; i++) {
+            double sum1 = 0;
+            double sum2 = 0;
+            for (int j = 0; j < i; j++) {
+                sum1 += A[i][j] * x[j];
+            }
+
+            for (int j = i + 1; j < N; j++) {
+                sum2 += A[i][j] * x[j];
+            }
+			
+            x[i] = (b[i] - sum1 - sum2) / A[i][i];
+        }
+
+        for (int i = 0; i < N; i++) {
+			z[i] = b[i];
+			for (int j = 0; j < N; j++) {
+				z[i] -= A[i][j] * x[j];
+			}
+		}
+
+        norma = 0;
+
+        for (int i = 0; i < N; i++) {
+            norma += z[i] * z[i];
+        }
+    }
 }
 
 
@@ -172,7 +215,81 @@ void parshinad::lab5()
  */
 void parshinad::lab6()
 {
+	double eps = 1e-35;
+    double *r = new double[N];    
 
+    for (int i = 0; i < N; i++){
+		r[i] = -b[i];
+	}
+    for (int i = 0; i < N; i++){
+		for (int j = 0; j < N; j++){
+            r[i] += A[i][j] * x[j];
+		}
+	}
+	
+    double rNorma = 0;
+    for (int i = 0; i < N; i++){
+		rNorma += r[i] * r[i];
+	}
+
+    double *Ar = new double[N];
+	memset(Ar, 0, sizeof(double) * N);
+    for (int i = 0; i < N; i++){
+		for (int j = 0; j < N; j++){
+			Ar[i] += A[i][j] * r[j];
+		}
+	}
+
+    double ArNorma = 0;
+    for (int i = 0; i < N; i++){
+		ArNorma += Ar[i] * Ar[i];
+	}
+
+    double t = 0;
+    for (int i = 0; i < N; i++){
+		t += Ar[i] * r[i];
+	}
+    t /= ArNorma;
+
+    while (rNorma > eps)
+    {
+		for (int i = 0; i < N; i++){
+			x[i] -= t * r[i];
+		}
+
+		for (int i = 0; i < N; i++){
+			r[i] = -b[i];
+		}
+	  
+		for (int i = 0; i < N; i++) {
+			for (int j = 0; j < N; j++){
+				r[i] += A[i][j] * x[j];  
+			}			  
+		}
+
+		memset(Ar, 0, sizeof(double) * N);
+		for (int i = 0; i < N; i++) {
+			for (int j = 0; j < N; j++){
+				Ar[i] += A[i][j] * r[j];
+			}
+		}
+
+		ArNorma = 0;
+		for (int i = 0; i < N; i++){
+			ArNorma += Ar[i] * Ar[i];
+		}
+
+		t = 0;
+		for (int i = 0; i < N; i++){
+			t += Ar[i] * r[i];
+		}
+		t /= ArNorma;
+		
+		rNorma = 0;
+		for (int i = 0; i < N; i++){
+			rNorma += r[i] * r[i];
+		}
+    }
 }
 
 
@@ -182,7 +299,102 @@ void parshinad::lab6()
  */
 void parshinad::lab7()
 {
+	double eps = 1e-35;
+  
+	double *xPrev = new double[N];
+	memset(xPrev, 0, sizeof(double) * N);
 
+	double *r = new double[N];
+
+	for (int i = 0; i < N; i++){
+		r[i] = -b[i];
+	}
+
+	double *Ar = new double[N];
+
+	memset(Ar, 0, sizeof(double) * N);
+	for (int i = 0; i < N; i++){
+		for (int j = 0; j < N; j++){
+			Ar[i] += A[i][j] * r[j];
+		}
+	}
+
+	double rScal = 0;
+
+	for (int i = 0; i < N; i++){
+		rScal += r[i] * r[i];
+	}
+
+	double rAScal = 0;
+
+	for (int i = 0; i < N; i++){
+		rAScal += Ar[i] * r[i];
+	}
+
+	double a = 1;
+
+	double t = rScal / rAScal;
+
+	for (int i = 0; i < N; i++){
+		x[i] = t * b[i];
+	}
+    
+
+	for (int i = 0; i < N; i++){
+		for (int j = 0; j < N; j++){
+			r[i] += A[i][j] * x[j];
+		}
+	}
+
+	rScal = 0;
+	for (int i = 0; i < N; i++){
+		rScal += r[i] * r[i];
+	}
+
+
+	while (rScal > eps){
+		
+    double rAScalPrev = rAScal;
+    memset(Ar, 0, sizeof(double) * N);
+
+    for (int i = 0; i < N; i++){
+		for (int j = 0; j < N; j++){
+            Ar[i] += A[i][j] * r[j];
+		}
+	}
+
+    rAScal = 0;
+
+    for (int i = 0; i < N; i++){
+		rAScal += Ar[i] * r[i];
+	}
+    
+    double tPrev = t;
+
+    t = rScal / rAScal;
+
+    a = 1.0 / (1 - t / tPrev / a * rScal / rAScalPrev);
+
+    for (int i = 0; i < N; i++){
+		double tmp = x[i];
+		x[i] = a * x[i] + (1 - a) * xPrev[i] - t * a * r[i];
+		xPrev[i] = tmp;
+    }
+
+    for (int i = 0; i < N; i++){
+		r[i] = -b[i];
+	}
+    for (int i = 0; i < N; i++){
+		for (int j = 0; j < N; j++){
+            r[i] += A[i][j] * x[j];
+		}
+	}
+
+    rScal = 0;
+
+    for (int i = 0; i < N; i++)
+		rScal += r[i] * r[i];
+    }
 }
 
 

@@ -191,7 +191,59 @@ for(int i=0;i<N;i++){
  */
 void kozlovaes::lab6()
 {
-
+    double eps = 1.e-20;
+    double *r0 = new double [N];
+    double *Fi = new double [N];
+	double *Ar0 = new double [N];
+    double *TempX = new double[N];
+    double a, norma=0, u=0, Tu=0;
+	
+	do
+    {
+		for (int i=0; i<N; i++){
+			TempX[i]=x[i];//первое приближение
+		}
+		
+		double Temp=0;
+        for(int i=0; i<N; i++)
+        {
+			Temp=0;
+			for(int j=0; j<N; j++){
+				Temp+= A[i][j]*TempX[j];
+			}
+			r0[i]=Temp-b[i];//Вектор невязок
+			Fi[i]=2*r0[i];
+        }
+		
+		Temp=0;
+        for(int i=0; i<N; i++)
+        {
+			for(int j=0; j<N; j++){
+				Temp+= A[i][j]*r0[j];
+			}
+			Ar0[i]=Temp;
+		}
+		
+        u=0.0; 
+        Tu=0.0;
+        for(int i=0; i<N; i++)
+        {
+            u+=abs(Ar0[i]*r0[i]);
+            Tu+=abs(Ar0[i]*Ar0[i]);
+        } 
+		
+        a=u/(2*Tu); 
+        for(int i=0; i<N; i++){
+			x[i]=TempX[i]-a*Fi[i];
+		}
+		
+        norma=0;
+        for(int i=0; i<N; i++)
+        {
+            norma+=(TempX[i]-x[i]);
+        }
+		
+    }while (norma>eps);
 }
 
 
