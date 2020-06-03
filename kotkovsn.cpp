@@ -444,10 +444,44 @@ void kotkovsn::lab8()
   delete []C;
 }
 
-
+/**
+ * Нахождение наибольшего по модулю собственного значения матрицы
+ */
 void kotkovsn::lab9()
 {
+  const double eps = 1e-3;
+
+  double *yPrev = new double[N];
+  for (int i = 0; i < N; i++)
+      yPrev[i] = 1;
   
+  double *y = new double[N];
+  
+  double delta = 1e9;
+  double lambdaMax = 0;
+
+  while (delta > eps)
+  {
+    memset(y, 0, sizeof(double) * N);
+    for (int i = 0; i < N; i++)
+      for (int j = 0; j < N; j++)
+        y[i] += A[i][j] * yPrev[j];
+
+    int i = 0;
+    while (i < N && fabs(y[i]) < eps && fabs(yPrev[i]) < eps) i++;
+
+    double lambda = y[i] / yPrev[i];
+    delta = fabs(lambda - lambdaMax);
+    lambdaMax = lambda;
+    
+    for (int i = 0; i < N; i++)
+      yPrev[i] = y[i];
+  }
+
+  cout << "lambdaMax = " << lambdaMax << endl;
+
+  delete []yPrev;
+  delete []y;
 }
 
 
