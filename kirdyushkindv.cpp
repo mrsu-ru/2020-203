@@ -312,7 +312,62 @@ void kirdyushkindv::lab7()
 
 void kirdyushkindv::lab8()
 {
+double eps = 1e-20;
+	double** B = new double* [N];
+	for (int i = 0; i < N; i++) {
+		B[i] = new double[N];
+	}
 
+	while (true) {
+		double norm = 0;
+		int imax = 0;
+		int jmax = 1;
+		for (int i = 0; i < N; i++) {
+			for (int j = i + 1; j < N; j++) {
+				if (abs(A[i][j]) > abs(A[imax][jmax])) {
+					imax = i;
+					jmax = j;
+				}
+				norm += A[i][j] * A[i][j];
+			}
+		}
+
+		if (sqrt(norm) < eps) {
+			break;
+		}
+
+		double fi = 0.5 * atan(2 * A[imax][jmax] / (A[imax][imax] - A[jmax][jmax]));
+
+		for (int i = 0; i < N; i++) {
+			B[i][imax] = A[i][imax] * cos(fi) + A[i][jmax] * sin(fi);
+			B[i][jmax] = A[i][jmax] * cos(fi) - A[i][imax] * sin(fi);
+		}
+
+		for (int i = 0; i < N; i++) {
+			for (int j = 0; j < N; j++) {
+				if (j != imax && j != jmax) {
+					B[i][j] = A[i][j];
+				}
+			}
+		}
+
+		for (int j = 0; j < N; j++) {
+			A[imax][j] = B[imax][j] * cos(fi) + B[jmax][j] * sin(fi);
+			A[jmax][j] = B[jmax][j] * cos(fi) - B[imax][j] * sin(fi);
+		}
+
+		for (int i = 0; i < N; i++) {
+			for (int j = 0; j < N; j++) {
+				if (i != imax && i != jmax) {
+					A[i][j] = B[i][j];
+				}
+			}
+		}
+	}
+
+	for (int i = 0; i < N; i++) {
+		x[i] = A[i][i];
+	}
 }
 
 
