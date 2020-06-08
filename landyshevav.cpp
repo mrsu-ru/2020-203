@@ -197,7 +197,56 @@ void landyshevav::lab5()
  */
 void landyshevav::lab6()
 {
+    double eps = 1e-15;
 
+    double* prevX = new double[N];
+    double* r = new double[N];
+
+    while (true) {
+
+        for (int i = 0; i < N; i++)
+            prevX[i] = x[i];
+
+        for (int i = 0; i < N; i++) {
+            r[i] = b[i];
+
+            for (int j = 0; j < N; j++) {
+                r[i] -= A[i][j] * x[j];
+            }
+        }
+
+        double tau = 0;
+        double denomTau = 0;
+
+        for (int i = 0; i < N; i++) {
+            double Ar = 0;
+
+            for (int j = 0; j < N; j++) {
+                Ar += A[i][j] * r[j];
+            }
+
+            tau += Ar * r[i];
+            denomTau += Ar * Ar;
+        }
+
+        tau /= denomTau;
+
+        for (int i = 0; i < N; i++) {
+            x[i] = prevX[i] + tau * r[i];
+        }
+
+        double maxErr = abs(x[0] - prevX[0]);
+        for (int i = 1; i < N; i++)
+            if (abs(x[i] - prevX[i]) > maxErr)
+                maxErr = abs(x[i] - prevX[i]);
+
+        if (maxErr < eps)
+            break;
+
+    }
+
+    delete[] prevX;
+    delete[] r;
 }
 
 
@@ -207,7 +256,71 @@ void landyshevav::lab6()
  */
 void landyshevav::lab7()
 {
+    double Del, s, sAbs;
+    double eps = 1.e-10;
 
+    double* K = new double[N];
+    double* L = new double[N];
+    double* M = new double[N];
+    double* xrez = new double[N];
+
+
+    for (int i = 0; i < N; i++) {
+        xrez[i] = 0;
+    }
+
+
+    do {
+       
+        for (int i = 0; i < N; i++) {
+            K[i] = 0;
+            for (int j = 0; j < N; j++)
+                K[i] += A[i][j] * xrez[j];
+        }
+
+        for (int i = 0; i < N; i++) {
+            L[i] = K[i] - b[i];
+        }
+
+
+        for (int i = 0; i < N; i++) {
+            K[i] = 0;
+            for (int j = 0; j < N; j++)
+                K[i] += A[i][j] * L[j];
+        }
+
+
+        for (int i = 0; i < N; i++) {
+            M[i] = 0;
+            for (int j = 0; j < N; j++) {
+                M[i] += A[i][j] * K[j];
+            }
+        }
+
+        s = 0;
+        sAbs = 0;
+
+        for (int i = 0; i < N; i++) {
+            s += K[i] * L[i];
+            sAbs += M[i] * K[i];
+        }
+        if (s == sAbs)
+            s = 1;
+        else
+            s = s / sAbs;
+
+        for (int i = 0; i < N; i++)
+            x[i] = xrez[i] - s * L[i];
+
+
+        Del = abs(x[0] - xrez[0]);
+
+        for (int i = 0; i < N; i++) {
+            if (abs(x[i] - xrez[i]) > Del)
+                Del = abs(x[i] - xrez[i]);
+            xrez[i] = x[i];
+        }
+    } while (eps < Del);
 }
 
 

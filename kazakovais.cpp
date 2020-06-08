@@ -1,11 +1,12 @@
 ﻿#include "kazakovais.h"
 
+
 /**
  * Введение в дисциплину
  */
 void kazakovais::lab1()
 {
-  cout << "hello world!" << endl;
+	cout << "hello world!" << endl;
 }
 
 
@@ -14,10 +15,10 @@ void kazakovais::lab1()
  */
 void kazakovais::lab2()
 {
- 	int max,i,j,k;
+	int max, i, j, k;
 	double sum;
 	sum = 0;
-	
+
 	//прямой ход
 	for (i = 0; i < N; i++)
 	{
@@ -31,38 +32,38 @@ void kazakovais::lab2()
 				max = j;
 			}
 		}
-			if (max != i)
-			{
-	               vspom = A[i];
-	               A[i]=A[max];
-	               A[max] = vspom;
-         
-	               vspom_1 = b[i];
-	               b[i] = b[max];
-	               b[max]= vspom_1;
-			}
+		if (max != i)
+		{
+			vspom = A[i];
+			A[i] = A[max];
+			A[max] = vspom;
 
-		for (j = N-1; j > i; j--)
+			vspom_1 = b[i];
+			b[i] = b[max];
+			b[max] = vspom_1;
+		}
+
+		for (j = N - 1; j > i; j--)
 		{
 			A[i][j] /= A[i][i];
 		}
-		b[i]/=A[i][i];
+		b[i] /= A[i][i];
 		A[i][i] = 1;
-		
+
 		for (j = i + 1; j < N; j++)
 		{
-			for (k = N-1; k > i; k--)
+			for (k = N - 1; k > i; k--)
 			{
 				A[j][k] = A[j][k] - A[j][i] * A[i][k];
 			}
-			b[j]=b[j]-A[j][i]*b[i];
+			b[j] = b[j] - A[j][i] * b[i];
 			A[j][i] = 0;
 		}
 		delete[]vspom;
 	}
 
 	//обратный ход
-	x[N-1]=b[N-1];
+	x[N - 1] = b[N - 1];
 	for (i = N - 2; i > -1; i--)
 	{
 		for (j = i + 1; j < N; j++)
@@ -97,7 +98,7 @@ void kazakovais::lab3()
 	{
 		alpha[i] = -A[i][i + 1] / (A[i][i] + A[i][i - 1] * alpha[i - 1]);
 		beta[i] = (b[i] - A[i][i - 1] * beta[i - 1]) / (A[i][i] + A[i][i - 1] * alpha[i - 1]);
-		
+
 	}
 
 	beta[N - 1] = (b[N - 1] - A[N - 1][N - 2] * beta[N - 2]) / (A[N - 1][N - 1] + A[N - 1][N - 2] * alpha[N - 2]);
@@ -127,18 +128,18 @@ void kazakovais::lab4()
 	double vspom = 0;
 	double *y; //вспомогательный массив для вычисления решений СЛАУ
 
-	int i,j,k;
-	
+	int i, j, k;
+
 	d = new double[N];	//массив для коэффициентов диагональной матрицы
 	sum = new double[N];
 	y = new double[N];
 	double **s = new double*[N];
-	
-	for (i=0; i<N;i++)
+
+	for (i = 0; i < N; i++)
 	{
 		s[i] = new double[N];
 	}
-	
+
 	//первый этап - поиск LU-разложения
 	//начальная инициализация массива вспомогательных сумм
 	for (i = 0; i < N; i++)
@@ -146,25 +147,25 @@ void kazakovais::lab4()
 		sum[i] = A[i][i];
 	}
 
-	if (sum[0]>0)
+	if (sum[0] > 0)
 	{
-		d[0]=1;
+		d[0] = 1;
 	}
-	else 
+	else
 	{
-		d[0]=-1;
+		d[0] = -1;
 	}
-	s[0][0]=sqrt(fabs(sum[0]));
-	for (j=1;j<N;j++)
+	s[0][0] = sqrt(fabs(sum[0]));
+	for (j = 1; j < N; j++)
 	{
-		s[0][j]=A[0][j]/(d[0]*s[0][0]);
+		s[0][j] = A[0][j] / (d[0] * s[0][0]);
 	}
-	
+
 	for (i = 1; i < N; i++)
 	{
 		for (k = 0; k < i; k++)
 		{
-			sum[i] -= d[k] * pow(s[k][i],2);
+			sum[i] -= d[k] * pow(s[k][i], 2);
 		}
 		if (sum[i] > 0)
 		{
@@ -175,14 +176,14 @@ void kazakovais::lab4()
 			d[i] = -1;
 		}
 		s[i][i] = sqrt(fabs(sum[i]));
-		for (j = i+1; j < N; j++)
+		for (j = i + 1; j < N; j++)
 		{
 			for (k = 0; k < i; k++)
 			{
 				vspom += d[k] * s[k][i] * s[k][j];
 			}
 
-			s[i][j] = (A[i][j]-vspom)/(d[i]*s[i][i]);
+			s[i][j] = (A[i][j] - vspom) / (d[i] * s[i][i]);
 			vspom = 0;
 		}
 	}
@@ -208,7 +209,7 @@ void kazakovais::lab4()
 		x[i] = (y[i] - d[i] * vspom) / (d[i] * s[i][i]);
 		vspom = 0;
 	}
-	
+
 	delete[]d;
 	delete[]sum;
 	delete[]y;
@@ -348,7 +349,7 @@ void kazakovais::lab6()
 	double Arr = 0;
 	double t = 0;	//приближение
 	double norma = 0;	//норма
-	int i,j;
+	int i, j;
 
 	for (i = 0; i < N; i++)
 	{
@@ -386,7 +387,7 @@ void kazakovais::lab6()
 	{
 		x1[i] = x[i] - t * r[i];
 	}
-	
+
 	norma = abs(x1[0] - x[0]);
 	for (i = 1; i < N; i++)
 	{
@@ -409,7 +410,7 @@ void kazakovais::lab6()
 		Arr = 0;
 		t = 0;
 		norma = 0;
-		
+
 		for (i = 0; i < N; i++)
 		{
 			r[i] = b[i];
@@ -467,7 +468,8 @@ void kazakovais::lab6()
  */
 void kazakovais::lab7()
 {
-	double eps = 1e-24;
+	//данный метод работает только для симметричных матриц коэффициентов
+	double eps = 1e-6;
 	double *r = new double[N];
 	double *r1 = new double[N];
 	double *z = new double[N];
@@ -480,11 +482,11 @@ void kazakovais::lab7()
 	double Norma = 0;
 	double norma1 = 0;
 	double norma2 = 0;
-	int i,j;
+	int i, j;
 
 	for (i = 0; i < N; i++)
 	{
-		x[i] = b[i];
+		x[i] = b[i];	//задаём начальное приближение
 	}
 
 	for (i = 0; i < N; i++)
@@ -492,7 +494,7 @@ void kazakovais::lab7()
 		r[i] = b[i];
 		for (j = 0; j < N; j++)
 		{
-			r[i] -= A[i][j] * x[j];
+			r[i] -= A[i][j] * x[j];		//рассчитываем вектор невязки
 		}
 	}
 
@@ -510,8 +512,8 @@ void kazakovais::lab7()
 		}
 		Azzscal += Az[i] * z[i];
 	}
-	alpha = r0scal / Azzscal;
-	
+	alpha = r0scal / Azzscal;	//коэффициент для нахождения x[i] на следующей итерации
+
 	for (i = 0; i < N; i++)
 	{
 		x[i] = x[i] + alpha * z[i];
@@ -586,20 +588,215 @@ void kazakovais::lab7()
 }
 
 
-
+/**
+*	Метод вращения для нахождения собственных значений матрицы
+*/
 void kazakovais::lab8()
 {
+	double eps = 1.0e-6;
+	double errc = 0;	//ошибка
+	int i, j, k, l;
+	int imax = 0;
+	int jmax = 1;
+	double Amax = A[0][1];
+	double alpha = 0;
+	double c = 0, s = 0;
+	double **C = new double*[N];
 
+	for (i = 0; i < N; i++)
+	{
+		C[i] = new double[N];
+	}
+
+	for (i = 0; i < N; i++)
+	{
+		for (j = 0; j < N; j++)
+		{
+			C[i][j] = 0;
+		}
+	}
+	
+	for (i = 0; i < N; i++)
+	{
+		for (j = 0; j < N; j++)
+		{
+			if (i != j)
+				errc += A[i][j]*A[i][j];
+		}
+	}
+		
+	while (sqrt(errc)>eps)
+	{
+		//находим максимальный элемент матрицы A над диагональю
+		for (i = 0; i < N; i++)
+		{
+			for (j = i+1; j < N; j++)
+			{
+				if (abs(A[i][j]) >= abs(Amax))
+				{
+					Amax = A[i][j];
+					imax = i;
+					jmax = j;
+				}
+			}
+		}
+
+		if (A[imax][imax] == A[jmax][jmax])
+		{
+			alpha = M_PI / 4;
+		}
+		else alpha = 0.5*atan((2 * A[imax][jmax]) / (A[jmax][jmax] - A[imax][imax]));
+		
+		c = cos(alpha);
+		s = sin(alpha);
+
+		//построение матрицы C
+		C[imax][imax] = c*c*A[imax][imax] - 2*s*c*A[imax][jmax] + s*s*A[jmax][jmax];
+		C[jmax][jmax] = s*s*A[imax][imax] + 2*s*c*A[imax][jmax] + c*c*A[jmax][jmax];
+		C[imax][jmax] = (c*c - s*s)*A[imax][jmax] + s*c*(A[imax][imax] - A[jmax][jmax]);
+		C[jmax][imax] = C[imax][jmax];
+		for (k = 0; k < N; k++)
+		{
+			if (k != imax && k != jmax)
+			{
+				C[imax][k] = c*A[imax][k] - s*A[jmax][k];
+				C[k][imax] = C[imax][k];
+			}
+		}
+		for (k = 0; k < N; k++)
+		{
+			if (k != imax && k != jmax)
+			{
+				C[jmax][k] = s*A[imax][k] + c*A[jmax][k];
+				C[k][jmax] = C[jmax][k];
+			}
+		}
+		for (k = 0; k < N; k++)
+		{
+			for (l = 0; l < N; l++)
+			{
+				if (k != imax && k != jmax && l != imax && l != jmax)
+				{
+					C[k][l] = A[k][l];
+				}
+			}
+		}
+
+		errc = 0;
+		
+		for (i = 0; i < N; i++)
+		{
+			for (j = 0; j < N; j++)
+			{
+				if (i != j)
+					errc += C[i][j]*C[i][j];
+			}
+		}
+
+		for (i = 0; i < N; i++)
+		{
+			for (j = 0; j < N; j++)
+			{
+				A[i][j] = C[i][j];
+			}
+		}
+
+		imax = 0;
+		jmax = 0;
+		Amax = A[0][1];
+		alpha = 0;
+		c = 0, s = 0;
+		for (i = 0; i < N; i++)
+		{
+			for (j = 0; j < N; j++)
+			{
+				C[i][j] = 0;
+			}
+		}
+	}
+	
+	for (i = 0; i < N; i++)
+	{
+		x[i] = A[i][i];
+	}
+	cout << "Собственные значения матрицы A помещены в элементы x[i] вектора RESULT." << endl;
 }
 
 
+/**
+*	Нахождение наибольшего по модулю собственного значения матрицы
+*/
 void kazakovais::lab9()
 {
+	//Для данной матрицы наибольшее по модулю собственное значение вещественное и простое
+	double eps = 1e-3;
+	double *y0 = new double[N];	//произвольный начальный вектор
+	double *y1 = new double[N]; //вектор для итерационно вычисленных значений
+	double y00 = 0;
+	double y10 = 0;
+	double lambda_max0 = 0;
+	double lambda_max1 = 0;
+	double delta_lambda = 0;
+	int i, j;
 
+	for (i = 0; i < N; i++)
+	{
+		y0[i] = 1;
+		y1[i] = 0;
+	}
+	for (i = 0; i < N; i++)
+	{
+		for (j = 0; j < N; j++)
+		{
+			y1[i] += A[i][j] * y0[j];
+		}
+	}
+	y00 = y0[0];
+
+	for (i = 0; i < N; i++)
+	{
+		if (y1[i] != 0)
+		{
+			y10 = y1[i];
+			break;
+		}
+	}
+
+	lambda_max0 = y10 / y00;
+	delta_lambda = lambda_max0;
+
+	while (delta_lambda > eps)
+	{
+		for (i = 0; i < N; i++)
+		{
+			y0[i] = y1[i];
+			y1[i] = 0;
+		}
+		for (i = 0; i < N; i++)
+		{
+			for (j = 0; j < N; j++)
+			{
+				y1[i] += A[i][j] * y0[j];
+			}
+		}
+		for (i = 0; i < N; i++)
+		{
+			if ((y1[i] != 0) && (y0[i] != 0))
+			{
+				y00 = y0[i];
+				y10 = y1[i];
+				break;
+			}
+		}
+		lambda_max1 = y10 / y00;
+		delta_lambda = fabs(lambda_max1 - lambda_max0);
+		lambda_max0 = lambda_max1;
+	}
+	cout << "Наибольшее по модулю собственное значение матрицы A: " << lambda_max1<<endl;
 }
 
 
 std::string kazakovais::get_name()
 {
-  return "Kazakova I.S.";
+	return "Kazakova I.S.";
 }
