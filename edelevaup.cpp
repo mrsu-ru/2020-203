@@ -267,7 +267,74 @@ double eps = 1e-19;
  */
 void edelevaup::lab7()
 {
+  int i,j; double e = 1.0e-21;
+ double *c, *r, *z, *r1;
+ 
+  z = new double[N];
+  c = new double[N];
+  r = new double[N];
+  r1 = new double[N];
+  
+  for (int i=0;i<N;i++){
+  	x[i]=b[i];
+  }
+  
+	for (i=0;i<N;i++){
+  	  double s = 0;
+  	  for (j=0;j<N;j++){
+  		 s += A[i][j]*x[j];
+	   }
+	  r[i]=-s+b[i];
+	  z[i]=-s+b[i];
+      }
+  
+  double xxx = 1;
+  double k=0;
+  while (xxx>e){
+	double al1=0,al2=0;
+	k++;
 
+  	for (i=0;i<N;i++){
+  		al1 += r[i]*r[i];
+  	}
+  	
+  	for (i=0;i<N;i++){
+  	  double s = 0;
+  	  for (j=0;j<N;j++){
+  		 s += A[i][j]*z[j];
+	   }
+	  c[i]=s;
+      }
+
+    for (i=0;i<N;i++){
+  		al2 += c[i]*z[i];
+  	}
+   double al=al1/al2;
+   cout<<al<<endl;
+  
+   for (i=0;i<N;i++){
+  	  x[i]+=al*z[i];
+    }
+   
+   for (i=0;i<N;i++){
+  	  r1[i] = r[i] - al*c[i];
+    }
+    double bt1=0;
+  	for (i=0;i<N;i++){
+  		bt1 += r1[i]*r1[i];
+  	}
+  	double bt=bt1/al1;
+  	double u1=0,u2=0;
+  	for (i=0;i<N;i++){
+  	  z[i] = r1[i] + bt*z[i];
+  	  r[i] = r1[i];
+  	  u1+=r1[i]*r1[i];
+  	  u2+=b[i]*b[i];
+    }
+    xxx = sqrt(u1)/sqrt(u2);
+    cout<<xxx<<endl;
+  
+  }
 }
 // Метод вращения для нахождения собственных значений матрицы 
 
