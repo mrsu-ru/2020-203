@@ -196,7 +196,43 @@ void malovki::lab5()
  */
 void malovki::lab6()
 {
+	const double eps = 1e-20;
+	double* r = new double[N];//вектор невязок
+	double rNorm = 0; //норма вектора невязок
+	double* Ar = new double[N]; //произведение матрицы A на вектор невязок
+	double ArNorm = 0; 
+	double tau = 0; //итерационный параметр
+	
+	do{
+		for (int i = 0; i < N; i++)
+			r[i] = -b[i];
+		for (int i = 0; i < N; i++)
+			for (int j = 0; j < N; j++)
+				r[i] += A[i][j] * x[j];
 
+		for (int i = 0; i < N; i++)
+			Ar[i] = 0;
+		for (int i = 0; i < N; i++)
+			for (int j = 0; j < N; j++)
+				Ar[i] += A[i][j] * r[j];
+
+		ArNorm = 0;
+		for (int i = 0; i < N; i++)
+			ArNorm += Ar[i] * Ar[i];
+
+		tau = 0;
+		for (int i = 0; i < N; i++)
+			tau += Ar[i] * r[i];
+		tau /= ArNorm;
+
+		rNorm = 0;
+		for (int i = 0; i < N; i++)
+			rNorm += r[i] * r[i];
+
+		for (int i = 0; i < N; i++)
+			x[i] = x[i] - tau * r[i];
+
+	} while (rNorm > eps);
 }
 
 
@@ -206,7 +242,68 @@ void malovki::lab6()
  */
 void malovki::lab7()
 {
+	const double eps = 1e-18;
 
+	double* xPrev = new double[N];
+	for (int i = 0; i < N; i++)
+		xPrev[i] = 0;
+	double* r = new double[N];
+	double* rPrev = new double[N];
+	double* A_xPrev = new double[N];
+	double r_r, rPrev_rPrev;
+	double Ax_x;
+	double alpha, betta;
+
+	do{
+		for (int i = 0; i < N; i++)
+			rPrev[i] = -b[i];
+		for (int i = 0; i < N; i++)
+			for (int j = 0; j < N; j++)
+				rPrev[i] += A[i][j] * x[j];
+
+		for (int i = 0; i < N; i++)
+			xPrev[i] = rPrev[i];
+
+		for (int i = 0; i < N; i++)
+			A_xPrev[i] = 0;
+		for (int i = 0; i < N; i++)
+			for (int j = 0; j < N; j++)
+				A_xPrev[i] += A[i][j] * xPrev[j];
+
+		rPrev_rPrev = 0;
+		for (int i = 0; i < N; i++)
+			rPrev_rPrev += rPrev[i] * rPrev[i];
+
+		Ax_x = 0;
+		for (int i = 0; i < N; i++)
+			Ax_x += A_xPrev[i] * xPrev[i];
+
+		alpha = rPrev_rPrev / Ax_x;
+
+		for (int i = 0; i < N; i++)
+			x[i] = x[i] + alpha * xPrev[i];
+		
+		for (int i = 0; i < N; i++)
+			r[i] = rPrev[i] - alpha * A_xPrev[i];
+
+		r_r = 0;
+		for (int i = 0; i < N; i++)
+			r_r += r[i] * r[i];
+
+		betta = r_r / rPrev_rPrev;
+
+		for (int i = 0; i < N; i++)
+			xPrev[i] = r[i] + betta * xPrev[i];
+
+		for (int i = 0; i < N; i++)
+			rPrev[i] = r[i];
+
+	} while (r_r > eps);
+
+	delete[]xPrev;
+	delete[]rPrev;
+	delete[]r;
+	delete[]A_xPrev;
 }
 
 
@@ -218,7 +315,65 @@ void malovki::lab8()
 
 void malovki::lab9()
 {
+	double eps = 1e-3;
+	double* yPrev = new double[N];	
+	double* yNext = new double[N]; 
+	double y0 = 0;
+	double y1 = 0;
+	double lambdaPrev = 0;
+	double lambdaNext = 0;
+	double delta = 0;
 
+	for (int i = 0; i < N; i++){
+		yPrev[i] = 1;
+		yNext[i] = 0;
+	}
+
+	for (int i = 0; i < N; i++){
+		for (int j = 0; j < N; j++){
+			yNext[i] += A[i][j] * yPrev[j];
+		}
+	}
+
+	y0 = yPrev[0];
+
+	for (int i = 0; i < N; i++){
+		if (yNext[i] != 0){
+			y1 = yNext[i];
+			break;
+		}
+	}
+
+	lambdaPrev = y1 / y0;
+	delta = lambdaPrev;
+
+	while (delta > eps){
+		for (int i = 0; i < N; i++){
+			yPrev[i] = yNext[i];
+			yNext[i] = 0;
+		}
+
+		for (int i = 0; i < N; i++){
+			for (int j = 0; j < N; j++){
+				yNext[i] += A[i][j] * yPrev[j];
+			}
+		}
+
+		for (int i = 0; i < N; i++){
+			if ((yNext[i] != 0) && (yPrev[i] != 0)){
+				y0 = yPrev[i];
+				y1 = yNext[i];
+				break;
+			}
+		}
+
+		lambdaNext = y1 / y0;
+		delta = fabs(lambdaNext - lambdaPrev);
+		lambdaPrev = lambdaNext;
+	}
+	cout << "Max self value: " << lambdaNext << endl;
+	delete[]yPrev;
+	delete[]yNext;
 }
 
 

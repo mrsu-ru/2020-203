@@ -209,8 +209,53 @@ void garinma::lab5()
  */
 void garinma::lab6()
 {
+double *new_x = new double[N],
+*r = new double[N],
+eps = 1.e-10;
 
+    for (int i = 0; i < N; i++)
+        x[i] = 0;
+
+    do
+    {
+        for (int i = 0; i < N; i++)
+        {
+            r[i] = b[i];
+            for (int j = 0; j < N; j++)
+                r[i] -= A[i][j] * x[j];
+        }
+
+        double tau, P = 0, Q = 0, t;
+        for (int i = 0; i < N; i++)
+        {
+            t = 0;
+            for (int j = 0; j < N; j++)
+                t += A[i][j] * r[j];
+
+
+            P += r[i] * t;
+            Q += t * t;
+        }
+
+        tau = P / Q;
+        for (int i = 0; i < N; i++)
+            new_x[i] = x[i] + tau * r[i];
+
+        double maxdif = 0;
+        for (int i = 0; i < N; i++)
+        {
+            if (fabs(x[i] - new_x[i]) > maxdif)
+				maxdif = fabs(x[i] - new_x[i]);
+            x[i] = new_x[i];
+        }
+
+        if (maxdif < eps) break;
+    }while(true);
+
+    delete[] new_x;
+    delete[] r;
 }
+
 
 
 
@@ -219,7 +264,74 @@ void garinma::lab6()
  */
 void garinma::lab7()
 {
+	double Del, s, sAbs;
+    double eps = 1.e-10;
 
+	double *K = new double[N];
+	double *L = new double[N];
+	double *M = new double[N];
+	double *xrez = new double[N];//итерационные решения
+
+
+	//задание начального приближения
+	for (int i = 0; i<N; i++){
+		xrez[i] = 0;
+	}
+
+
+	do {
+		//нахождение скалярного произведения матрицы системы и вектора приближенного решения
+		for (int i = 0; i < N; i++) {
+			K[i] = 0;
+			for (int j = 0; j < N; j++)
+				K[i] += A[i][j] * xrez[j];
+		}
+
+		//нахождение градиента
+		for (int i = 0; i < N; i++) {
+			L[i] = K[i] - b[i];
+		}
+
+		//скалярное произведение матрицы системы и градиента
+		for (int i = 0; i < N; i++) {
+			K[i] = 0;
+			for (int j = 0; j < N; j++)
+				K[i] += A[i][j] * L[j];
+		}
+
+
+		for (int i = 0; i < N; i++) {
+			M[i] = 0;
+			for (int j = 0; j < N; j++) {
+				M[i] += A[i][j] * K[j];
+			}
+		}
+
+		s = 0;
+		sAbs = 0;
+
+		//нахождение величины смещения по направлению градиента(скалярного шага)
+		for (int i = 0; i < N; i++) {
+			s += K[i] * L[i];
+			sAbs += M[i] * K[i];
+		}
+		if (s == sAbs)
+			s = 1;
+		else
+			s = s / sAbs;
+		//записываем новое приближенное решение
+		for (int i = 0; i < N; i++)
+			x[i] = xrez[i] - s*L[i];
+
+		//проверка на уменьшение погрешности
+		Del = abs(x[0] - xrez[0]);
+
+		for (int i = 0; i < N; i++) {
+			if (abs(x[i] - xrez[i])>Del)
+				Del = abs(x[i] - xrez[i]);
+				xrez[i] = x[i];
+		}
+	} while (eps < Del);
 }
 
 

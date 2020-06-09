@@ -13,6 +13,7 @@ SOURCES= \
     kazakovais.cpp \
     isokovaa.cpp \
     golovatyukam.cpp \
+	gorbunovaa.cpp \
     kirdyushkindv.cpp \
     puzinva.cpp \
     parshinad.cpp \
@@ -28,6 +29,7 @@ SOURCES= \
 	loginovvv.cpp \
     manindi.cpp \
     zevaykinae.cpp \
+    dvoryaninovada.cpp \
 	lab.cpp
 
 OBJECTS=$(SOURCES:.cpp=.o)

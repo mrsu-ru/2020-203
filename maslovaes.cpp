@@ -167,7 +167,48 @@ double tmp;
  */
 void maslovaes::lab6()
 {
+double* F = new double[N];
+double* r = new double[N];
+double norma, eps = 1e-15;
 
+do {
+	for (int i = 0; i < N; i++) {
+		double tmp = 0;
+		for (int j = 0; j < N; j++) {
+			tmp += A[i][j] * x[j];
+		}
+	r[i] = tmp - b[i];
+		F[i] = 2 * r[i];
+	}
+	double* A1 = new double[N];
+	for (int i = 0; i < N; i++) {
+		double temp = 0;
+		for (int j = 0; j < N; j++) {
+			temp += A[i][j] * r[j];
+		}
+		A1[i] = temp;
+	}
+	double t1 = 0, t2 = 0;
+	for (int i = 0; i < N; i++) {
+		t1 += abs(A1[i] * r[i]);
+		t2 += abs(A1[i] * A1[i]);
+	}
+	double a = t1 / (2 * t2);
+
+	double*y = new double[N];
+	for (int i = 0; i < N; i++) {
+		y[i] = x[i];
+	}
+	for (int i = 0; i < N; i++) {
+		x[i] = x[i] - a * F[i];
+	}
+
+	norma = 0;
+	for (int i = 0; i < N; i++) {
+		norma += (y[i] - x[i])*(y[i] - x[i]);
+	}
+
+} while (sqrt(norma) > eps);
 }
 
 

@@ -161,7 +161,73 @@ void zevaykinae::lab5()
  */
 void zevaykinae::lab6()
 {
+ 	double eps = 1e-15;
 
+	// Задаем вектор значений x на предыдущий итерации
+	double *px = new double[N];
+	for (int i = 0; i < N; i++) {
+		px[i] = 0.0;
+	}
+
+	// Задаем вектор невязок
+	double *r = new double[N];
+
+	int iteration = 0;
+	while (true) {
+		iteration++;
+
+	// Рассчитываем вектор невязки
+		for (int i = 0; i < N; i++) {
+			r[i] = b[i];
+
+			for (int j = 0; j < N; j++) {
+				r[i] -= (A[i][j] * px[j]);
+			}
+		}
+
+	// Рассчитываем итерационный параметр
+		double t = 0.0;
+		double temp = 0.0;
+		for (int i = 0; i < N; i++) {
+			double Ar = 0.0;
+
+			for (int j = 0; j < N; j++) {
+				Ar += (A[i][j] * r[j]);
+			}
+
+			t += (Ar * r[i]);
+			temp += (Ar * Ar);
+		}
+		t /= temp;
+
+	// Рассчитывается новое приближение к вектору x
+		for (int i = 0; i < N; i++) {
+			x[i] = px[i] + t * r[i];
+		}
+
+	// Посчитаем максимальную по модулю погрешность
+		double err = 0.0;
+		for (int i = 0; i < N; i++) {
+			if (abs(x[i] - px[i]) > err) {
+				err = abs(x[i] - px[i]);
+			}
+		}
+
+	// При достижении необходимой точности завершаем процесс
+		if (err < eps) {
+			break;
+		}
+
+	// Текущее зачение итерации представим как предыдущее
+		for (int i = 0; i < N; i++) {
+			px[i] = x[i];
+		}
+	}
+
+	cout << "Number of iterations : " << iteration << endl;
+
+	delete[] px;
+	delete[] r;
 }
 
 
@@ -171,7 +237,59 @@ void zevaykinae::lab6()
  */
 void zevaykinae::lab7()
 {
+	for (int i=0; i<N; i++)
+           	   x[i]=0;
+      	 double *r=new double[N];
+       	for (int i=0; i<N; i++){
+       	     r[i]=b[i];
+        	 for (int j=0; j<N; j++)
+         	   r[i]-=A[i][j]*x[j];
+       	}
+       	double *z=new double[N];
+        	 for (int i=0; i<N; i++)
+         	   z[i]=r[i];
+       	double eps=10e-16;
+       	double var=0;
+       	double alpha = 0;
+       	for(;;){
+        	    double differ=0, sum1=0, sum2=0, vec=0;
+          	   for (int i=0; i<N; i++){
+              	  	vec=0;
+               	 for (int k=0; k<N; k++)
+               	      vec+=A[i][k]*z[k];
+               	 sum1+=r[i]*r[i];
+               	 sum2+=vec*z[i];
+           	 }
+            	alpha=sum1/sum2;
+            	for (int i=0; i<N; i++){
+           	         var=x[i];
+            		x[i]+=alpha*z[i];
+             	   	if(abs(x[i]-var)>differ)
+               	     		differ=abs(x[i]-var);
+             	}
+           	if(differ<eps) break;
+            	sum2=0;
+            	sum1=0;
 
+             	for (int i=0; i<N; i++){
+              	    	vec=0;
+               	 	sum2+=r[i]*r[i];
+                	for (int j=0; j<N; j++)
+                 		vec+=A[i][j]*z[j];
+                	r[i]-=alpha*vec;
+                 	sum1+=r[i]*r[i];
+             	 }
+
+           	 for (int i=0; i<N; i++){
+              	 	sum1+=r[i]*r[i];
+                 	sum2+=vec*z[i];
+           	 }
+
+            for (int i=0; i<N; i++)
+           	 z[i]=r[i]+sum1*z[i]/sum2;
+     	}
+      	delete[] r;
+      	delete[] z;
 }
 
 
