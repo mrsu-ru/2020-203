@@ -1,18 +1,11 @@
 #include "gorbunovaa.h"
 
-/**
-<<<<<<< HEAD
- * Ã‚Ã¢Ã¥Ã¤Ã¥Ã­Ã¨Ã¥ Ã¢ Ã¤Ã¨Ã±Ã¶Ã¨Ã¯Ã«Ã¨Ã­Ã³
- */
+
 void gorbunovaa::lab1()
 {
   cout << "Hello world!" << endl;
 }
 
-
-/**
- * ÃŒÃ¥Ã²Ã®Ã¤ ÃƒÃ Ã³Ã±Ã±Ã  Ã± Ã¢Ã»Ã¡Ã®Ã°Ã®Ã¬ Ã£Ã«Ã Ã¢Ã­Ã®Ã£Ã® Ã½Ã«Ã¥Ã¬Ã¥Ã­Ã²Ã 
- */
 void gorbunovaa::lab2()
 {
 	const double e = 1e-10;
@@ -70,30 +63,8 @@ void gorbunovaa::lab2()
 	for (int i = 0; i < n; i++) {
 		cout << "x[" << i << "] = " << x[i] << endl;
 	}
-=======
- * Ââåäåíèå â äèñöèïëèíó
- */
-void gorbunovaa::lab1()
-{
-  cout << "hello world!" << endl;
-}
 
 
-/**
- * Ìåòîä Ãàóññà ñ âûáîðîì ãëàâíîãî ýëåìåíòà
- */
-void gorbunovaa::lab2()
-{
-
->>>>>>> 601c71265191b17f91bfc5ebc9e04f23ad6cde08
-}
-
-
-
-/**
-<<<<<<< HEAD
- * ÐœÐµÑ‚Ð¾Ð´ Ð¿Ñ€Ð¾Ð³Ð¾Ð½ÐºÐ¸
- */
 void gorbunovaa::lab3()
 {
 	float *a = new float[n];
@@ -125,24 +96,8 @@ void gorbunovaa::lab3()
 	for (int i = 0; i < n; i++) {
 		cout << "x[" << i + 1 << "] = " << x[i] << endl;
 	}
-=======
- * Ìåòîä ïðîãîíêè
- */
-void gorbunovaa::lab3()
-{
-
->>>>>>> 601c71265191b17f91bfc5ebc9e04f23ad6cde08
-}
 
 
-
-/**
-<<<<<<< HEAD
- * ÃŒÃ¥Ã²Ã®Ã¤ Ã¯Ã°Ã®Ã±Ã²Ã»Ãµ Ã¨Ã²Ã¥Ã°Ã Ã¶Ã¨Ã©
-=======
- * Ìåòîä ïðîñòûõ èòåðàöèé
->>>>>>> 601c71265191b17f91bfc5ebc9e04f23ad6cde08
- */
 void gorbunovaa::lab4()
 {
 
@@ -150,13 +105,7 @@ void gorbunovaa::lab4()
 
 
 
-/**
-<<<<<<< HEAD
- * ÃŒÃ¥Ã²Ã®Ã¤ ÃŸÃªÃ®Ã¡Ã¨ Ã¨Ã«Ã¨ Ã‡Ã¥Ã©Ã¤Ã¥Ã«Ã¿
-=======
- * Ìåòîä ßêîáè èëè Çåéäåëÿ
->>>>>>> 601c71265191b17f91bfc5ebc9e04f23ad6cde08
- */
+
 void gorbunovaa::lab5()
 {
 
@@ -164,13 +113,7 @@ void gorbunovaa::lab5()
 
 
 
-/**
-<<<<<<< HEAD
- * ÃŒÃ¥Ã²Ã®Ã¤ Ã¬Ã¨Ã­Ã¨Ã¬Ã Ã«Ã¼Ã­Ã»Ãµ Ã­Ã¥Ã¢Ã¿Ã§Ã®Ãª
-=======
- * Ìåòîä ìèíèìàëüíûõ íåâÿçîê
->>>>>>> 601c71265191b17f91bfc5ebc9e04f23ad6cde08
- */
+
 void gorbunovaa::lab6()
 {
 
@@ -178,13 +121,6 @@ void gorbunovaa::lab6()
 
 
 
-/**
-<<<<<<< HEAD
- * ÃŒÃ¥Ã²Ã®Ã¤ Ã±Ã®Ã¯Ã°Ã¿Ã¦Ã¥Ã­Ã­Ã»Ãµ Ã£Ã°Ã Ã¤Ã¨Ã¥Ã­Ã²Ã®Ã¢
-=======
- * Ìåòîä ñîïðÿæåííûõ ãðàäèåíòîâ
->>>>>>> 601c71265191b17f91bfc5ebc9e04f23ad6cde08
- */
 void gorbunovaa::lab7()
 {
 
