@@ -315,12 +315,94 @@ void guskovas::lab7()
 
 void guskovas::lab8()
 {
+  double err = 0;
+  double** C = new double*[N];
+
+  for (int i = 0; i < N; i++){
+  	for (int j = i+1; j < N; j++) err += (i != j)? A[i][j] * A[i][j] : 0;
+  	C[i] = new double[N];
+   	for (int j= i+1; j < N; j++) C[i][j] = 0; // вычисляем ошибку errc
+   }
+	  
+  while (sqrt(err) > 1e-20){
+
+	int mI = 0, mJ = 1;
+
+  	for (int i = 0; i < N; i++)
+      for (int j = i+1; j<N; j++)
+  	    if ( abs(A[i][j]) > abs(A[mI][mJ]) ){
+  	    	mI = i; mJ = j;	// arg max |Aij|
+		}
+
+
+	double a = (A[mI][mI] == A[mJ][mJ])? // (11)
+					M_PI/4 : 
+					a = 0.5 * ( atan( 2*A[mI][mJ] / (A[mI][mI]-A[mJ][mJ]) ) );
+	
+	double c = cos(a);
+	double s = sin(a);
+ 
+ 	// Найдем значения элементов матрицы С (10)
+	C[mI][mI] = pow(c, 2)*A[mI][mI] - 2*s*c*A[mI][mJ] + pow(s, 2)*A[mJ][mJ];
+	C[mJ][mJ] = pow(s, 2)*A[mI][mI] + 2*s*c*A[mI][mJ] + pow(c, 2)*A[mJ][mJ];
+	C[mI][mJ] = (pow(c, 2) - pow(s, 2))*A[mI][mJ] + s*c*(A[mJ][mJ] - A[mI][mI]);
+	C[mJ][mI] = C[mI][mJ];
+	
+	for (int k = 0; k < N; k++){
+	  if (k != mI  &&  k != mJ){
+	  	C[mI][k] = c*A[mI][k] - s*c*A[mJ][k];
+	  	C[k][mI] = C[mI][k];
+	  	C[mJ][k] = s*A[mI][k] + c*A[mJ][k];
+	  	C[k][mJ] = C[mJ][k];
+	  } 
+	  for (int l = 0; l < N; l++)
+	    if (k != mI && k != mJ && l != mI && l != mJ) C[k][l] = A[k][l];	  
+	}
+	
+	err = 0;
+	for (int i = 0; i < N; i++)
+      for (int j = i+1; j < N; j++)
+  	    if (i != j) err += C[i][j] * C[i][j]; // Вычисляем errc
+
+	for (int i = 0; i < N; i++)
+      for (int j = 0; j < N; j++) A[i][j] = C[i][j]; // A := C
+
+  }
+  
+  for (int i = 0; i < N; i++) x[i] = A[i][i];
 
 }
 
 
 void guskovas::lab9()
 {
+	double *xk = new double[N]; //Yk
+	double L = 0; // лямбда
+	double newL = 0; //следующее приближение
+    x[0] = 1; // x = y0,   a1 != 0     (a1=1)
+
+    do
+    {
+        newL = 0;
+        for (int i = 0; i < N; i++)
+        {
+            xk[i] = 0;
+            for (int j = 0; j < N; j++) xk[i] += A[i][j] * x[j]; // Yk+1 = Ak*Yk = Ak*x (2)
+            newL += x[i] * xk[i]; // 
+        }
+
+        if (fabs(newL - L) < 1e-20) break; /////////////////////BREAK
+
+        L = newL;
+        double n = 0;
+        for (int i = 0; i < N; i++) n += xk[i] * xk[i];
+        n = sqrt(n);
+
+        for (int i = 0; i < N; i++) x[i] = xk[i] / n; // yk+1=yk/||yk||
+
+    } while (1);
+
+    cout<<"RESULT: "<< L << endl;
 
 }
 
