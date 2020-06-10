@@ -103,8 +103,8 @@ void borisovayu::lab4()
     double **S;
     S = new double*[N];
     for (i=0; i<N; i++){
-	S[i] = new double[N];
-	for (j=0; j<N; j++) S[i][j] = 0;
+	    S[i] = new double[N];
+	    for (j=0; j<N; j++) S[i][j] = 0;
      }
 	 
     for (i=0; i<N; i++){
@@ -366,7 +366,38 @@ void borisovayu::lab8()
 
 void borisovayu::lab9()
 {
+	double eps = 1e-3; 
+	double *yk = new double[N];
+	double *yk1 = new double[N]; 
+	int i,j;
 
+	for (int i = 0; i < N; i++)	yk[i] = 1; 
+
+	double err = 0; 
+	double lambda1 = 0; 
+	double lambda2 = 0;
+
+	do{
+		for (i = 0; i < N; i++) 
+			for (j = 0; j < N; j++) 
+				yk1[i] += A[i][j] * yk[j]; 
+			
+		for (i = 0; i < N; i++)
+			if(fabs(yk[i]) > eps && fabs(yk1[i]) > eps){
+				lambda1 = yk1[i]/yk[i];
+				break;
+			}
+		
+		err = fabs(lambda1 - lambda2); 
+		lambda2 = lambda1; 
+
+		for (i = 0; i < N; i++) {
+			yk[i] = yk1[i];
+            yk1[i] = 0;			
+		}
+	}
+	while(err > eps);
+	cout<<"max lambda = "<<lambda2<<endl;
 }
 
 
