@@ -188,9 +188,7 @@ void kvashninka::lab5()
             z[i] -= A[i][j] * x[j];
         }
     }
-
     double norma = 0;
-
     for (int i = 0; i < N; i++)
     {
         norma += z[i] * z[i];
