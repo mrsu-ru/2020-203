@@ -326,6 +326,7 @@ void landyshevav::lab7()
 
 void landyshevav::lab8()
 {
+    double eps = 1.e-10;
     double Ja[N][N];
     while (true)
     {
