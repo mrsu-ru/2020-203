@@ -406,7 +406,43 @@ void parshinad::lab8()
 
 void parshinad::lab9()
 {
+	double eps = 1e-3; 
+	double *y = new double[N];
+	double *yNext = new double[N]; 
+	
+	for (int i = 0; i < N; i++){
+		y[i] = 1; 
+	}
 
+	double delta = 0; 
+	double maxLambda = 0; 
+
+	do{
+		for (int i = 0; i < N; i++) {
+			for (int j = 0; j < N; j++) {
+				yNext[i] += A[i][j] * y[j]; 
+			}
+		}
+
+		double lambda;
+		for (int i = 0; i < N; i++){
+			if(fabs(y[i]) > eps && fabs(yNext[i]) > eps){
+				lambda = yNext[i]/y[i];
+				break;
+			}
+		} 
+
+		delta = fabs(lambda - maxLambda); 
+
+		maxLambda = lambda; 
+
+		for (int i = 0; i < N; i++) {
+			y[i] = yNext[i]; 
+		}
+		memset(yNext, 0, sizeof(double) * N);
+	}while(delta > eps);
+	
+	cout << "maxLambda = " << maxLambda << endl;
 }
 
 

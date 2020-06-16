@@ -39,3 +39,4 @@ class gorbunovaa: public lab
   virtual std::string get_name();
 
 };
+
