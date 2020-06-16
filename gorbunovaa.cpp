@@ -9,6 +9,7 @@ void gorbunovaa::lab1()
 void gorbunovaa::lab2()
 {
 	const double e = 1e-10;
+	int n = N;
 
 	for (int i = 0; i < n; i++) {
 		if (fabs(A[i][i]) < e) { // Проверка диагонали на элемент меньше е (т.е. нулевой)
@@ -67,8 +68,10 @@ void gorbunovaa::lab2()
 
 void gorbunovaa::lab3()
 {
-	float *a = new float[n];
-	float *b = new float[n];
+	double *a = new double[n];
+	double *b = new double[n];
+	double **matr = A;
+	
 
 	cout << matr[0][1] << endl;
 
@@ -84,7 +87,7 @@ void gorbunovaa::lab3()
 	}
 
 	// Обрантый ход
-	float *x = new float[n];
+	double *x = new double[n];
 
 	x[n - 1] = (-matr[n - 1][n - 2] * b[n - 1] + matr[n - 1][n + 1]) / (matr[n - 1][n - 1] + matr[n - 1][n - 2] * a[n - 1]);
 
