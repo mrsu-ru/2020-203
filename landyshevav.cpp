@@ -396,9 +396,44 @@ void landyshevav::lab8()
 
 
 void landyshevav::lab9()
-{
+    {
 
-}
+        double eps = 1.0e-3;
+        double* yk, * yk_1;
+        double del_k1 = 0, del_k = 1;
+        int n = N;
+
+        yk_1 = new double[n];
+        yk = new double[n];
+
+        for (int i = 0; i < n; i++)
+            yk_1[i] = 1;
+
+        while (fabs(del_k - del_k1) > eps) {
+            del_k1 = del_k;
+
+            for (int i = 0; i < n; i++) {
+                double s = 0;
+                for (int j = 0; j < n; j++) {
+                    s += A[i][j] * yk_1[j];
+                }
+                yk[i] = s;
+            }
+
+            for (int i = 0; i < n; i++) {
+                if (yk[0] != 0 && yk_1[0] != 0) {
+                    del_k = yk[i] / yk_1[i];
+                }
+            }
+
+            for (int i = 0; i < n; i++)
+                yk_1[i] = yk[i];
+
+        }
+        cout << "Answer by LabWork 9: " << del_k << endl;
+
+    }
+
 
 
 std::string landyshevav::get_name()
