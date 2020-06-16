@@ -68,6 +68,7 @@ void gorbunovaa::lab2()
 
 void gorbunovaa::lab3()
 {
+	int n = N;
 	double *a = new double[n];
 	double *b = new double[n];
 	double **matr = A;
