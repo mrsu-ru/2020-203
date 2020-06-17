@@ -400,7 +400,79 @@ void parshinad::lab7()
 
 void parshinad::lab8()
 {
+	const double eps = 1e-18; 
+	double err = 0; 
+	
+	double **C = new double*[N]; 
 
+	for (int i = 0; i < N; i++){
+		C[i] = new double[N]; 
+	}
+
+	for (int i = 0; i < N; i++){
+		for (int j = i + 1; j < N; j++){
+			err += A[i][j] * A[i][j] + A[j][i] * A[j][i]; 
+		}
+	}
+
+	while (err > eps) { 
+		double alpha = 0; 
+		int i = -1, j = -1; 
+		double max = -1e9; 
+		
+		for (int ii = 0; ii < N; ii++) { 
+			for (int jj = ii + 1; jj < N; jj++) { 
+				if (fabs(A[ii][jj]) > max) { 
+					max = fabs(A[ii][jj]); 
+					i = ii; j = jj;  
+				} 
+			} 
+		} 
+
+		if (fabs(A[i][i] - A[j][j]) < eps){
+			alpha = atan(1); 
+		}
+		else {
+		  alpha = atan(2 * A[i][j] / (A[j][j] - A[i][i])) / 2; 
+		}
+		double s = sin(alpha), c = cos(alpha); 
+
+		for (int ii = 0; ii < N; ii++) {
+			for (int jj = 0; jj < N; jj++) {
+				C[ii][jj] = A[ii][jj];    
+			}
+		}
+
+		C[i][i] = c * c * A[i][i] - 2 * s * c * A[i][j] + s * s * A[j][j]; 
+		C[j][j] = s * s * A[i][i] + 2 * s * c * A[i][j] + c * c * A[j][j]; 
+		C[i][j] = C[j][i] = (c * c - s * s) * A[i][j] + s * c * (A[i][i] - A[j][j]); 
+
+		for (int k = 0; k < N; k++) { 
+			if (k == i || k == j) continue; 
+			
+			C[i][k] = C[k][i] = c * A[i][k] - s * A[j][k]; 
+			C[j][k] = C[k][j] = s * A[i][k] + c * A[j][k]; 
+		} 
+
+		err = 0; 
+
+		for (int i = 0; i < N; i++){
+			for (int j = i + 1; j < N; j++) {
+				err += C[i][j] * C[i][j] + C[j][i] * C[j][i]; 
+			}
+		}
+
+		for (int ii = 0; ii < N; ii++) {
+			for (int jj = 0; jj < N; jj++) {
+				A[ii][jj] = C[ii][jj]; 
+			}
+		}
+	}
+  
+  for (int i = 0; i < N; i++)
+  {
+      cout  << "Lambda[" << i << "] = " << A[i][i] << endl;  
+  }
 }
 
 
