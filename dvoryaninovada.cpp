@@ -1,4 +1,4 @@
-﻿#include "dvoryaninovada.h"
+#include "dvoryaninovada.h"
 
 /**
  * Введение в дисциплину
@@ -319,13 +319,81 @@ void dvoryaninovada::lab7()
 
 void dvoryaninovada::lab8()
 {
+	double **B = new double*[N];
+	for (int i = 0; i < N; i++)
+		B[i] = new double[N];
+	double eps = 1.e-10;
+	int i_var, j_var;
+	for (;;) {
+		i_var = 0;
+		j_var = 1;
+		double n = 0;
+		for (int i = 0; i < N - 1; i++)
+			for (int j = i + 1; j < N; j++) {
+				if (abs(A[i][j]) > abs(A[i_var][j_var])) {
+					i_var = i;
+					j_var = j;
+				}
+				n += A[i][j] * A[i][j];
+			}
+		if (sqrt(n) < eps) break;
+		double fi = 0.5*atan(2 * A[i_var][j_var] / (A[i_var][i_var] - A[j_var][j_var]));
+		for (int i = 0; i < N; i++) {
+			B[i][i_var] = A[i][i_var] * cos(fi) + A[i][j_var] * sin(fi);
+			B[i][j_var] = -A[i][i_var] * sin(fi) + A[i][j_var] * cos(fi);
+		}
+		for (int i = 0; i < N; i++)
+			for (int j = 0; j < N; j++)
+				if (j != j_var && j != i_var) B[i][j] = A[i][j];
+		for (int i = 0; i < N; i++) {
+			A[i_var][i] = B[i_var][i] * cos(fi) + B[j_var][i] * sin(fi);
+			A[j_var][i] = -B[i_var][i] * sin(fi) + B[j_var][i] * cos(fi);
+		}
+		for (int i = 0; i < N; i++)
+			for (int j = 0; j < N; j++)
+				if (i != j_var && i != i_var) A[i][j] = B[i][j];
+	}
+	for (int i = 0; i < N; i++)
+		x[i] = A[i][i];
 
+	for (int i = 0; i < N; i++)
+		delete[] B[i];
+	delete[] B;
 }
 
 
 void dvoryaninovada::lab9()
 {
 
+	double * Y = new double[N];//первый вектор приближения
+	double * M = new double[N];//второй вектор приближения
+	double maxL, L, sum;
+	double EPS = 1e-15;
+
+	for (int i = 0; i < N; i++) Y[i] = 0;
+	Y[0] = 1;
+
+	do {
+		sum = 0;
+		for (int i = 0; i < N; i++)	sum += Y[i] * Y[i];
+
+		L = sqrt(sum);
+
+		//построение последовательности векторов
+		for (int i = 0; i < N; i++)	{
+			M[i] = 0;
+			for (int j = 0; j < N; j++)	M[i] += A[i][j] * Y[j] / L;
+		}
+		sum = 0;
+
+		//сравнение нормы полученного вектора с заданной погрешностью
+		for (int i = 0; i < N; i++)	sum += M[i] * M[i];
+		maxL = sqrt(sum);
+
+		for (int i = 0; i < N; i++)	Y[i] = M[i];
+	} while (abs(maxL - L) > EPS);
+
+	cout << maxL << endl;
 }
 
 
