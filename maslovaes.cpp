@@ -218,19 +218,199 @@ do {
  */
 void maslovaes::lab7()
 {
+ int i,j; double e = 1.0e-21;
+ double *Az, *r, *z, *r1;
+ 
+  z = new double[N];
+  Az = new double[N];
+  r = new double[N];
+  r1 = new double[N];
+  
+  for (int i=0;i<N;i++){
+  	x[i]=b[i];
+  }
+  
+	for (i=0;i<N;i++){
+  	  double s = 0;
+  	  for (j=0;j<N;j++){
+  		 s += A[i][j]*x[j];
+	   }
+	  r[i]=-s+b[i];
+	  z[i]=r[i];
+      }
+  
+  double norma = 1;
+  double k=0;
+  while (norma>e){
+	double alfa1=0,alfa2=0;
+	k++;
 
+  	for (i=0;i<N;i++){
+  		alfa1 += r[i]*r[i];
+  	}
+  	
+  	for (i=0;i<N;i++){
+  	  double s = 0;
+  	  for (j=0;j<N;j++){
+  		 s += A[i][j]*z[j];
+	   }
+	  Az[i]=s;
+      }
+
+    for (i=0;i<N;i++){
+  		alfa2 += Az[i]*z[i];
+  	}
+   double alfa=alfa1/alfa2;
+   
+  
+   for (i=0;i<N;i++){
+  	  x[i]+=alfa*z[i];
+    }
+   
+   for (i=0;i<N;i++){
+  	  r1[i] = r[i] - alfa*Az[i];
+    }
+    double betta1=0;
+  	for (i=0;i<N;i++){
+  		betta1 += r1[i]*r1[i];
+  	}
+  	double betta=betta1/alfa1;
+  	double u1=0,u2=0;
+  	for (i=0;i<N;i++){
+  	  z[i] = r1[i] + betta*z[i];
+  	  r[i] = r1[i];
+  	  u1+=r1[i]*r1[i];
+  	  u2+=b[i]*b[i];
+    }
+    norma = sqrt(u1)/sqrt(u2);
+  
+  }
 }
 
 
 void maslovaes::lab8()
 {
+double eps = 1.0e-6;
+    double errc = 0;
+    double c = 0, s = 0, alpha = 0;
+    int max_i = 0, max_j = 1;
+    double** C;
 
+    C = new double*[N];
+ 
+		for (int i = 0; i < N; i++)
+	{
+	     C[i] = new double[N];
+        for (int j = i+1; j < N; j++)
+        {
+          
+            if (i != j){
+                errc += A[i][j]*A[i][j];
+            }
+            	C[i][j] = 0;
+        }
+    }
+    while (sqrt(errc) > eps)
+    {
+        for (int i = 0; i < N; i++)
+        {
+            for (int j = i + 1; j < N; j++)
+            {
+                if (abs(A[i][j]) >= abs(A[max_i][max_j]))
+                {
+
+                    max_i = i;
+                    max_j = j;
+                }
+            }
+        }
+        if (A[max_i][max_i] == A[max_j][max_j])
+            alpha = M_PI / 4;
+		else alpha = 0.5*atan((2 * A[max_i][max_j]) / (A[max_j][max_j] - A[max_i][max_i]));
+        c = cos(alpha);
+        s = sin(alpha);
+
+        C[max_i][max_i]= c*c*A[max_i][max_i] - 2*s*c*A[max_i][max_j]+s*s*A[max_j][max_j];
+        C[max_j][max_j]= s*s*A[max_i][max_i]+2*s*c*A[max_i][max_j]+c*c*A[max_j][max_j];
+        C[max_i][max_j]= (c*c-s*s)*A[max_i][max_j]+s*c*(A[max_i][max_i]-A[max_j][max_j]);
+        C[max_j][max_i]= C[max_i][max_j];
+
+        for (int k = 0; k < N; k++)
+        {
+            if (k != max_i && k != max_j)
+            {
+                C[max_i][k] = c * A[max_i][k] - s * c * A[max_j][k];
+                C[k][max_i] = C[max_i][k];
+                C[max_j][k] = s * A[max_i][k] + c * A[max_j][k];
+                C[k][max_j] = C[max_j][k];
+            }
+            for (int l = 0; l < N; l++)
+            {
+                if (k != max_i && k != max_j && l != max_i && l != max_j)
+                    C[k][l] = A[k][l];
+            }
+        }
+    
+    errc = 0;
+    for (int i = 0; i < N; i++)
+    {
+        for (int j = i + 1; j < N; j++)
+        {
+            if (i != j)
+            {
+                errc += C[i][j] * C[i][j];
+            }
+        }
+    }
+    for (int i = 0; i < N; i++)
+    {
+        for (int j = 0; j < N; j++)
+        {
+            A[i][j] = C[i][j];
+        }
+    }
+
+    for (int i = 0; i < N; i++)
+        x[i] = A[i][i];
+}
 }
 
 
 void maslovaes::lab9()
 {
+double eps = 1.0e-3;
+  double *yk, *yk_1;
+  double lambda_k1 = 0, lambda_k = 1;
+  int n=N;
+ 
+  yk_1 = new double[n];
+  yk = new double[n];
 
+  for (int i=0; i<n; i++)
+  	yk_1[i]=1;
+  
+  while(fabs(lambda_k - lambda_k1) > eps){
+  	lambda_k1 = lambda_k;
+  	
+	for(int i=0; i<n; i++){
+	  double s = 0;
+      for(int j=0; j<n; j++){
+        s += A[i][j]*yk_1[j];
+        }
+	  yk[i]=s;
+    }
+    
+   for (int i=0; i<n; i++){
+   	if (yk[0] != 0 && yk_1[0] != 0){
+   		lambda_k = yk[i]/yk_1[i];
+	   }
+   }
+   
+   for (int i=0; i<n; i++)
+   	yk_1[i]=yk[i];
+   	
+  }
+  cout<<"Answer: " << lambda_k << endl;
 }
 
 
