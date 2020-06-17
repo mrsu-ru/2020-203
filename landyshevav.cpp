@@ -326,14 +326,115 @@ void landyshevav::lab7()
 
 void landyshevav::lab8()
 {
+    double eps = 1.e-10;
+    double Ja[N][N];
+    while (true)
+    {
+        int i_max = 0;
+        int j_max = 0;
+        for (int i = 0; i < N - 1; i++)
+        {
+            for (int j = i + 1; j < N; j++)
+            {
+                if (fabs(A[i][j]) > fabs(A[i_max][j_max]))
+                {
+                    i_max = i;
+                    j_max = j;
+                }
+            }
+        }
 
+        if (fabs(A[i_max][j_max]) < eps)
+        {
+            break;
+        }
+
+        double fi = 0.5 * atan(2 * A[i_max][j_max] / (A[i_max][i_max] - A[j_max][j_max]));
+        double cos_fi = cos(fi);
+        double sin_fi = sin(fi);
+
+        for (int k = 0; k < N; k++)
+        {
+            Ja[k][i_max] = A[k][i_max] * cos_fi + A[k][j_max] * sin_fi;
+            Ja[k][j_max] = A[k][j_max] * cos_fi - A[k][i_max] * sin_fi;
+        }
+
+        for (int i = 0; i < N; i++)
+        {
+            for (int j = 0; j < N; j++)
+            {
+                if ((i != i_max) && (j != j_max))
+                {
+                    Ja[i][j] = A[i][j];
+                }
+            }
+        }
+
+        for (int k = 0; k < N; k++)
+        {
+            A[i_max][k] = Ja[i_max][k] * cos_fi + Ja[j_max][k] * sin_fi;
+            A[j_max][k] = Ja[j_max][k] * cos_fi - Ja[i_max][k] * sin_fi;
+        }
+
+        for (int i = 0; i < N; i++)
+        {
+            for (int j = 0; j < N; j++)
+            {
+                if ((i != i_max) && (i != j_max))
+                {
+                    A[i][j] = Ja[i][j];
+                }
+            }
+        }
+    }
+
+    for (int i = 0; i < N; i++)
+    {
+        x[i] = A[i][i];
+    }
 }
+
 
 
 void landyshevav::lab9()
-{
+    {
 
-}
+        double eps = 1.0e-3;
+        double* yk, * yk_1;
+        double del_k1 = 0, del_k = 1;
+        int n = N;
+
+        yk_1 = new double[n];
+        yk = new double[n];
+
+        for (int i = 0; i < n; i++)
+            yk_1[i] = 1;
+
+        while (fabs(del_k - del_k1) > eps) {
+            del_k1 = del_k;
+
+            for (int i = 0; i < n; i++) {
+                double s = 0;
+                for (int j = 0; j < n; j++) {
+                    s += A[i][j] * yk_1[j];
+                }
+                yk[i] = s;
+            }
+
+            for (int i = 0; i < n; i++) {
+                if (yk[0] != 0 && yk_1[0] != 0) {
+                    del_k = yk[i] / yk_1[i];
+                }
+            }
+
+            for (int i = 0; i < n; i++)
+                yk_1[i] = yk[i];
+
+        }
+        cout << "Answer by LabWork 9: " << del_k << endl;
+
+    }
+
 
 
 std::string landyshevav::get_name()

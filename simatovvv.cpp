@@ -262,12 +262,118 @@ void simatovvv::lab7()
 
 void simatovvv::lab8()
 {
+double eps=1.e-20;
+	double B[N][N], norm;
+	int imax, jmax;
+	for(;;){
+		imax=0; jmax=1;
+		norm=0;
+		for (int i=0; i<N-1; i++) {
+			for (int j=i+1; j<N; j++) {
+				if (abs(A[i][j])>abs(A[imax][jmax])) {
+					imax=i;
+					jmax=j;
+				}
+				norm+=A[i][j]*A[i][j];
+			}
+		}
+
+		if (sqrt(norm)<eps) {
+			break;
+		}
+
+        for (int i=0; i<N; i++){
+            for (int j=0; j<N; j++){
+                B[i][j]=A[i][j];
+            }
+        }
+
+		double fi=0.5*atan(2*A[imax][jmax]/(A[imax][imax]-A[jmax][jmax]));
+		for (int i=0; i<N; i++) {
+			B[i][imax]=A[i][imax]*cos(fi)+A[i][jmax]*sin(fi);
+			B[i][jmax]=-A[i][imax]*sin(fi)+A[i][jmax]*cos(fi);
+		}
+
+		for (int i=0; i<N; i++){
+            for (int j=0; j<N; j++){
+                A[i][j]=B[i][j];
+            }
+        }
+
+		for (int i=0; i<N; i++) {
+			A[imax][i]=B[imax][i]*cos(fi)+B[jmax][i]*sin(fi);
+			A[jmax][i]=-B[imax][i]*sin(fi)+B[jmax][i]*cos(fi);
+		}
+	}
+
+	for (int i = 0; i < N; i++) {
+		x[i]=A[i][i];
+	}
 
 }
 
 
 void simatovvv::lab9()
 {
+double eps = 1e-3;
+	double* yPrev = new double[N];	
+	double* yNext = new double[N]; 
+	double y0 = 0;
+	double y1 = 0;
+	double lambdaPrev = 0;
+	double lambdaNext = 0;
+	double delta = 0;
+
+	for (int i = 0; i < N; i++){
+		yPrev[i] = 1;
+		yNext[i] = 0;
+	}
+
+	for (int i = 0; i < N; i++){
+		for (int j = 0; j < N; j++){
+			yNext[i] += A[i][j] * yPrev[j];
+		}
+	}
+
+	y0 = yPrev[0];
+
+	for (int i = 0; i < N; i++){
+		if (yNext[i] != 0){
+			y1 = yNext[i];
+			break;
+		}
+	}
+
+	lambdaPrev = y1 / y0;
+	delta = lambdaPrev;
+
+	while (delta > eps){
+		for (int i = 0; i < N; i++){
+			yPrev[i] = yNext[i];
+			yNext[i] = 0;
+		}
+
+		for (int i = 0; i < N; i++){
+			for (int j = 0; j < N; j++){
+				yNext[i] += A[i][j] * yPrev[j];
+			}
+		}
+
+		for (int i = 0; i < N; i++){
+			if ((yNext[i] != 0) && (yPrev[i] != 0)){
+				y0 = yPrev[i];
+				y1 = yNext[i];
+				break;
+			}
+		}
+
+		lambdaNext = y1 / y0;
+		delta = fabs(lambdaNext - lambdaPrev);
+		lambdaPrev = lambdaNext;
+	}
+	cout << "Max self value: " << lambdaNext << endl;
+	delete[]yPrev;
+	delete[]yNext;
 
 }
 

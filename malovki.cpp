@@ -309,7 +309,78 @@ void malovki::lab7()
 
 void malovki::lab8()
 {
+	int n = N;
+	double** C = new double* [n];
+	double eps = 1e-10, err = 0;
+	int cur_i, cur_j;
 
+	for (int i = 0; i < n; i++) {
+		C[i] = new double[n];
+	}
+
+	for (int i = 0; i < n; i++) {
+		for (int j = i + 1; j < n; j++) {
+			if (i != j) {
+				err += A[i][j];
+			}
+			C[i][j] = 0;
+		}
+	}
+
+	while (err > eps) {
+		//cout<<1<<endl;
+		double max = abs(A[0][1]);
+		//находим max в верхнем треугольнике
+		for (int i = 0; i < n; i++) {
+			for (int j = i + 1; j < n; j++) {
+				if (abs(A[i][j]) > max) {
+					max = abs(A[i][j]);
+					cur_i = i;
+					cur_j = j;
+				}
+			}
+		}
+		double phi;
+		if (A[cur_i][cur_i] != A[cur_j][cur_j]) {
+			phi = 0.5 * atan(2 * A[cur_i][cur_j] / (A[cur_j][cur_j] - A[cur_i][cur_i]));
+		}
+		else { 
+			phi = M_PI / 4; 
+		}
+		double s = sin(phi), c = cos(phi);
+
+		C[cur_i][cur_j] = c * c * A[cur_i][cur_i] - 2 * s * c * A[cur_i][cur_j] + s * s * A[cur_j][cur_j];
+		C[cur_j][cur_j] = s * s * A[cur_i][cur_i] + 2 * s * c * A[cur_i][cur_j] + c * c * A[cur_j][cur_j];
+		C[cur_i][cur_j] = (c * c - s * s) * A[cur_i][cur_j] + s * c * (A[cur_j][cur_j] - A[cur_i][cur_i]);
+		C[cur_j][cur_i] = C[cur_i][cur_j];
+
+		for (int k = 0; k < n; k++) {
+			if (k != cur_i && k != cur_j) {
+				C[cur_i][k] = c * A[cur_i][k] - s * c * A[cur_j][k];
+				C[k][cur_i] = C[cur_i][k];
+				C[cur_j][k] = s * A[cur_i][k] + c * A[cur_j][k];
+				C[k][cur_j] = C[cur_j][k];
+			}
+
+			for (int l = 0; l < n; l++)
+				if (l != cur_j && k != cur_i)
+					C[k][l] = A[k][l];
+		}
+
+		err = 0;
+		for (int i = 0; i < n; i++)
+			for (int j = i + 1; j < n; j++)
+				if (i != j) err += C[i][j];
+
+
+		for (int i = 0; i < n; i++)
+			for (int j = 0; j < n; j++)
+				A[i][j] = C[i][j];
+	}
+	cout << "СЗ Mat(A):" << endl;
+	for (int i = 0; i < n; i++)
+		cout << A[i][i] << endl;
+	cout << "))";
 }
 
 

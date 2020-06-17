@@ -14,9 +14,9 @@ void kozlovaes::lab1()
  */
 void kozlovaes::lab2()
 {
-	for (int i = 0; i < N; i++) {
+	for (int i = 0; i <N; i++) {
 		int max = i;
-		for (int j = i + 1; j < N; j++) {
+		for (int j = i + 1; j <N; j++) {
 			if (abs(A[j][i]) > abs(A[max][i]))
 				max = j;
 		}
@@ -32,7 +32,7 @@ void kozlovaes::lab2()
 		b[i] /= A[i][i];
 		A[i][i] = 1;
 
-		for (int j = i + 1; j < N; j++) {
+		for (int j = i + 1; j <N; j++) {
 
 			for (int k = N; k > i; k--) A[j][k] -= A[i][k] * A[j][i];
 			b[j] -= b[i] * A[j][i];
@@ -42,13 +42,13 @@ void kozlovaes::lab2()
 	double s;
 	for (int i = N - 1; i > 0; i--) {
 		s = 0;
-		for (int j = i ; j < N; j++) {
+		for (int j = i ; j <N; j++) {
 			s += b[j] * A[i - 1][j];
 			A[i - 1][j] = 0;
 		}
 		b[i - 1] -=s;
 	}
-	for (int i = 0; i < N; i++) {
+	for (int i = 0; i <N; i++) {
 		x[i] = b[i];
 	}
 }
@@ -67,7 +67,7 @@ void kozlovaes::lab3()
 	betta[0] = b[0]/A[0][0];
  
 
-	for(i = 1;i < N;i++){
+	for(i = 1;i <N;i++){
 		alfa[i] = A[i][i+1]/(-A[i][i]-alfa[i-1]*A[i][i-1]);
 		betta[i] = (-b[i]+A[i][i-1]*betta[i-1])/(-A[i][i]-alfa[i-1]*A[i][i-1]);
 	}
@@ -88,7 +88,7 @@ void kozlovaes::lab4()
 {
 double* d=new double[N];
 double** S = new double*[N];
-for (int i = 0; i < N; i++) { 
+for (int i = 0; i <N; i++) { 
 S[i] = new double[N];
 }
 
@@ -102,7 +102,7 @@ S[0][i]=A[0][i]/(S[0][0]*d[0]);
 
 ///////Вычисление матрицы S
 double sumd=0;
-for(int i=1; i < N; i++){
+for(int i=1; i <N; i++){
 for(int k=0;k<i;k++){
 sumd += pow(S[k][i],2)*d[k];
 }
@@ -115,7 +115,7 @@ else{
 S[i][i]=sqrt(d[i]*(A[i][i]-sumd));
 sumd=0;
 double sumS=0;
-for(int j=i+1;j < N;j++){
+for(int j=i+1;j <N;j++){
 for(int k=0;k<j;k++){
 sumS +=d[k]*S[k][i]*S[k][j];
 }
@@ -253,19 +253,245 @@ void kozlovaes::lab6()
  */
 void kozlovaes::lab7()
 {
+  double* r = new double[N];
+  double* r0 = new double[N];
+  double* Az = new double[N];
+  double* z = new double[N];
+  double  eps = 1e-21, norma_b,norma_r,alpha,betta, norma;
+
+
+  for(int i = 0; i<N; i++)
+  norma_b += b[i]*b[i]; 
+
+ double tmp=0;
+  for (int i = 0; i<N; i++){
+	r[i] = b[i];
+    for(int j = 0; j<N; j++){ 
+	  r[i]-=A[i][j]*x[j];
+    }
+    z[i] = r[i];
+  }
+
+  for (int i = 0; i<N; i++){
+    tmp=0;
+    for(int j = 0; j<N; j++){
+      tmp +=A[i][j]*z[j]; 
+    }
+    Az[i] = tmp;
+  }
+ 
+  double tmp1 = 0, tmp2 = 0;
+    for (int i = 0; i<N; i++){
+      tmp1 += abs(r[i]*r[i]);
+      tmp2 += abs(Az[i]*z[i]); 
+    }
+  alpha = tmp1/tmp2;
+
+  //запоминаем предыдущие r[i]
+  for(int i=0; i<N; i++){
+    r0[i] = r[i];
+  }
+
+  for(int i=0; i<N; i++){
+    x[i] = x[i] + alpha*z[i];
+    r[i] = r[i] - alpha*Az[i];
+  }
+
+   for (int i = 0; i<N; i++){
+      tmp1 += abs(r[i]*r[i]);
+      tmp2 += abs(r0[i]*r0[i]); 
+    }
+  betta = tmp1/tmp2;
+
+  for(int i = 0; i<N; i++){
+    z[i] = r[i] + betta*z[i];
+  }
+  norma_r = 0;
+  for(int i = 0; i<N; i++){
+    norma_r +=r[i]*r[i];
+  }
+
+  norma = sqrt(norma_r/norma_b);
+
+do{
+  double tmp=0;
+  for (int i = 0; i<N; i++){
+	tmp=0;
+    for(int j = 0; j<N; j++){
+      tmp +=A[i][j]*z[j]; 
+    }
+    Az[i] = tmp;
+  }
+
+  double tmp1 = 0, tmp2 = 0;
+    for (int i = 0; i<N; i++){
+      tmp1 += abs(r[i]*r[i]);
+      tmp2 += abs(Az[i]*z[i]); 
+    }
+  alpha = tmp1/tmp2;
+
+  for(int i=0; i<N; i++){
+    r0[i] = r[i];
+  }
+
+  for(int i=0; i<N; i++){
+    x[i] = x[i] + alpha*z[i];
+    r[i] = r[i] - alpha*Az[i];
+  }
+
+   for (int i = 0; i<N; i++){
+      tmp1 += abs(r[i]*r[i]);
+      tmp2 += abs(r0[i]*r0[i]); 
+    }
+  betta = tmp1/tmp2;
+
+  for(int i = 0; i<N; i++){
+    z[i] = r[i] + betta*z[i];
+  }
+  norma_r= 0;
+  for(int i = 0; i<N; i++){
+    norma_r +=r[i]*r[i];
+  }
+
+  norma = sqrt(norma_r/norma_b);
+
+}while(norma>=eps);
 
 }
 
 
 void kozlovaes::lab8()
 {
+ double eps = 1.0e-6;
+double errC = 0, c, s,fi;
+int maxi, maxj;
 
+
+double** C = new double*[N];;
+  for (int i=0; i<N; i++){
+  	C[i] = new double[N];
+  }
+  
+   for (int i=0; i<N; i++){
+    for (int j=i+1; j<N; j++){
+	  C[i][j]=0;
+	}
+  }
+  
+  for (int i=0; i<N; i++){
+	  for (int j=0; j<N; j++){
+		  if (i!=j){
+			  errC += A[i][j] * A[i][j];
+
+		    }
+	    }
+    }
+	
+  while (sqrt(errC) > eps){
+
+  	fi = 0; 
+	maxi = 0, maxj = 1;
+  	for (int i=0; i<N; i++){
+      for (int j=i+1; j<N; j++){
+  	    if (abs(A[i][j]) > abs(A[maxi][maxj])){
+  	    	maxi = i;
+  	    	maxj = j;
+		  }
+	  }
+	}
+	if (A[maxi][maxi] == A[maxj][maxj]) fi = M_PI/4;
+	else fi = 0.5 *(atan(2*A[maxi][maxj] / (A[maxi][maxi]-A[maxj][maxj])));
+
+	c = cos(fi), s = sin(fi);
+	
+	C[maxi][maxi]	= c*c*A[maxi][maxi] - 2*s*c*A[maxi][maxj] + s*s*A[maxj][maxj];
+	C[maxj][maxj]	= s*s*A[maxi][maxi] + 2*s*c*A[maxi][maxj] + c*c*A[maxj][maxj];
+	C[maxi][maxj] = (c*c - s*s)*A[maxi][maxj] + s*c*(A[maxj][maxj] - A[maxi][maxi]);
+	C[maxj][maxi] = C[maxi][maxj];
+
+
+
+	for (int k=0; k<N; k++){
+	  if (k != maxi  &&  k != maxj){
+	  	C[maxi][k] = c*A[maxi][k] - s*c*A[maxj][k];
+	  	C[k][maxi] = C[maxi][k];
+	  	C[maxj][k] = s*A[maxi][k] + c*A[maxj][k];
+	  	C[k][maxj] = C[maxj][k];
+	  } 
+	  for (int l=0; l<N; l++){
+	    if (k != maxi  &&  k != maxj  &&  l != maxi  &&  l != maxj)
+	      C[k][l] = A[k][l];
+
+	  }
+	}
+
+	errC = 0.;
+	for (int i=0; i<N; i++){
+      for (int j=0; j<N; j++){
+  	    if (i != j){
+		  errC += C[i][j] * C[i][j];
+	    }
+
+	  }
+    }
+	for (int i=0; i<N; i++)
+      for (int j=0; j<N; j++)
+	  A[i][j] = C[i][j];
+  }
+
+  for (int i=0; i<N; i++)
+	  x[i] = A[i][i];
 }
 
 
 void kozlovaes::lab9()
 {
+double eps = 1e-3;
+double* y0 = new double[N];	
+double* y1 = new double[N]; 
+double lambda1 = 0;
+double lambda2 = 0;
 
+for (int i = 0; i < N; i++){
+		y0[i] = 1;
+		y1[i] = 0;
+	}
+	
+	for (int i = 0; i < N; i++){
+		for (int j = 0; j < N; j++){
+			y1[i] += A[i][j] * y0[j];
+		}
+	}
+	for (int i = 0; i < N; i++){
+		if ((y1[i] != 0) && (y0[i]!=0)){
+			lambda1 = y1[i]/y0[i];
+			break;
+		}
+	}
+	
+	while(abs(lambda2-lambda1)>eps){
+		
+	lambda1 = lambda2;
+	lambda2 = 0;
+		
+	for (int i = 0; i < N; i++){
+		y0[i] = y1[i];
+		y1[i] = 0;
+	}
+	
+	for (int i = 0; i < N; i++){
+		for (int j = 0; j < N; j++){
+			y1[i] += A[i][j] * y0[j];
+		}
+	}
+	for (int i = 0; i < N; i++){
+		if ((y1[i] != 0) && (y0[i]!=0)){
+			lambda2 = y1[i]/y0[i];
+			break;
+		}
+	}	
+}
+cout << "The largest in modulus eigenvalue : " << lambda2;
 }
 
 
