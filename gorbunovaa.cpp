@@ -104,7 +104,91 @@ void gorbunovaa::lab3()
 
 void gorbunovaa::lab4()
 {
+	double **L = new double*[N];
+	for (int i = 0; i < N; i++) {
+		L[i] = new double[N];
+		for (int j = 0; j < N; j++)
+			L[i][j] = 0;
+	}
+	double S = 0;
 
+
+	for (int i = 0; i < N; i++) {
+
+		for (int k = 0; k < i; k++) {
+			S += L[i][k] * L[i][k];
+		}
+
+		L[i][i] = sqrt(A[i][i] - S);
+		S = 0;
+
+		for (int k = i + 1; k < N; k++) {
+			for (int m = 0; m < i; m++) {
+				S += L[k][m] * L[i][m];
+			}
+			L[k][i] = (A[k][i] - S) / L[i][i];
+			S = 0;
+		}
+	}
+
+	double **Lt = new double*[N];
+	for (int i = 0; i < N; i++) {
+		Lt[i] = new double[N];
+		for (int j = 0; j < N; j++)
+			Lt[i][j] = 0;
+	}
+
+	for (int i = 0; i < N; i++) {
+		for (int j = 0; j < N; j++) {
+			Lt[i][j] = L[j][i];
+		}
+	}
+
+	cout << "A = L * Lt = " << endl;
+	for (int i = 0; i < N; i++) {
+		for (int j = 0; j < N; j++) {
+			cout << L[i][j] << "  ";
+		}
+		cout << endl;
+	}
+	cout << endl;
+
+	for (int i = 0; i < N; i++) {
+		for (int j = 0; j < N; j++) {
+			cout << Lt[i][j] << "  ";
+		}
+		cout << endl;
+	}
+	cout << endl;
+
+	double *y = new double[N];
+
+	for (int i = 0; i < N; i++)
+	{
+		S = 0;
+		for (int k = 0; k < i; k++) {
+			S += L[i][k] * y[k];
+		}
+		y[i] = (b[i] - S) / L[i][i];
+	}
+
+
+	/*for (int i = 0; i < N; i++) {
+		cout << "y[" << i << "] = " << y[i] << endl;
+	} */
+
+	double *x = new double[N];
+	for (int k = N - 1; k >= 0; k--)
+	{
+		double res = 0;
+		for (int i = k + 1; i < N; i++)
+			res += Lt[k][i] * x[i];
+		x[k] = (y[k] - res) / Lt[k][k];
+	}
+
+	for (int i = 0; i < N; i++) {
+		cout << "x[" << i << "] = " << x[i] << endl;
+	}
 }
 
 
@@ -112,7 +196,40 @@ void gorbunovaa::lab4()
 
 void gorbunovaa::lab5()
 {
+	double x[N], y[N];
+	for (int i = 0; i < N; i++)
+	{
+		x[i] = 0; // начальное приближение
+	}
+	double temp = 0.0;
+	double eps = 1e-20;
+	int k = 0;
+	do
+	{
+		k++;
+		temp = 0.0;
+		for (int i = 0; i < N; i++)
+			y[i] = x[i];
+		for (int i = 0; i < N; i++)
+		{
+			double s = 0;
+			for (int j = 0; j < i; j++)
+				s += A[i][j] * x[j];
+			for (int j = i + 1; j < N; j++)
+				s += A[i][j] * y[j];
+			x[i] = (b[i] - s) / A[i][i];
+		}
+		for (int i = 0; i < N; i++)
+		{
+			if (fabs(y[i] - x[i]) > temp)
+				temp = fabs(y[i] - x[i]);
+		}
 
+	} while (temp >= eps);
+
+	for (int i = 0; i < N; i++) {
+		cout << "x[" << i << "] = " << x[i] << endl;
+	}
 }
 
 
