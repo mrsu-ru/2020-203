@@ -373,7 +373,65 @@ double eps = 1e-20;
 
 void kirdyushkindv::lab9()
 {
+double eps = 1e-3;
+	double* yPrev = new double[N];
+	double* yNext = new double[N];
+	double y0 = 0;
+	double y1 = 0;
+	double lambdaPrev = 0;
+	double lambdaNext = 0;
+	double delta = 0;
 
+	for (int i = 0; i < N; i++){
+		yPrev[i] = 1;
+		yNext[i] = 0;
+	}
+
+	for (int i = 0; i < N; i++){
+		for (int j = 0; j < N; j++){
+			yNext[i] += A[i][j] * yPrev[j];
+		}
+	}
+
+	y0 = yPrev[0];
+
+	for (int i = 0; i < N; i++){
+		if (yNext[i] != 0){
+			y1 = yNext[i];
+			break;
+		}
+	}
+
+	lambdaPrev = y1 / y0;
+	delta = lambdaPrev;
+
+	while (delta > eps){
+		for (int i = 0; i < N; i++){
+			yPrev[i] = yNext[i];
+			yNext[i] = 0;
+		}
+
+		for (int i = 0; i < N; i++){
+			for (int j = 0; j < N; j++){
+				yNext[i] += A[i][j] * yPrev[j];
+			}
+		}
+
+		for (int i = 0; i < N; i++){
+			if ((yNext[i] != 0) && (yPrev[i] != 0)){
+				y0 = yPrev[i];
+				y1 = yNext[i];
+				break;
+			}
+		}
+
+		lambdaNext = y1 / y0;
+		delta = fabs(lambdaNext - lambdaPrev);
+		lambdaPrev = lambdaNext;
+	}
+	cout << "Max self value: " << lambdaNext << endl;
+	delete[]yPrev;
+	delete[]yNext;
 }
 
 
