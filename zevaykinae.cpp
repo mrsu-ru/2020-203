@@ -295,8 +295,8 @@ void zevaykinae::lab7()
 
 void zevaykinae::lab8()
 {
-    double **H = new double*[N], eps = 1.e-10;
-    for (int i = 0; i < N; i++) H[i] = new double[N];
+     double **H = new double*[N], eps = 1.e-10;
+     for (int i = 0; i < N; i++) H[i] = new double[N];
 
     do
     {
@@ -348,7 +348,7 @@ void zevaykinae::lab8()
 
 void zevaykinae::lab9()
 {
-       for (int i=0; i<N; i++)
+        for (int i=0; i<N; i++)
             x[i]=0;
             x[0]=1;
        double *y=new double[N];
@@ -374,7 +374,7 @@ void zevaykinae::lab9()
              if(abs(l - prev_l)<eps) break;
             }
             x[0] = l;
-       delete[] y;
+        delete[] y;
 }
 
 
