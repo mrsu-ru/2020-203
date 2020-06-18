@@ -295,13 +295,86 @@ void zevaykinae::lab7()
 
 void zevaykinae::lab8()
 {
+     double **H = new double*[N], eps = 1.e-10;
+     for (int i = 0; i < N; i++) H[i] = new double[N];
 
+    do
+    {
+        double n = 0;
+        int i_max = 0, j_max = 1;
+        for (int i = 0; i < N; i++)
+            for (int j = i + 1; j < N; j++)
+            {
+                if (fabs(A[i][j]) > fabs(A[i_max][j_max]))
+                {
+                    i_max = i;
+                    j_max = j;
+                }
+
+                n += A[i][j] * A[i][j];
+            }
+
+        if (sqrt(n) < eps) break;
+
+        double fi = 0.5 * atan(2 * A[i_max][j_max] / (A[i_max][i_max] - A[j_max][j_max]));
+        for (int i = 0; i < N; i++)
+        {
+            H[i][i_max] = A[i][i_max] * cos(fi) + A[i][j_max] * sin(fi);
+            H[i][j_max] = A[i][j_max] * cos(fi) - A[i][i_max] * sin(fi);
+        }
+
+        for (int i = 0; i < N; i++)
+            for (int j = 0; j < N; j++)
+                if (j != i_max && j != j_max) H[i][j] = A[i][j];
+
+        for (int j = 0; j < N; j++)
+        {
+            A[i_max][j] = H[i_max][j] * cos(fi) + H[j_max][j] * sin(fi);
+            A[j_max][j] = H[j_max][j] * cos(fi) - H[i_max][j] * sin(fi);
+        }
+
+        for (int i = 0; i < N; i++)
+            for (int j = 0; j < N; j++)
+                if (i != i_max && i != j_max) A[i][j] = H[i][j];
+
+    }while(true);
+
+    for (int i = 0; i < N; i++) x[i] = A[i][i];
+
+    for (int i = 0; i < N; i++) delete[] H[i];
+    delete[] H;
 }
 
 
 void zevaykinae::lab9()
 {
+        for (int i=0; i<N; i++)
+            x[i]=0;
+            x[0]=1;
+       double *y=new double[N];
+       double eps=1e-15;
+       double prev_l;
+       double l = 0;
+       double sum;
 
+       for(;;){
+            sum = 0;
+            prev_l = l;
+            l = 0;
+            for (int i = 0; i<N; i++){
+                y[i] = 0;
+                for (int k=0; k<N; k++)
+                     y[i] += A[i][k]*x[k];
+                l += y[i]*x[i];
+                sum += y[i]*y[i];
+            }
+           sum = pow(sum,0.5);
+             for (int i=0; i<N; i++)
+                x[i] = y[i]/sum;
+             if(abs(l - prev_l)<eps) break;
+            }
+            x[0] = l;
+        delete[] y;
 }
 
 
