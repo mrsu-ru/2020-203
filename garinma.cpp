@@ -407,7 +407,42 @@ void garinma::lab8()
 
 void garinma::lab9()
 {
+double * Y = new double[N];//первый вектор приближения
+    double * M = new double[N];//второй вектор приближения
+    double maxL, L, sum;
+    double EPS = 1e-15;
 
+    //первичное приближение начального вектора
+    for (int i = 0; i < N; i++)
+        Y[i] = 0;
+    Y[0] = 1;
+
+    do{
+        sum = 0;
+        //нахождение скалярного произведения векторов приближения
+        for (int i = 0; i < N; i++)
+            sum += Y[i] * Y[i];
+
+        L = sqrt(sum);//норма вектора приближения
+
+        //построение последовательности векторов
+        for (int i = 0; i < N; i++)
+        {
+            M[i] = 0;
+            for (int j = 0; j < N; j++)
+                M[i] += A[i][j] * Y[j] / L;
+        }
+        sum = 0;
+
+        //сравнение нормы полученного вектора с заданной погрешностью
+        for (int i = 0; i < N; i++)
+            sum += M[i] * M[i];
+        maxL = sqrt(sum);
+
+        for (int i = 0; i<N; i++)
+            Y[i] = M[i];
+    } while (abs(maxL - L)>EPS);
+    x[0]=maxL;
 }
 
 
