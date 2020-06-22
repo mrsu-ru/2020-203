@@ -121,7 +121,35 @@ for (int i = 0; i < N; i++) {
  */
 void sayfetdinovsf::lab5()
 {
-
+//Метод Якоби
+	double *oldx = new double[N]; 
+	for (int i=0; i<N; i++) { 
+		x[i]=0;} // заполняем решение нулями 
+	double Err=0.0; 
+	double eps=1e-20; // погрешность
+	int k=0; 
+	do { 
+		k++; 
+		Err=0.0; 
+		for(int i=0; i<N; i++) 
+			oldx[i]=x[i]; // предыдущее решение 
+			for(int i=0; i<N; i++) 
+			{ 
+				double s=0;
+				for(int j=0; j<i; j++) 
+					s += A[i][j] * oldx[j]; //под главной диагональю
+				for(int j=i+1; j<N; j++) 
+					s += A[i][j] * oldx[j]; //над главной диагональю
+				x[i]=(b[i] - s)/A[i][i]; // вычисляется новое решение 
+			}			 
+			Err=std::abs(oldx[0]-x[0]); 
+			for(int i=0; i<N; i++) 
+			{ 
+				if(std::abs(oldx[i]-x[i]) > Err) 
+				Err = std::abs(oldx[i]-x[i]);//максимальная разница между предыдущим решением и текущим. 
+			} 
+	} while(Err >= eps); 
+delete [] oldx; 
 }
 
 
@@ -131,7 +159,51 @@ void sayfetdinovsf::lab5()
  */
 void sayfetdinovsf::lab6()
 {
+double eps = 1e-17;    
+    double *z, *Az;
+    int i,j;
+    z = new double[N];
+    Az = new double[N];
+    for (i=0; i<N; i++) x[i]=0;
+    for (i=0; i<N; i++) z[i]=b[i];
+	
+    for (i=0; i<N; i++)
+	   for (j=0; j<N; j++) 
+	      z[i]-=A[i][j]*x[j];
 
+    double Z=0;
+    double t=0;
+    double scalar=0;
+	
+    for (i=0; i<N; i++)
+	    Z += z[i]*z[i];
+    
+    while (Z > eps*eps){
+	    for (i=0; i<N; i++){
+	        Az[i] = 0;
+	        for (j=0; j<N; j++)	Az[i] += A[i][j]*z[j];
+	    }
+		
+	    scalar = 0;
+	    for (i=0; i<N; i++) scalar += Az[i]*z[i];
+	    t = -scalar;
+	    scalar = 0;
+	    for (i=0; i<N; i++) scalar += Az[i]*Az[i];
+	    t/=scalar;
+	
+	    for (i=0; i<N; i++) x[i] = x[i] - t*z[i];
+			
+	    for (i=0; i<N; i++)  z[i] = b[i];
+            for (i=0; i<N; i++)
+	            for (j=0; j<N; j++) 
+		            z[i] -= A[i][j]*x[j];		
+		
+	    Z=0;
+	    for (i=0; i<N; i++)  Z += z[i]*z[i];
+	}
+	
+	delete[] Az;
+	delete[] z;
 }
 
 
@@ -141,7 +213,73 @@ void sayfetdinovsf::lab6()
  */
 void sayfetdinovsf::lab7()
 {
+	double eps = 1e-20;
+	double* prevX = new double[N];
+	double* prevR = new double[N];
+	double* r = new double[N];
+	double* z = new double[N];
+	for (int i = 0; i < N; i++) {
+		r[i] = b[i];
+		z[i] = r[i];
+	}
 
+	while (true) {
+
+		for (int i = 0; i < N; i++) {
+			prevR[i] = r[i];
+			prevX[i] = x[i];
+		}
+
+		double alpha = 0, denAlpha = 0;
+
+		for (int i = 0; i < N; i++) {
+			double Az = 0;
+			for (int j = 0; j < N; j++) {
+				Az += A[i][j] * z[j];
+			}
+			alpha += prevR[i] * prevR[i];
+			denAlpha += Az * z[i];
+		}
+		alpha /= denAlpha;
+
+		for (int i = 0; i < N; i++) {
+			x[i] = prevX[i] + alpha * z[i];
+		}
+
+		double maxErr = abs(x[0] - prevX[0]);
+		for (int i = 1; i < N; i++)
+			if (abs(x[i] - prevX[i]) > maxErr)
+				maxErr = abs(x[i] - prevX[i]);
+
+		if (maxErr < eps)
+			break;
+
+		for (int i = 0; i < N; i++) {
+			double Az = 0;
+
+			for (int j = 0; j < N; j++) {
+				Az += A[i][j] * z[j];
+			}
+
+			r[i] = prevR[i] - alpha * Az;
+		}
+
+		double beta = 0, denBeta = 0;
+		for (int i = 0; i < N; i++) {
+			beta += r[i] * r[i];
+			denBeta += prevR[i] * prevR[i];
+		}
+		beta /= denBeta;
+
+		for (int i = 0; i < N; i++) {
+			z[i] = r[i] + beta * z[i];
+		}
+	}
+
+	delete[] prevX;
+	delete[] r;
+	delete[] prevR;
+	delete[] z;
 }
 
 
