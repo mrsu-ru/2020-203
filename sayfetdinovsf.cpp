@@ -57,7 +57,25 @@ int i,j,k,max;
  */
 void sayfetdinovsf::lab3()
 {
+	double *p = new double[N];
+	double *q = new double[N];
 
+	// Прямой ход
+	p[0] = -A[0][1] / A[0][0];
+	q[0] = b[0] / A[0][0];
+	for (int i = 1; i < N; i++) {
+		p[i] = -A[i][i + 1] / (A[i][i] + A[i][i - 1] * p[i - 1]);
+		q[i] = (b[i] - A[i][i - 1] * q[i - 1]) / (A[i][i] + A[i][i - 1] * p[i - 1]);
+	}
+
+	// Обратный ход
+	x[N - 1] = q[N - 1];
+	for (int i = N - 2; i >= 0; i--) {
+		x[i] = p[i] * x[i + 1] + q[i];
+	}
+
+	delete[] p;
+	delete[] q;
 }
 
 
